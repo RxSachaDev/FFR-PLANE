@@ -183,9 +183,13 @@ public class Coloration {
         }
         return countConflicts(graph);
     }
-    
-    
-    
+     
+    public int dsatur(){
+        Graph graphCopy = copyGraph(graph);
+        for (Node node : graphCopy.getEachNode()){
+            
+        }
+    }
 }
 
 

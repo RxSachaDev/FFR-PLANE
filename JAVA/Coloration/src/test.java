@@ -9,7 +9,7 @@ public class test {
 
     public static void main(String[] args) {
         try {
-            test.charger_graphe("data/graph-test2.txt");
+            test.charger_graphe("data/graph-test0.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
