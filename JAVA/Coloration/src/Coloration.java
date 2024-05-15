@@ -1,13 +1,13 @@
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
-import org.graphstream.graph.*;
-import org.graphstream.graph.implementations.*;
-import org.graphstream.ui.*;
+
 import org.graphstream.algorithm.coloring.WelshPowell;
-import java.awt.Color;
-import java.util.Random;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.MultiGraph;
 
 public class Coloration {
     private int kmax;
@@ -183,12 +183,69 @@ public class Coloration {
         }
         return countConflicts(graph);
     }
+
+    public Node[] rangerParDegreeNodes(){
+        Node[] tab = new Node[graph.getNodeCount()];
+        for (Node node : graph.getEachNode()){
+            if (node == graph.getNode(0)){
+                tab[0] = graph.getNode(0);
+            }
+            else {
+                int i = 0;
+                while (tab[i] != null && node.getDegree() < tab[i].getDegree()) {
+                    i++;
+                }
+                if (tab[i] == null){
+                    tab[i] = node;
+                }
+                else {
+                    for(int y = tab.length - 1; y > i; y--) {
+                        tab[y] = tab[y - 1];
+                    }
+                    tab[i] = node;
+                }
+            }
+        }
+        return tab;
+    }
+
+    public boolean colorPasRempli(Node[] node){
+        boolean pasRempli = false;
+        for (int i = 0; i<node.length && !pasRempli ;i++){
+            if (node[i].getAttribute("color") == null){
+                pasRempli = true;
+            }
+        }
+        return pasRempli;
+    }
+
+    public Node plusHautDegreNonUtilise(Node[] node){
+        Node val = node[0];
+        for (int i =1; i<node.length;i++){
+            if (node[i].getAttribute("color") == null && (int) node[i].getAttribute("nbColor") > (int) val.getAttribute("nbColor") ){
+                val = node[i];
+            }
+        }
+        return val;
+    }
      
-    public int dsatur(){
-        Graph graphCopy = copyGraph(graph);
-        for (Node node : graphCopy.getEachNode()){
+    public void dsatur(){
+        Node[] tab = rangerParDegreeNodes();
+        for (Node node : tab){
+            node.addAttribute("nbColor", node.getDegree());
+        }
+        tab[0].addAttribute("color", 1);
+        for (Edge edge : tab[0].getEdgeSet()) {
+            // Obtention de l'autre nœud connecté à cette arête
+            Node otherNode = edge.getOpposite(tab[0]);
+
+            // Modification des attributs de l'autre nœud
+            otherNode.setAttribute("nbColor", 1);
+        }
+        while(colorPasRempli(tab)){
             
         }
+        
     }
 }
 

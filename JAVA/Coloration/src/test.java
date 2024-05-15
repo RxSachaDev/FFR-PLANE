@@ -13,9 +13,7 @@ public class test {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(graph.getEdgeCount());
+        test.dsatur();
         
-        System.out.println(test.welshPowell());
-        test.afficherGraphe();
     }
 }
