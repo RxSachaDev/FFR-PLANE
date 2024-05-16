@@ -9,11 +9,11 @@ public class test {
 
     public static void main(String[] args) {
         try {
-            test.charger_graphe("data/graph-test0.txt");
+            test.charger_graphe("data/graph-test1.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        test.dsatur();
+        System.out.println(test.dsatur());
         
     }
 }

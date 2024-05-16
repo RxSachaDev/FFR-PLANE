@@ -80,31 +80,6 @@ public class Coloration {
         }
     }
 
-    public ArrayList<Integer> compterDegré(int x) {
-        int cpt = 0;
-        ArrayList<Integer> degré = new ArrayList<>();
-        degré.add(x);
-        for (int i = 0; i<sommet.size(); i++){
-            if (sommet.get(i) == x)
-                cpt++;
-        }
-        
-        degré.add(cpt);
-        return degré;
-    }   
-
-    public ArrayList<Integer> precedent(int x){
-        int i = 0;
-        ArrayList<Integer> precedent = new ArrayList<>();
-        while (i< sommet.size()){
-            if (sommet.get(i) == x && i%2 == 1){
-                precedent.add(sommet.get(i-1));
-            }
-            i++;
-        }
-        return precedent;
-    }
-
     public static Graph copyGraph(Graph original) {
         Graph copy = new MultiGraph("Copy");
         
@@ -184,26 +159,16 @@ public class Coloration {
         return countConflicts(graph);
     }
 
-    public Node[] rangerParDegreeNodes(){
+    public Node[] rangerParDegreeNodes() {
         Node[] tab = new Node[graph.getNodeCount()];
-        for (Node node : graph.getEachNode()){
-            if (node == graph.getNode(0)){
-                tab[0] = graph.getNode(0);
+        for (Node node : graph) {
+            int i = 0;
+            while (i < tab.length && tab[i] != null && node.getDegree() < tab[i].getDegree()) {
+                i++;
             }
-            else {
-                int i = 0;
-                while (tab[i] != null && node.getDegree() < tab[i].getDegree()) {
-                    i++;
-                }
-                if (tab[i] == null){
-                    tab[i] = node;
-                }
-                else {
-                    for(int y = tab.length - 1; y > i; y--) {
-                        tab[y] = tab[y - 1];
-                    }
-                    tab[i] = node;
-                }
+            if (i < tab.length) {
+                System.arraycopy(tab, i, tab, i + 1, tab.length - 1 - i);
+                tab[i] = node;
             }
         }
         return tab;
@@ -219,33 +184,76 @@ public class Coloration {
         return pasRempli;
     }
 
-    public Node plusHautDegreNonUtilise(Node[] node){
-        Node val = node[0];
-        for (int i =1; i<node.length;i++){
-            if (node[i].getAttribute("color") == null && (int) node[i].getAttribute("nbColor") > (int) val.getAttribute("nbColor") ){
-                val = node[i];
+    public Node plusHautDegreNonUtilise(Node[] nodes) {
+        Node val = null;
+        int maxDegree = -1;
+        for (Node node : nodes) {
+            if (node.getAttribute("color") == null) {
+                int degree = node.getAttribute("nbColor");
+                if (degree > maxDegree) {
+                    maxDegree = degree;
+                    val = node;
+                }
             }
         }
         return val;
     }
+
+    public void setNbColorOpposite(Node n) {
+        for (Edge edge : n.getEdgeSet()) {
+            Node otherNode = edge.getOpposite(n);
+            ArrayList<Integer> couleurAutour = otherNode.getAttribute("couleurAutour");
+            if (couleurAutour == null) {
+                couleurAutour = new ArrayList<>();
+                otherNode.setAttribute("couleurAutour", couleurAutour);
+            }
+            Integer color = n.getAttribute("color");
+            if (!couleurAutour.contains(color)) {
+                couleurAutour.add(color);
+                int nbColor = otherNode.getAttribute("nbColor");
+                otherNode.setAttribute("nbColor", nbColor + 1);
+            }
+        }
+    }
+
+    public void appliquerColor(Node node) {
+        boolean colore = false;
+        int i = 1;
+        while (!colore) {
+            boolean conflit = false;
+            for (Edge edge : node.getEdgeSet()) {
+                Node otherNode = edge.getOpposite(node);
+                if (otherNode.getAttribute("color") != null && otherNode.getAttribute("color").equals(i)) {
+                    conflit = true;
+                    break;
+                }
+            }
+            if (!conflit) {
+                node.setAttribute("color", i);
+                colore = true;
+            } else {
+                i++;
+            }
+        }
+    }
      
-    public void dsatur(){
+    public int dsatur() {
         Node[] tab = rangerParDegreeNodes();
-        for (Node node : tab){
+        for (Node node : tab) {
             node.addAttribute("nbColor", node.getDegree());
+            node.addAttribute("couleurAutour", new ArrayList<Integer>());
         }
         tab[0].addAttribute("color", 1);
-        for (Edge edge : tab[0].getEdgeSet()) {
-            // Obtention de l'autre nœud connecté à cette arête
-            Node otherNode = edge.getOpposite(tab[0]);
-
-            // Modification des attributs de l'autre nœud
-            otherNode.setAttribute("nbColor", 1);
+        setNbColorOpposite(tab[0]);
+        while (colorPasRempli(tab)) {
+            Node n = plusHautDegreNonUtilise(tab);
+            appliquerColor(n);
+            setNbColorOpposite(n);       
         }
-        while(colorPasRempli(tab)){
-            
+        for (Node node : graph) {
+            System.out.println(node.getId() + ": " + node.getAttribute("color"));
         }
-        
+        return countConflicts(graph);
     }
 }
 
