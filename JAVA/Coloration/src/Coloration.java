@@ -30,6 +30,10 @@ public class Coloration {
         this.fichier = fichier;
     }
 
+    public void setGraph(Graph g){
+        this.graph = g;
+    }
+
     public String getFichier() {
         return fichier;
     }
@@ -46,9 +50,9 @@ public class Coloration {
         graph.display();
     }
 
-    public void charger_graphe(String f) throws IOException {
+    public void charger_graphe() throws IOException {
         int cpt = 0;
-        FileInputStream fileInputStream = new FileInputStream(f);
+        FileInputStream fileInputStream = new FileInputStream(this.fichier);
         Scanner scanner = new Scanner(fileInputStream);
     
         while (scanner.hasNextLine()) {
@@ -114,54 +118,46 @@ public class Coloration {
         return conflictCount;
     }
 
-    public int welshPowell() {
+     public int welshPowell() {
         // Appliquer l'algorithme de Welsh-Powell
         WelshPowell wp = new WelshPowell("color");
         wp.init(graph);
         wp.compute();
-    
-        Integer chromaticNumber = wp.getChromaticNumber();
+
+        int chromaticNumber = wp.getChromaticNumber();
         System.out.println("Chromatic Number: " + chromaticNumber);
-    
+
         while (chromaticNumber > kmax) {
             Graph graphCopy = copyGraph(graph);
             for (Node node : graph) {
-                Integer colorIndex = (Integer) node.getAttribute("color"); // Cast en Integer
-                if (colorIndex >= kmax) { // Si la couleur dépasse kmax
-                    node.removeAttribute("color"); // Supprimer la couleur attribuée
-                } else {
+                Integer colorIndex = node.getAttribute("color");
+                if (colorIndex != null && colorIndex >= kmax) {
+                    node.removeAttribute("color");
+                } else if (colorIndex != null) {
                     graphCopy.removeNode(node.getId());
                 }
             }
-            // Appliquer à nouveau l'algorithme de Welsh-Powell récursivement jusqu'à ce que chromaticNumber <= kmax
+            // Appliquer à nouveau l'algorithme de Welsh-Powell sur le graphe copié
             wp.init(graphCopy);
-            wp.compute(); // Appel récursif
-    
+            wp.compute();
+
             // Mettre à jour les couleurs dans le graphe original avec les couleurs du graphe copié
             for (Node node : graphCopy) {
-                Integer colorIndex = (Integer) node.getAttribute("color"); // Cast en Integer
-                graph.getNode(node.getId()).setAttribute("color", colorIndex.intValue()); // Convertir en int
+                Integer colorIndex = node.getAttribute("color");
+                if (colorIndex != null) {
+                    graph.getNode(node.getId()).setAttribute("color", colorIndex);
+                }
             }
-    
+
             // Mettre à jour chromaticNumber après l'appel récursif
             chromaticNumber = wp.getChromaticNumber();
-        }
-    
-        // Attribuer les couleurs mises à jour aux nœuds du graphe original
-        String[] colors = {"red", "blue", "green", "yellow", "orange", "purple", "pink", "cyan", "magenta", "brown"};
-        for (Node node : graph) {
-            Integer colorIndex = (Integer) node.getAttribute("color"); // Cast en Integer
-            if (colorIndex != null && colorIndex >= 0 && colorIndex < colors.length) {
-                String color = colors[colorIndex];
-                node.setAttribute("ui.style", "fill-color: " + color + ";");
-            }
         }
         return countConflicts(graph);
     }
 
-    public Node[] rangerParDegreeNodes() {
-        Node[] tab = new Node[graph.getNodeCount()];
-        for (Node node : graph) {
+    public Node[] rangerParDegreeNodes(Graph g) {
+        Node[] tab = new Node[g.getNodeCount()];
+        for (Node node : g) {
             int i = 0;
             while (i < tab.length && tab[i] != null && node.getDegree() < tab[i].getDegree()) {
                 i++;
@@ -237,23 +233,70 @@ public class Coloration {
         }
     }
      
-    public int dsatur() {
-        Node[] tab = rangerParDegreeNodes();
+    public int dsatur(Graph g) {
+        Node[] tab = rangerParDegreeNodes(g);
         for (Node node : tab) {
             node.addAttribute("nbColor", node.getDegree());
-            node.addAttribute("couleurAutour", new ArrayList<Integer>());
         }
         tab[0].addAttribute("color", 1);
         setNbColorOpposite(tab[0]);
         while (colorPasRempli(tab)) {
             Node n = plusHautDegreNonUtilise(tab);
             appliquerColor(n);
-            setNbColorOpposite(n);       
+            setNbColorOpposite(n);
         }
-        for (Node node : graph) {
-            System.out.println(node.getId() + ": " + node.getAttribute("color"));
+
+        int chromaticNumber = 0;
+        for (Node node : g) {
+            if ((int) node.getAttribute("color") > chromaticNumber) {
+                chromaticNumber = (int) node.getAttribute("color");
+            }
         }
-        return countConflicts(graph);
+
+        while (chromaticNumber > kmax) {
+            Graph graphCopy = copyGraph(g);
+            for (Node node : g) {
+                Integer colorIndex = (Integer) node.getAttribute("color");
+                if (colorIndex >= kmax) {
+                    node.removeAttribute("color");
+                    node.removeAttribute("nbColor");
+                    node.removeAttribute("couleurAutour");
+                } else {
+                    graphCopy.removeNode(node.getId());
+                }
+            }
+            dsatur(graphCopy);
+            for (Node node : graphCopy) {
+                Integer colorIndex = (Integer) node.getAttribute("color");
+                g.getNode(node.getId()).setAttribute("color", colorIndex.intValue());
+            }
+
+            chromaticNumber = 0;
+            for (Node node : g) {
+                if ((int) node.getAttribute("color") > chromaticNumber) {
+                    chromaticNumber = (int) node.getAttribute("color");
+                }
+            }
+        }
+        return countConflicts(g);
+    }
+
+    public int minConflict(){
+        int conflict = dsatur(graph);
+        System.out.println(conflict);
+        graph = new MultiGraph(fichier);
+        try {
+            charger_graphe();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (conflict > welshPowell()){
+            conflict = welshPowell();
+        }
+        for (Node node : graph){
+            System.out.println(node + ": " + node.getAttribute("color"));
+        }
+        return conflict;
     }
 }
 
