@@ -33,6 +33,11 @@ public class Aeroport {
         Coordonnees = calCooCartesiennes();
     }
 
+    Aeroport(String code,double[] Coordonnees){
+        this.code = code;
+        this.Coordonnees = Coordonnees;
+    }
+
     //méthodes
     public double[] calCooCartesiennes() { 
         int R = 6371; //Rayon de la Terre (km) 

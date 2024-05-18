@@ -49,4 +49,8 @@ public class ListeVols {
          */
         return true;
     }
+
+    public List<Vol> getListeVols() {
+        return ListeVols;
+    }
 }

@@ -86,4 +86,8 @@ public class Vol {
     public void setDistanceVol(double distanceVol) {
         this.distanceVol = distanceVol;
     }
+
+    public int getNumeroVol() {
+        return numeroVol;
+    }
 }
