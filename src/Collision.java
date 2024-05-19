@@ -22,7 +22,7 @@ public class Collision {
         Aeroport A3 = V2.getAero_depart();
         Aeroport A4 = V2.getAero_arrivee();     
         
-        if (A1 == A4 && A2 == A3){
+        if (A1 == A4 && A2 == A3){ // TAG 3
             if (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15) return true;
             
             Vol firstVolToGo = V1;
@@ -35,15 +35,19 @@ public class Collision {
             if (secondVolToGo.getHoraireDepart() - firstVolToGo.getHoraireArrivee() < 15) return true;
 
             return false;     
-        } else if (A1 == A3 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15)) { 
+        } 
+        if (A1 == A3 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15)) { // TAG 1
             return true;
-        } else if (A2 == A4 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireArrivee()) < 15)) { 
+        } 
+        if (A2 == A4 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireArrivee()) < 15)) { // TAG 2
             return true;
-        } else if (A1 == A4 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireArrivee()) < 15)) { 
+        } 
+        if (A1 == A4 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireArrivee()) < 15)) { // TAG 4
             return true;
-        } else if (A2 == A3 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireDepart()) < 15)) { 
+        } 
+        if (A2 == A3 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireDepart()) < 15)) { // TAG 5
             return true;
-        } else {
+        } else { // TAG 6
             Boolean bool = false;
             double[] point = calIntersectionPoint(V1, V2);
             if(point[0] != 7000){ // Si un point d'intersection existe
