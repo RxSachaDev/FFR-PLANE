@@ -50,6 +50,10 @@ public class ListeVols {
         return true;
     }
 
+    public void viderListe(){
+        ListeVols.clear();
+    }
+    
     public List<Vol> getListeVols() {
         return ListeVols;
     }

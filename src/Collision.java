@@ -3,74 +3,89 @@
 public class Collision {
     private static boolean isOnFlightSegment(double x, double y, Vol vol) {
         boolean bool = false;
-        double[] vol_Depart = vol.getAero_depart().getCoordonnees();
-        double[] vol_Arrivee = vol.getAero_arrivee().getCoordonnees();
+        double[] cooDepart = vol.getAero_depart().getCoordonnees();
+        double[] cooArrivee = vol.getAero_arrivee().getCoordonnees();
     
-        double max_x = Math.max(vol_Depart[0], vol_Arrivee[0]);
-        double min_x = Math.min(vol_Depart[0], vol_Arrivee[0]);
-        double max_y = Math.max(vol_Depart[1], vol_Arrivee[1]);
-        double min_y = Math.min(vol_Depart[1], vol_Arrivee[1]);
+        double max_x = Math.max(cooDepart[0], cooArrivee[0]);
+        double min_x = Math.min(cooDepart[0], cooArrivee[0]);
+        double max_y = Math.max(cooDepart[1], cooArrivee[1]);
+        double min_y = Math.min(cooDepart[1], cooArrivee[1]);
 
         if(min_x <= x && x <= max_x && min_y <= y && y <= max_y) bool = true;
 
         return bool;
     }
  
-    public static boolean isInCollision(Vol V1, Vol V2) {
+    public static boolean hasCollision(Vol V1, Vol V2) {
         Aeroport A1 = V1.getAero_depart();
         Aeroport A2 = V1.getAero_arrivee();
         Aeroport A3 = V2.getAero_depart();
         Aeroport A4 = V2.getAero_arrivee();     
         
-        //Cas ou il y a le meme aeroport de départ
-        if (A1 == A3 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15)) { 
-            return true;
-        }
-        
-        //Cas ou il y a le meme aeroport d'arrivé
-        if (A2 == A4 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireArrivee()) < 15)) { 
-            return true;
-        }
-               
-        //Cas ou l'aeroport d'arrivé de V2 est l'aeroport de depart de V1
-        if (A1 == A4 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireArrivee()) < 15)) { 
-            return true;
-        }
-        
-        //Cas ou l'aeroport d'arrivé de V1 est l'aeroport de depart de V2
-        if (A2 == A3 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireDepart()) < 15)) { 
-            return true;
-        } 
-        
-        //Cas ou l'aeroport d'arrivé de V2 est l'aeroport de depart de V1 ET l'aeroport d'arrivé de V1 est l'aeroport de depart de V2
         if (A1 == A4 && A2 == A3){
             if (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15) return true;
             
             Vol firstVolToGo = V1;
             Vol secondVolToGo = V2;
-            if(firstVolToGo.getHoraireDepart()>secondVolToGo.getHoraireDepart()) {
+            if(firstVolToGo.getHoraireDepart() > secondVolToGo.getHoraireDepart()) {
                 firstVolToGo = V2;
                 secondVolToGo = V1;
             }
             
-            if (secondVolToGo.getHoraireDepart()-firstVolToGo.getHoraireDepart()-firstVolToGo.getDuree()<15){
-                return true;
-            } else return false;     
-        }
-        
-        Boolean bool = false;
-        double[] point = calPointIntersection(V1, V2);
-        if(point[0] != 7000){ // Si un point d'intersection existe
-            double distancePoint_volA = ToolBox.distance(V1.getAero_depart().getCoordonnees(), point);
-            double heurePoint_volA = calHourAtPoint(V1, distancePoint_volA);
-            double distancePoint_volB = ToolBox.distance(V2.getAero_depart().getCoordonnees(), point);
-            double heurePoint_volB = calHourAtPoint(V2, distancePoint_volB);
+            if (secondVolToGo.getHoraireDepart() - firstVolToGo.getHoraireArrivee() < 15) return true;
 
-            if(timeDifference(heurePoint_volA, heurePoint_volB) < 15.0) bool = true;
+            return false;     
+        } else if (A1 == A3 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15)) { 
+            return true;
+        } else if (A2 == A4 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireArrivee()) < 15)) { 
+            return true;
+        } else if (A1 == A4 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireArrivee()) < 15)) { 
+            return true;
+        } else if (A2 == A3 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireDepart()) < 15)) { 
+            return true;
+        } else {
+            Boolean bool = false;
+            double[] point = calIntersectionPoint(V1, V2);
+            if(point[0] != 7000){ // Si un point d'intersection existe
+                double distancePoint_volA = ToolBox.distance(V1.getAero_depart().getCoordonnees(), point);
+                double heurePoint_volA = calHourAtPoint(V1, distancePoint_volA);
+                double distancePoint_volB = ToolBox.distance(V2.getAero_depart().getCoordonnees(), point);
+                double heurePoint_volB = calHourAtPoint(V2, distancePoint_volB);
+
+                if(timeDifference(heurePoint_volA, heurePoint_volB) < 15.0) bool = true;
+            }
+            return bool;
         }
-        return bool;
     }
-    
+
+    private static double[] calIntersectionPoint(Vol V1, Vol V2){
+        double[] point = new double[2];
+        point[0] = point[1] = 7000;
+
+        double[] cooArrivee1 = V1.getAero_arrivee().getCoordonnees();
+        double[] cooDepart1 = V1.getAero_depart().getCoordonnees();
+        double[] cooArrivee2 = V2.getAero_arrivee().getCoordonnees();
+        double[] cooDepart2 = V2.getAero_depart().getCoordonnees();
+
+        double m1 = (cooArrivee1[1] - cooDepart1[1]) / (cooArrivee1[0] - cooDepart1[0]); 
+        double p1 = cooArrivee1[1] - m1 * cooArrivee1[0];
+
+        double m2 = (cooArrivee2[1]-cooDepart2[1])/(cooArrivee2[0]-cooDepart2[0]);
+        double p2 = cooArrivee2[1] - m2 * cooArrivee2[0]; 
+
+        double x = Double.NaN, y = Double.NaN;
+        
+        x = -(p1 - p2) / (m1 - m2); // Abscisse du point d'intersection
+        y = m1 * x + p1; // Ordonnée du point d'intersection
+        
+        if (isOnFlightSegment(x,y,V1) && isOnFlightSegment(x,y,V2)) {
+            point[0] = x;
+            point[1] = y;
+        }
+        return point;
+    }
+
+    /*    
     private static double[] calPointIntersection(Vol V1, Vol V2){
         double[] point = new double[2];
         point[0] = point[1] = 7000;
@@ -94,7 +109,7 @@ public class Collision {
         }
         
         double x = Double.NaN, y = Double.NaN;
-
+        
         if (m1 == m2) {
             if(p1 != p2) { //Cas ou les droites sont paralleles
                 return point;
@@ -143,7 +158,7 @@ public class Collision {
         // System.out.println("    | isBetweenInterval(volB, x, y) : "+isOnFlightSegment(x, y,V2));
         return point;
     }
-
+*/
     public static double calHourAtPoint(Vol vol, double distancePoint) {
         // Simple produit en croix
         double dureePoint = (distancePoint * vol.getDuree()) / vol.getDistanceVol();
