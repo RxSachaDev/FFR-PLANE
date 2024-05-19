@@ -1,7 +1,7 @@
 
 //Penser à integrer les méthodes directement à la classe Vol ou ListeVols
 public class Collision {
-    private static boolean isBetweenInterval(Vol vol, double x, double y){
+    private static boolean isOnFlightSegment(double x, double y, Vol vol) {
         boolean bool = false;
         double[] vol_Depart = vol.getAero_depart().getCoordonnees();
         double[] vol_Arrivee = vol.getAero_arrivee().getCoordonnees();
@@ -13,130 +13,144 @@ public class Collision {
 
         if(min_x <= x && x <= max_x && min_y <= y && y <= max_y) bool = true;
 
-        // System.out.println("        | min_x : "+min_x);
-        // System.out.println("        | x : "+x);
-        // System.out.println("        | max_x : "+max_x);
-        // System.out.println("        | min_y : "+min_y);
-        // System.out.println("        | y : "+y);
-        // System.out.println("        | max_y : "+max_y);
+        return bool;
+    }
+ 
+    public static boolean isInCollision(Vol V1, Vol V2) {
+        Aeroport A1 = V1.getAero_depart();
+        Aeroport A2 = V1.getAero_arrivee();
+        Aeroport A3 = V2.getAero_depart();
+        Aeroport A4 = V2.getAero_arrivee();     
+        
+        //Cas ou il y a le meme aeroport de départ
+        if (A1 == A3 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15)) { 
+            return true;
+        }
+        
+        //Cas ou il y a le meme aeroport d'arrivé
+        if (A2 == A4 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireArrivee()) < 15)) { 
+            return true;
+        }
+               
+        //Cas ou l'aeroport d'arrivé de V2 est l'aeroport de depart de V1
+        if (A1 == A4 && (Math.abs(V1.getHoraireDepart() - V2.getHoraireArrivee()) < 15)) { 
+            return true;
+        }
+        
+        //Cas ou l'aeroport d'arrivé de V1 est l'aeroport de depart de V2
+        if (A2 == A3 && (Math.abs(V1.getHoraireArrivee() - V2.getHoraireDepart()) < 15)) { 
+            return true;
+        } 
+        
+        //Cas ou l'aeroport d'arrivé de V2 est l'aeroport de depart de V1 ET l'aeroport d'arrivé de V1 est l'aeroport de depart de V2
+        if (A1 == A4 && A2 == A3){
+            if (Math.abs(V1.getHoraireDepart() - V2.getHoraireDepart()) < 15) return true;
+            
+            Vol firstVolToGo = V1;
+            Vol secondVolToGo = V2;
+            if(firstVolToGo.getHoraireDepart()>secondVolToGo.getHoraireDepart()) {
+                firstVolToGo = V2;
+                secondVolToGo = V1;
+            }
+            
+            if (secondVolToGo.getHoraireDepart()-firstVolToGo.getHoraireDepart()-firstVolToGo.getDuree()<15){
+                return true;
+            } else return false;     
+        }
+        
+        Boolean bool = false;
+        double[] point = calPointIntersection(V1, V2);
+        if(point[0] != 7000){ // Si un point d'intersection existe
+            double distancePoint_volA = ToolBox.distance(V1.getAero_depart().getCoordonnees(), point);
+            double heurePoint_volA = calHourAtPoint(V1, distancePoint_volA);
+            double distancePoint_volB = ToolBox.distance(V2.getAero_depart().getCoordonnees(), point);
+            double heurePoint_volB = calHourAtPoint(V2, distancePoint_volB);
 
+            if(timeDifference(heurePoint_volA, heurePoint_volB) < 15.0) bool = true;
+        }
         return bool;
     }
     
-    private static double[] pointIntersection(Vol volA, Vol volB){
+    private static double[] calPointIntersection(Vol V1, Vol V2){
         double[] point = new double[2];
-        point[0] = 7000;
+        point[0] = point[1] = 7000;
 
-        double[] cooArriveeA = volA.getAero_arrivee().getCoordonnees();
-        double[] cooDepartA = volA.getAero_depart().getCoordonnees();
-        double[] cooArriveeB = volB.getAero_arrivee().getCoordonnees();
-        double[] cooDepartB = volB.getAero_depart().getCoordonnees();
+        double[] cooArrivee1 = V1.getAero_arrivee().getCoordonnees();
+        double[] cooDepart1 = V1.getAero_depart().getCoordonnees();
+        double[] cooArrivee2 = V2.getAero_arrivee().getCoordonnees();
+        double[] cooDepart2 = V2.getAero_depart().getCoordonnees();
 
-        double mA = Double.POSITIVE_INFINITY;  // Coef directeur de la droite A
-        mA = (cooArriveeA[1] - cooDepartA[1]) / (cooArriveeA[0] - cooDepartA[0]); // Si la droite n'est pas verticale
-        double pA = cooArriveeA[1] - mA * cooArriveeA[0];
+        double m1 = Double.POSITIVE_INFINITY;  // Coef directeur de la droite 1 (initialisé à infini pour les cas des verticales)
+        double p1 = cooDepart1[0]; //initialisé à x pour le cas des verticales
+        if(cooArrivee1[0] - cooDepart1[0] != 0) {
+            m1 = (cooArrivee1[1] - cooDepart1[1]) / (cooArrivee1[0] - cooDepart1[0]);
+            p1 = cooArrivee1[1] - m1 * cooArrivee1[0];
+        }
+        double m2 = Double.POSITIVE_INFINITY;  // Coef directeur de la droite 2 (initialisé à infini pour les cas des verticales)
+        double p2 = cooDepart2[0]; //initialisé à x pour le cas des verticales
+        if(cooArrivee2[0] - cooDepart2[0] != 0) {
+            m2=(cooArrivee2[1]-cooDepart2[1])/(cooArrivee2[0]-cooDepart2[0]);
+            p2 = cooArrivee2[1] - m2 * cooArrivee2[0];
+        }
+        
+        double x = Double.NaN, y = Double.NaN;
 
-        double mB = Double.POSITIVE_INFINITY;  // Coef directeur de la droite B
-        mB = (cooArriveeB[1] - cooDepartB[1]) / (cooArriveeB[0] - cooDepartB[0]);
-        double pB = cooArriveeB[1] - mB * cooArriveeB[0];
-
-        double x=Double.NaN, y=Double.NaN;
-
-        if (mA == mB && pA == pB) { // Cas où les droites sont identiques
-            if (isBetweenInterval(volA, cooDepartB[0], cooDepartB[1]) || isBetweenInterval(volA, cooArriveeB[0], cooArriveeB[1])){
-                //Si les segment sont egaux V1 = A1=>A2 et V2 = A2=>A1
-                if(volA.getAero_depart()==volB.getAero_arrivee() && volB.getAero_depart()==volA.getAero_arrivee()) {
-                    //Normalement c'est bon Ici
-                    int tempsMinA = volA.getH_depart()*60+volA.getMin_depart();
-                    int tempsMinB = volB.getH_depart()*60+volB.getMin_depart();
-                    Vol volSelect = volA;
-                    if(volB.getH_depart()<volA.getH_depart() || volB.getMin_depart()<volB.getMin_depart()) volSelect=volB;
-                    if(Math.abs(tempsMinA-tempsMinB)>volSelect.getDuree()+15) {
-                        point[0] = point[1]=Double.POSITIVE_INFINITY;
-                        System.out.println("YYYYYYYYYY");
-                        return point; //Infinité d'intersection
-                    }
-                } else if (isBetweenInterval(volA, cooDepartB[0], cooDepartB[1])) { //Normalement c'est bon Ici
-                    point[0] = cooDepartB[0];
-                    point[1] = cooDepartB[1];
-                    System.out.println("ZZZZZZZZZZA");
-                    return point;
-                } else { 
-                    point[0] = cooArriveeB[0];
-                    point[1] = cooArriveeB[1];
-                    System.out.println("ZZZZZZZZZZB");
-                    return point;
+        if (m1 == m2) {
+            if(p1 != p2) { //Cas ou les droites sont paralleles
+                return point;
+            } else { //Cas ou les droites sont confondues (mais les segments ne sont pas égaux)
+                if (isOnFlightSegment(cooDepart2[0], cooDepart2[1],V1)) {
+                    point[0] = cooDepart2[0];
+                    point[1] = cooDepart2[1];
+                } else if (isOnFlightSegment(cooArrivee2[0],cooArrivee2[1],V1)){ 
+                    point[0] = cooArrivee2[0];
+                    point[1] = cooArrivee2[1];
                 }
+                return point;
             }
-        } else if (Double.isFinite(mA) && Double.isFinite(mB)) { //Cas classique
-            System.out.println("AAAAAAAAAA");
-            x = -(pA - pB) / (mA - mB); // Abscisse du point d'intersection
-            y = mA * x + pA; // Ordonnée du point d'intersection
-        } else if (Double.isInfinite(mA) && Double.isFinite(mB)) { //Cas ou A est verticale 
-            System.out.println("BBBBBBBBBB");
-            x = cooDepartA[0]; // La droite A est verticale
-            y = mB * x + pB;
+
+        } else if (Double.isFinite(m1) && Double.isFinite(m2)) { //Cas classique
+            x = -(p1 - p2) / (m1 - m2); // Abscisse du point d'intersection
+            y = m1 * x + p1; // Ordonnée du point d'intersection
+
+        } else if (Double.isInfinite(m1) && Double.isFinite(m2)) { //La droite 1 est verticale 
+            x = cooDepart1[0];
+            y = m2 * x + p2;
             y = Math.round(y * 1000.0)/1000.0; //Arrondis au millième
-        } else if (Double.isInfinite(mB) && Double.isFinite(mA)) { //Cas ou B est verticale
-            System.out.println("CCCCCCCCCC");
-            x = cooDepartB[0]; // La droite B est verticale
-            y = mA * x + pA;
+
+        } else if (Double.isInfinite(m2) && Double.isFinite(m1)) { //La droite 2 est verticale
+            x = cooDepart2[0]; 
+            y = m1 * x + p1;
             y = Math.round(y * 1000.0)/1000.0; //Arrondis au millième
-        } else { //Cas ou A et B sont paralleles (disjointes)
-            System.out.println("DDDDDDDDDD");
-            // Les deux droites sont verticales, pas d'intersection possible
-            return point;
         }
 
-        if (isBetweenInterval(volA, x, y) && isBetweenInterval(volB, x, y)) { // Si le point d'intersection est dans l'intervalle des segments
+        if (isOnFlightSegment(x,y,V1) && isOnFlightSegment(x,y,V2)) {
             point[0] = x;
             point[1] = y;
         }
 
-        // System.out.println("    | cooArriveeA : "+cooArriveeA[0]+" , "+cooArriveeA[1]);
-        // System.out.println("    | cooDepartA : "+cooDepartA[0]+" , "+cooDepartA[1]);
-        // System.out.println("    | cooArriveeB : "+cooArriveeB[0]+" , "+cooArriveeB[1]);
-        // System.out.println("    | cooDepartB : "+cooDepartB[0]+" , "+cooDepartB[1]);
-        // System.out.println("    | mA : "+mA);
-        // System.out.println("    | pA : "+pA);
-        // System.out.println("    | mB : "+mB);
-        // System.out.println("    | pB : "+pB);
+        // System.out.println("    | cooArriveeA : "+cooArrivee1[0]+" , "+cooArrivee1[1]);
+        // System.out.println("    | cooDepartA : "+cooDepart1[0]+" , "+cooDepart1[1]);
+        // System.out.println("    | cooArriveeB : "+cooArrivee2[0]+" , "+cooArrivee2[1]);
+        // System.out.println("    | cooDepartB : "+cooDepart2[0]+" , "+cooDepart2[1]);
+        // System.out.println("    | mA : "+m1);
+        // System.out.println("    | pA : "+p1);
+        // System.out.println("    | mB : "+m2);
+        // System.out.println("    | pB : "+p2);
         // System.out.println("    | x : "+x);
         // System.out.println("    | y : "+y);
-        // System.out.println("    | isBetweenInterval(volA, x, y) : "+isBetweenInterval(volA, x, y));
-        // System.out.println("    | isBetweenInterval(volB, x, y) : "+isBetweenInterval(volB, x, y));
-
+        // System.out.println("    | isBetweenInterval(volA, x, y) : "+isOnFlightSegment(x, y,V1));
+        // System.out.println("    | isBetweenInterval(volB, x, y) : "+isOnFlightSegment(x, y,V2));
         return point;
     }
-    
-    public static boolean enCollision(Vol volA, Vol volB){
-        boolean bool = false;
-        double[] point = pointIntersection(volA, volB);
-        if(Double.isInfinite(point[0])) return true;
-        if(point[0] != 7000){ // Si un point d'intersection existe
-            double distancePoint_volA = ToolBox.distance(volA.getAero_depart().getCoordonnees(), point);
-            double heurePoint_volA = tempsVol(volA.getDistanceVol(), distancePoint_volA, volA.getDuree(), volA.getH_depart(), volA.getMin_depart());
-            double distancePoint_volB = ToolBox.distance(volB.getAero_depart().getCoordonnees(), point);
-            double heurePoint_volB = tempsVol(volB.getDistanceVol(), distancePoint_volB, volB.getDuree(), volB.getH_depart(), volB.getMin_depart());
 
-            if(ecartHoraire(heurePoint_volA, heurePoint_volB) < 15.0) bool = true;
-            
-            // System.out.println("    | Vols : "+volA.getNumeroVol()+" - "+volB.getNumeroVol());
-            // System.out.println("    | Point d'intersection : (" + point[0] + "," + point[1] + ")");
-            // System.out.println("    | Intervalle : "+heurePoint_volA+" - "+heurePoint_volB+" = "+(heurePoint_volA-heurePoint_volB));
-            // System.out.println("    | EcartHoraire : "+ecartHoraire(heurePoint_volA, heurePoint_volB));
-            // System.out.println("    | Collision : "+bool+"\n");
-        }
-        return bool;
-    }
-
-    public static double tempsVol(double distanceVol, double distancePoint, double dureeVol, int h_DepartVol, int min_DepartVol) {
+    public static double calHourAtPoint(Vol vol, double distancePoint) {
         // Simple produit en croix
-        double dureePoint = (distancePoint * dureeVol) / distanceVol;
-        return h_DepartVol * 60 + min_DepartVol + dureePoint;
+        double dureePoint = (distancePoint * vol.getDuree()) / vol.getDistanceVol();
+        return vol.getHoraireDepart() + dureePoint;
     }
 
-    public static double ecartHoraire(double horaireMinutes1,double horaireMinutes2){
+    public static double timeDifference(double horaireMinutes1,double horaireMinutes2) {
         double difference = Math.abs(horaireMinutes1 - horaireMinutes2);
         double difference_avec_minuit = 1440 - difference;  // 1440 minutes dans une journée
         return Math.min(difference, difference_avec_minuit);

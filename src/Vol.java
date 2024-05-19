@@ -90,4 +90,12 @@ public class Vol {
     public int getNumeroVol() {
         return numeroVol;
     }
+
+    public int getHoraireDepart() {
+        return h_depart*60+min_depart;
+    }
+
+    public int getHoraireArrivee() {
+        return getHoraireDepart() + duree;
+    }
 }
