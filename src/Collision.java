@@ -1,6 +1,8 @@
 
 //Penser à integrer les méthodes directement à la classe Vol ou ListeVols
 public class Collision {
+    
+/*
     private static boolean isOnFlightSegment(double x, double y, Vol vol) {
         boolean bool = false;
         double[] cooDepart = vol.getAero_depart().getCoordonnees();
@@ -163,7 +165,7 @@ public class Collision {
         return point;
     }
 */
-    public static double calHourAtPoint(Vol vol, double distancePoint) {
+/*    public static double calHourAtPoint(Vol vol, double distancePoint) {
         // Simple produit en croix
         double dureePoint = (distancePoint * vol.getDuree()) / vol.getDistanceVol();
         return vol.getHoraireDepart() + dureePoint;
@@ -173,5 +175,139 @@ public class Collision {
         double difference = Math.abs(horaireMinutes1 - horaireMinutes2);
         double difference_avec_minuit = 1440 - difference;  // 1440 minutes dans une journée
         return Math.min(difference, difference_avec_minuit);
+    }*/
+
+
+        //1
+    private static double[] findIntersection(Vol V1, Vol V2) { //FAIT
+        double[] intersectionPoint = {7000,7000};
+        if (hasIntersection(V1,V2)) {
+            double[] A = V1.getAero_depart().getCoordonnees();
+            double[] B = V1.getAero_arrivee().getCoordonnees();
+            double[] C = V2.getAero_depart().getCoordonnees();
+            double[] D = V2.getAero_arrivee().getCoordonnees();
+            intersectionPoint[0] = ((A[0] * B[1] - A[1] * B[0]) * (C[0] - D[0]) - (A[0] - B[0]) * (C[0] * D[1] - C[1] * D[0])) / ((A[0] - B[0]) * (C[1] - D[1]) - (A[1] - B[1]) * (C[0] - D[0]));
+            intersectionPoint[1] = ((A[0] * B[1] - A[1] * B[0]) * (C[1] - D[1]) - (A[1] - B[1]) * (C[0] * D[1] - C[1] * D[0])) / ((A[0] - B[0]) * (C[1] - D[1]) - (A[1] - B[1]) * (C[0] - D[0]));
+        }
+        return intersectionPoint;
+    }
+
+    private static boolean hasIntersection(Vol V1,Vol V2) { //
+        double[] A = V1.getAero_depart().getCoordonnees();
+        double[] B = V1.getAero_arrivee().getCoordonnees();
+        double[] C = V2.getAero_depart().getCoordonnees();
+        double[] D = V2.getAero_arrivee().getCoordonnees();
+        boolean result = false;
+        int oA = orientation(A, B, C);
+        int oB = orientation(A, B, D);
+        int oC = orientation(C, D, A);
+        int oD = orientation(C, D, B);
+
+        if (oA != oB && oC != oD)
+            result = true;
+        else if (oA == 0 && isOnSegment(A, C, B))
+            result = true;
+        else if (oB == 0 && isOnSegment(A, D, B))
+            result = true;
+        else if (oC == 0 && isOnSegment(C, A, D))
+            result = true;
+        else if (oD == 0 && isOnSegment(C, B, D))
+            result = true;
+        return result;
+    }
+
+    private static int orientation(double[] P, double[] Q, double[] R) { //FAIT
+        int result = 0;
+        double val = ((Q[1] - P[1]) * (R[0] - Q[0])) - ((Q[0] - P[0]) * (R[1] - Q[1]));
+        if (val > 0)
+            result = 1;
+        else if (val < 0)
+            result = 2;
+        return result;
+    }
+
+    private static boolean isOnSegment(double[] P, double[] Q, double[] R) { //FAIT
+        return (Q[0] <= Math.max(P[0], R[0]) && Q[0] >= Math.min(P[0], R[0]) && 
+                Q[1] <= Math.max(P[1], R[1]) && Q[1] >= Math.min(P[1], R[1]));
+    }
+        
+        //2
+    private static int intersectionCase(Vol V1, Vol V2, double[] I) { //FAIT
+        int result = 0;
+        Aeroport AirpDep1 = V1.getAero_depart();
+        Aeroport AirpDep2 = V2.getAero_depart();
+        Aeroport AirpArr1 = V1.getAero_arrivee();
+        Aeroport AirpArr2 = V2.getAero_arrivee();
+
+        if (AirpDep1.equals(AirpArr2) && AirpDep2.equals(AirpArr1))
+            result = 3;
+        else if (AirpDep1.equals(AirpDep2))
+            result = 1;
+        else if (AirpArr1.equals(AirpArr2))
+            result = 2;
+        else if (AirpDep1.equals(AirpArr2))
+            result = 4;
+        else if (AirpDep2.equals(AirpArr1))
+            result = 5;
+        else if (I[0] != 7000)
+            result = 6;
+        return result;
+    }
+
+        //3
+    private static boolean hasCollision2(Vol V1, Vol V2, double[] I, int intersectCase) { //FAIT
+        double timeDelta = 16;
+        double hDep1 = V1.getHoraireDepart();
+        double hDep2 = V2.getHoraireDepart();
+        double hArr1 = V1.getHoraireArrivee();
+        double hArr2 = V2.getHoraireArrivee();
+        switch (intersectCase) {
+            case 1:
+                timeDelta = Math.abs(hDep1 - hDep2);
+                break;
+            case 2:
+                timeDelta = Math.abs(hArr1 - hArr2);
+                break;
+            case 3:
+                if (hDep1 < hDep2)
+                    timeDelta = hDep2 - hArr1;
+                else
+                    timeDelta = hDep1 - hArr2;
+                break;
+            case 4:
+                timeDelta = Math.abs(hArr2 - hDep1);
+                break;
+            case 5:
+                timeDelta = Math.abs(hArr1 - hDep2);
+                break;
+            case 6:
+                double hIntersect1 = findTimeAtIntersection(V1, I);
+                double hIntersect2 = findTimeAtIntersection(V2, I);
+                timeDelta = Math.abs(hIntersect1 - hIntersect2);
+                break;
+        }
+        return (timeDelta < 15);
+    }
+
+    private static double findTimeAtIntersection(Vol vol, double[] I) { //FAIT
+        double[] dep = vol.getAero_depart().getCoordonnees();
+        double[] arr = vol.getAero_arrivee().getCoordonnees();
+        double hDeparture = vol.getHoraireDepart();
+        int duration = vol.getDuree();
+
+        double flightDistance = Math.sqrt((arr[0] - dep[0]) * (arr[0] - dep[0]) + (arr[1] - dep[1]) * (arr[1] - dep[1]));
+        double avgSpeed = flightDistance / duration;
+
+        double intersectDistance = Math.sqrt((I[0] - dep[0]) * (I[0] - dep[0]) + (I[1] - dep[1]) * (I[1] - dep[1]));
+        double timeToIntersect = intersectDistance / avgSpeed;
+
+        return hDeparture + timeToIntersect;
+    }
+
+        //4
+    public static boolean hasCollision(Vol V1, Vol V2) {
+        double[] intersectionPoint = findIntersection(V1,V2);
+        int intersectCase = intersectionCase(V1, V2, intersectionPoint);
+        return hasCollision2(V1, V2, intersectionPoint, intersectCase);
     }
 }
