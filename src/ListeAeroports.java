@@ -1,5 +1,9 @@
+
 import java.io.*;
 import java.util.*;
+
+import airports.Airport;
+import errors.FileFormatError;
 
 public class ListeAeroports {
     /*Necessaire car pour calculer la distance drectement depuis la classe vol
@@ -9,7 +13,7 @@ public class ListeAeroports {
      * clé = Code
      * Valeur = Aeroport
      */ 
-    private Map<String,Aeroport> mapAeroports;
+    private Map<String,Airport> mapAeroports;
 
     //Instanciation
     ListeAeroports(){
@@ -17,7 +21,7 @@ public class ListeAeroports {
     }
 
     //méthodes
-    public boolean ajAeroport(Aeroport aeroport){
+    public boolean ajAeroport(Airport aeroport){
         boolean bool = false;
         if (mapAeroports.get(aeroport.getCode()) == null) {
             mapAeroports.put(aeroport.getCode(), aeroport);
@@ -34,7 +38,7 @@ public class ListeAeroports {
             while (scanner.hasNextLine()) {
                 String ligne = scanner.nextLine();
                 String[] Valeurs = ligne.split(";");
-                this.ajAeroport(new Aeroport(Valeurs[0], Valeurs[1], 
+                this.ajAeroport(new Airport(Valeurs[0], Valeurs[1], 
                   Integer.parseInt(Valeurs[2]), Integer.parseInt(Valeurs[3]), Integer.parseInt(Valeurs[4]), Valeurs[5].charAt(0), 
                   Integer.parseInt(Valeurs[6]), Integer.parseInt(Valeurs[7]), Integer.parseInt(Valeurs[8]), Valeurs[9].charAt(0)));
                 i++;
@@ -43,14 +47,14 @@ public class ListeAeroports {
         } catch (FileNotFoundException erreur) {
             throw new FileNotFoundException();
         } catch (NumberFormatException erreur) {
-            throw new ErreurFormatLigne(i,cheminFichier);
+            throw new FileFormatError(i,cheminFichier);
         } catch (ArrayIndexOutOfBoundsException erreur){
-            throw new ErreurFormatLigne(i,cheminFichier);
+            throw new FileFormatError(i,cheminFichier);
         }
         return true;
     }
 
-    public Aeroport getAeroport(String key){
+    public Airport getAeroport(String key){
         return mapAeroports.get(key);
     }
 

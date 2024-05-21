@@ -1,6 +1,11 @@
 import java.io.*;
 import java.util.List;
 
+import airports.Airport;
+import errors.FileFormatError;
+import flights.Flight;
+import intersection.FlightCollisionTools;
+
 public class Test {
     public static final String FICHIER_AEROPORTS = "./data/aeroports.txt";
     public static final String FICHIER_VOLS = "./data/vol-test4.csv";
@@ -11,31 +16,22 @@ public class Test {
         try {
             listeAero.remplirListe(FICHIER_AEROPORTS);
             
-            
-            //double[] tab1 = {(-2),(-2)};
-            //Aeroport A1 = new Aeroport("A1", tab1);
+            Airport A1 = listeAero.getAeroport("MRS");
+            Airport A2 = listeAero.getAeroport("BES");
+            Airport A3 = listeAero.getAeroport("LYS");
+            Airport A4 = listeAero.getAeroport("BOD");
+            Flight V1 = new Flight("AF000090",A1,A2,7,33,81);
+            Flight V2 = new Flight("AF000132",A3,A4,7,34,47);
 
-            //double[] tab2 = {(3),(3)};
-            //Aeroport A2 = new Aeroport("A2", tab2);
-
-            //double[] tab3 = {(1),(1)};
-            //Aeroport A3 = new Aeroport("A3", tab3);
-
-            //double[] tab4 = {(3),(-1)};
-            //Aeroport A4 = new Aeroport("A3", tab4);
-
-            //Vol V3 = new Vol("V3",A1,A2,7,0,50);
-            //Vol V4 = new Vol("V4",A3,A4,7,45,10);
-
-            //System.out.println(Collision.hasCollision(V3,V4));
+            System.out.println(FlightCollisionTools.hasCollision(V1,V2));
 
         } catch (FileNotFoundException erreur) {
             System.err.println("    > ERREUR : Impossible de traiter ce fichier !");
-        } catch (ErreurFormatLigne erreur) {
+        } catch (FileFormatError erreur) {
             System.err.println("    > ERREUR : "+erreur);
         }
 
-        List<Vol> listeVolsA = listeVols.getListeVols();
+        List<Flight> listeVolsA = listeVols.getListeVols();
         for(int ii = 1 ; ii<10 ; ii++){
             String temp = "./data/vol-test"+ii+".csv";
             try {
@@ -47,7 +43,7 @@ public class Test {
             listeVolsA = listeVols.getListeVols();
             for(int i = 0 ; i<listeVolsA.size()-1 ; i++) {
                 for(int j = i+1 ; j<listeVolsA.size() ; j++){
-                    if(Collision.hasCollision(listeVolsA.get(i), listeVolsA.get(j))) count++;
+                    if(FlightCollisionTools.hasCollision(listeVolsA.get(i), listeVolsA.get(j))) count++;
                 }
             }
             

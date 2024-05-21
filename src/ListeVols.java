@@ -1,16 +1,20 @@
+
 import java.util.*;
+
+import flights.Flight;
+
 import java.io.*;
 
 public class ListeVols {
-    private List<Vol> ListeVols;
+    private List<Flight> ListeVols;
     
     //Instanciation
     ListeVols(){
-        ListeVols = new ArrayList<Vol>();
+        ListeVols = new ArrayList<Flight>();
     }
 
     //méthodes
-    public boolean ajVol(Vol vol){
+    public boolean ajVol(Flight vol){
         boolean bool = false;
         if(vol!=null && !ListeVols.contains(vol)){
             bool = ListeVols.add(vol);
@@ -31,7 +35,7 @@ public class ListeVols {
             while (scanner.hasNextLine()) {
                 String ligne = scanner.nextLine();
                 String[] Valeurs = ligne.split(";");
-                this.ajVol(new Vol(Valeurs[0], listeAeroports.getAeroport(Valeurs[1]),listeAeroports.getAeroport(Valeurs[2]),
+                this.ajVol(new Flight(Valeurs[0], listeAeroports.getAeroport(Valeurs[1]),listeAeroports.getAeroport(Valeurs[2]),
                         Integer.parseInt(Valeurs[3]),Integer.parseInt(Valeurs[4]),Integer.parseInt(Valeurs[5])));
             }
             scanner.close();
@@ -54,7 +58,7 @@ public class ListeVols {
         ListeVols.clear();
     }
     
-    public List<Vol> getListeVols() {
+    public List<Flight> getListeVols() {
         return ListeVols;
     }
 }
