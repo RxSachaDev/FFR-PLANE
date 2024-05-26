@@ -1,116 +1,157 @@
 package intersection;
 
-import airports.Airport;
-import flights.Flight;
+import airports.*;
+import flights.*;
 import toolbox.ToolBox;
 
-public class FlightCollisionTools { 
-
-    public static boolean hasCollision(Flight V1, Flight V2) {
+/**
+ * The FlightCollisionTools class provides methods to detect potential collisions between flights.
+ */
+public class FlightCollisionTools {
+    /**
+     * Determines if there is a collision between two flights.
+     *
+     * @param flight1 the first flight
+     * @param flight2 the second flight
+     * @return true if there is a collision, false otherwise
+     */
+    public static boolean hasCollision(Flight flight1, Flight flight2) {
         double res = 16; // (PARAMETRE MODIFIABLE)
-        int intersectionCase = calIntersectionCase(V1,V2);
+        int intersectionCase = calculateIntersectionCase(flight1, flight2);
         switch (intersectionCase) {
-            case 1:     // Cas où V1 et V2 ont les même trajectoires (directions opposées)
-                if (V1.getDepartureTime() < V2.getDepartureTime())
-                    res = V2.getDepartureTime() - V1.getArrivalTime();
+            case 1: // Case where flight1 and flight2 have the same trajectories (opposite directions)
+                if (flight1.getDepartureTime() < flight2.getDepartureTime())
+                    res = flight2.getDepartureTime() - flight1.getArrivalTime();
                 else
-                    res = V1.getDepartureTime() - V2.getArrivalTime();
+                    res = flight1.getDepartureTime() - flight2.getArrivalTime();
                 break;
-            case 2:     // Cas où V1 et V2 ont le même aeroport de départ
-                res = Math.abs(V1.getDepartureTime() - V2.getDepartureTime());
+            case 2: // Case where flight1 and flight2 have the same departure airport
+                res = Math.abs(flight1.getDepartureTime() - flight2.getDepartureTime());
                 break;
-            case 3:     // Cas où V1 et V2 ont le même aeroport d'arrivé
-                res = Math.abs(V1.getArrivalTime() - V2.getArrivalTime());
+            case 3: // Case where flight1 and flight2 have the same arrival airport
+                res = Math.abs(flight1.getArrivalTime() - flight2.getArrivalTime());
                 break;
-            case 4:     // Cas où l'aeroport de départ de V1 = aeroport d'arrivé de V2
-                res = Math.abs(V1.getDepartureTime() - V2.getArrivalTime());
+            case 4: // Case where the departure airport of flight1 = arrival airport of flight2
+                res = Math.abs(flight1.getDepartureTime() - flight2.getArrivalTime());
                 break;
-            case 5:     // Cas où l'aeroport de départ de V2 = aeroport d'arrivé de V1
-                res = Math.abs(V1.getArrivalTime() - V2.getDepartureTime());
+            case 5: // Case where the departure airport of flight2 = arrival airport of flight1
+                res = Math.abs(flight1.getArrivalTime() - flight2.getDepartureTime());
                 break;
-            case 6:     // Tous les autres cas
-                double[] intersectionPoint = calIntersectionPoint(V1, V2);
-                if(isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], V1) && isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], V2)) {
-                    double distancePointV1 = ToolBox.calDistance(V1.getDepartureAirport().getCoordinates(), intersectionPoint);
-                    double hIntersect1 = calHourAtPoint(V1, distancePointV1);
-                    double distancePointV2 = ToolBox.calDistance(V2.getDepartureAirport().getCoordinates(), intersectionPoint);
-                    double hIntersect2 = calHourAtPoint(V2, distancePointV2);
-                    res = Math.abs(hIntersect1 - hIntersect2);
+            case 6: // All other cases
+                double[] intersectionPoint = calculateIntersectionPoint(flight1, flight2);
+                if (isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], flight1) && isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], flight2)) {
+                    double distancePointFlight1 = ToolBox.calDistance(flight1.getDepartureAirport().getCoordinates(), intersectionPoint);
+                    double hourAtPoint1 = calculateHourAtPoint(flight1, distancePointFlight1);
+                    double distancePointFlight2 = ToolBox.calDistance(flight2.getDepartureAirport().getCoordinates(), intersectionPoint);
+                    double hourAtPoint2 = calculateHourAtPoint(flight2, distancePointFlight2);
+                    res = Math.abs(hourAtPoint1 - hourAtPoint2);
                 }
                 break;
         }
         return (res < 15); // (PARAMETRE MODIFIABLE)
     }
 
-    private static int calIntersectionCase(Flight V1, Flight V2) {    
-        Airport A1 = V1.getDepartureAirport();
-        Airport A2 = V1.getArrivalAirport();
-        Airport A3 = V2.getDepartureAirport();
-        Airport A4 = V2.getArrivalAirport();
 
-        if (A1 == A4 && A2 == A3) {
-            return 1;   // Cas où V1 et V2 ont les même trajectoires (directions opposées)
+    /**
+     * Calculates the intersection case between two flights.
+     *
+     * @param flight1 the first flight
+     * @param flight2 the second flight
+     * @return an integer representing the intersection case
+     */
+    private static int calculateIntersectionCase(Flight flight1, Flight flight2) {
+        Airport departureAirport1 = flight1.getDepartureAirport();
+        Airport arrivalAirport1 = flight1.getArrivalAirport();
+        Airport departureAirport2 = flight2.getDepartureAirport();
+        Airport arrivalAirport2 = flight2.getArrivalAirport();
+
+        if (departureAirport1 == arrivalAirport2 && arrivalAirport1 == departureAirport2) {
+            return 1; // Case where flight1 and flight2 have the same trajectories (opposite directions)
         }
-        if (A1 == A3) {
-            return 2;   // Cas où V1 et V2 ont le même aeroport de départ
+        if (departureAirport1 == departureAirport2) {
+            return 2; // Case where flight1 and flight2 have the same departure airport
         }
-        if (A2 == A4) { 
-            return 3;   // Cas où V1 et V2 ont le même aeroport d'arrivé
+        if (arrivalAirport1 == arrivalAirport2) {
+            return 3; // Case where flight1 and flight2 have the same arrival airport
         }
-        if (A1 == A4) { 
-            return 4;   // Cas où l'aeroport de départ de V1 = aeroport d'arrivé de V2
+        if (departureAirport1 == arrivalAirport2) {
+            return 4; // Case where the departure airport of flight1 = arrival airport of flight2
         }
-        if (A2 == A3) {
-            return 5;   // Cas où l'aeroport de départ de V2 = aeroport d'arrivé de V1
+        if (arrivalAirport1 == departureAirport2) {
+            return 5; // Case where the departure airport of flight2 = arrival airport of flight1
         }
-        return 6;       // Tous les autres cas
+        return 6; // All other cases
     }
 
-    private static double[] calIntersectionPoint(Flight V1, Flight V2) {
-        double[] point = {Double.NaN,Double.NaN};
-    
-        double[] cooArrivee1 = V1.getArrivalAirport().getCoordinates();
-        double[] cooDepart1 = V1.getDepartureAirport().getCoordinates();
-        double[] cooArrivee2 = V2.getArrivalAirport().getCoordinates();
-        double[] cooDepart2 = V2.getDepartureAirport().getCoordinates();
-    
-        double m1 = (cooArrivee1[1] - cooDepart1[1]) / (cooArrivee1[0] - cooDepart1[0]);
-        double p1 = cooArrivee1[1] - m1 * cooArrivee1[0];
-    
-        double m2 = (cooArrivee2[1] - cooDepart2[1]) / (cooArrivee2[0] - cooDepart2[0]);
-        double p2 = cooArrivee2[1] - m2 * cooArrivee2[0];
-    
-        double x = -(p1 - p2) / (m1 - m2);
-        double y = m1 * x + p1;
-    
-        if (isOnFlightSegment(x, y, V1) && isOnFlightSegment(x, y, V2)) {
+
+    /**
+     * Calculates the intersection point between two flights.
+     *
+     * @param flight1 the first flight
+     * @param flight2 the second flight
+     * @return an array containing the coordinates of the intersection point
+     */
+    private static double[] calculateIntersectionPoint(Flight flight1, Flight flight2) {
+        double[] point = {Double.NaN, Double.NaN};
+
+        double[] arrivalCoordinates1 = flight1.getArrivalAirport().getCoordinates();
+        double[] departureCoordinates1 = flight1.getDepartureAirport().getCoordinates();
+        double[] arrivalCoordinates2 = flight2.getArrivalAirport().getCoordinates();
+        double[] departureCoordinates2 = flight2.getDepartureAirport().getCoordinates();
+
+        double slope1 = (arrivalCoordinates1[1] - departureCoordinates1[1]) / (arrivalCoordinates1[0] - departureCoordinates1[0]);
+        double intercept1 = arrivalCoordinates1[1] - slope1 * arrivalCoordinates1[0];
+
+        double slope2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
+        double intercept2 = arrivalCoordinates2[1] - slope2 * arrivalCoordinates2[0];
+
+        double x = -(intercept1 - intercept2) / (slope1 - slope2);
+        double y = slope1 * x + intercept1;
+
+        if (isOnFlightSegment(x, y, flight1) && isOnFlightSegment(x, y, flight2)) {
             point[0] = x;
             point[1] = y;
         }
-    
+
         return point;
     }
 
-    private static boolean isOnFlightSegment(double x, double y, Flight vol) {
-        double[] cooDepart = vol.getDepartureAirport().getCoordinates();
-        double[] cooArrivee = vol.getArrivalAirport().getCoordinates();
-    
-        double maxX = Math.max(cooDepart[0], cooArrivee[0]);
-        double minX = Math.min(cooDepart[0], cooArrivee[0]);
-        double maxY = Math.max(cooDepart[1], cooArrivee[1]);
-        double minY = Math.min(cooDepart[1], cooArrivee[1]);
-    
+
+    /**
+     * Checks if a point is on the flight segment.
+     *
+     * @param x the x-coordinate of the point
+     * @param y the y-coordinate of the point
+     * @param flight the flight
+     * @return true if the point is on the flight segment, false otherwise
+     */
+    private static boolean isOnFlightSegment(double x, double y, Flight flight) {
+        double[] departureCoordinates = flight.getDepartureAirport().getCoordinates();
+        double[] arrivalCoordinates = flight.getArrivalAirport().getCoordinates();
+
+        double maxX = Math.max(departureCoordinates[0], arrivalCoordinates[0]);
+        double minX = Math.min(departureCoordinates[0], arrivalCoordinates[0]);
+        double maxY = Math.max(departureCoordinates[1], arrivalCoordinates[1]);
+        double minY = Math.min(departureCoordinates[1], arrivalCoordinates[1]);
+
         return (minX <= x && x <= maxX && minY <= y && y <= maxY);
     }
 
-    private static double calHourAtPoint(Flight vol, double distancePoint) {
-        double dureePoint = (distancePoint * vol.getDuration()) / vol.getFlightDistance();
-        return vol.getDepartureTime() + dureePoint;
+
+    /**
+     * Calculates the hour at a given point on the flight segment.
+     *
+     * @param flight the flight
+     * @param distanceToPoint the distance to the point
+     * @return the hour at the given point
+     */
+    private static double calculateHourAtPoint(Flight flight, double distanceToPoint) {
+        double durationToPoint = (distanceToPoint * flight.getDuration()) / flight.getFlightDistance();
+        return flight.getDepartureTime() + durationToPoint;
     }
-    
 
 /**
- * PARTIE QUI FAIT DIFFERER LES RESULTATS DES vol-test4.csv ET vol-test8.csv
+    * PARTIE QUI FAIT DIFFERER LES RESULTATS DES vol-test4.csv ET vol-test8.csv
     public static boolean hasCollision(Flight V1, Flight V2) {
         Airport A1 = V1.getDepartureAirport();
         Airport A2 = V1.getArrivalAirport();
@@ -158,3 +199,4 @@ public class FlightCollisionTools {
     }
 */
 }
+           

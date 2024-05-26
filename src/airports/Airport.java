@@ -17,6 +17,7 @@ public class Airport {
     private int longMinute;
     private int longSecond;
     private char longOrientation;
+
     private double[] coordinates; // coordinates[0] = x and coordinates[1] = y
 
     /**
@@ -45,9 +46,20 @@ public class Airport {
         this.longMinute = longMinute;
         this.longSecond = longSecond;
         this.longOrientation = longOrientation;
-        this.coordinates = calCartesianCoordinates();
+        this.coordinates = calculateCartesianCoordinates();
     }
 
+
+    /**
+     * Constructor to instantiate an Airport with a code and coordinates.
+     *
+     * @param code the airport code
+     * @param coordinates the Cartesian coordinates of the airport
+     */
+    public Airport(String code, double[] coordinates) {
+        this.code = code;
+        this.coordinates = coordinates;
+    }
 
 
     /**
@@ -55,28 +67,21 @@ public class Airport {
      *
      * @return the Cartesian coordinates as a double array where coordinates[0] = x and coordinates[1] = y
      */
-    public double[] calCartesianCoordinates() {
-        int R = 6371; // Radius of the Earth (km)
-        int latCoefficient = 1;
-        int longCoefficient = 1;
+    public double[] calculateCartesianCoordinates() { 
+        int R = 6371; //Rayon de la Terre (km) 
+        int coef_lat = 1;
+        int coef_long = 1;
         double[] result = new double[2];
-        
-        if (latOrientation == 'O' || latOrientation == 'S') {
-            latCoefficient = -1;
-        }
-        if (longOrientation == 'O' || latOrientation == 'S') {
-            longCoefficient = -1;
-        }
-        
-        double latitude = Math.toRadians(latCoefficient * (latDegree + latMinute / 60.0 + latSecond / 3600.0));
-        double longitude = Math.toRadians(longCoefficient * (longDegree + longMinute / 60.0 + longSecond / 3600.0));
-        
-        result[0] = R * Math.cos(latitude) * Math.sin(longitude);
-        result[1] = R * Math.cos(latitude) * Math.cos(longitude);
-        
+        if(latOrientation == 'O' || latOrientation == 'S')
+            coef_lat = -1;
+        if(longOrientation == 'O' || longOrientation == 'S')
+            coef_long = -1;
+        double latitude = Math.toRadians(coef_lat*(latDegree+latMinute/60.0+latSecond/3600.0));
+        double longitude = Math.toRadians(coef_long*(longDegree+longMinute/60.0+longSecond/3600.0));
+        result[0] = R*Math.cos(latitude)*Math.sin(longitude);
+        result[1] = R*Math.cos(latitude)*Math.cos(longitude);
         return result;
     }
-
 
 
     /**
@@ -92,7 +97,6 @@ public class Airport {
     }
 
 
-
     /**
      * Gets the airport code.
      *
@@ -101,7 +105,6 @@ public class Airport {
     public String getCode() {
         return code;
     }
-
 
 
     /**
@@ -114,7 +117,6 @@ public class Airport {
     }
 
 
-
     /**
      * Gets the Cartesian coordinates of the airport.
      *
@@ -123,7 +125,6 @@ public class Airport {
     public double[] getCoordinates() {
         return coordinates;
     }
-
 
 
     /**
@@ -136,7 +137,6 @@ public class Airport {
     }
 
 
-
     /**
      * Sets the location of the airport.
      *
@@ -146,8 +146,7 @@ public class Airport {
         this.location = location;
     }
 
-
-
+    
     /**
      * Sets the Cartesian coordinates of the airport.
      *

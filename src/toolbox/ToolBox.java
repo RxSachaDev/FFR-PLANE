@@ -3,7 +3,6 @@ package toolbox;
  * The ToolBox class provides utility methods for various calculations.
  */
 public class ToolBox {
-
     /**
      * Calculates the distance between two points in a Cartesian plane.
      *

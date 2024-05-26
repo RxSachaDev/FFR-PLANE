@@ -1,8 +1,7 @@
 package flights;
 
-import airports.Airport;
-import toolbox.ToolBox;
-
+import airports.*;
+import toolbox.*;
 
 /**
  * The Flight class represents a flight with its details including name, departure and arrival airports, 
@@ -11,12 +10,14 @@ import toolbox.ToolBox;
 public class Flight {
     private static int i = 0; // Counter to assign a flight number to each flight
     private int flightNumber;
+    
     private String name;
     private Airport departureAirport;
     private Airport arrivalAirport;
     private int departureHour;
     private int departureMinute;
     private int duration;
+
     private double flightDistance; // Calculated once to avoid recalculating for each comparison between flights
 
     /**
@@ -42,7 +43,6 @@ public class Flight {
     }
 
 
-
     /**
      * Returns a string representation of the Flight object.
      *
@@ -56,7 +56,6 @@ public class Flight {
     }
 
 
-
     /**
      * Gets the name of the flight.
      *
@@ -65,7 +64,6 @@ public class Flight {
     public String getName() {
         return name;
     }
-
 
 
     /**
@@ -78,7 +76,6 @@ public class Flight {
     }
 
 
-
     /**
      * Gets the arrival airport.
      *
@@ -87,7 +84,6 @@ public class Flight {
     public Airport getArrivalAirport() {
         return arrivalAirport;
     }
-
 
 
     /**
@@ -100,7 +96,6 @@ public class Flight {
     }
 
 
-
     /**
      * Gets the departure minute.
      *
@@ -109,7 +104,6 @@ public class Flight {
     public int getDepartureMinute() {
         return departureMinute;
     }
-
 
 
     /**
@@ -122,7 +116,6 @@ public class Flight {
     }
 
 
-
     /**
      * Gets the distance of the flight.
      *
@@ -131,7 +124,6 @@ public class Flight {
     public double getFlightDistance() {
         return flightDistance;
     }
-
 
 
     /**
@@ -143,8 +135,7 @@ public class Flight {
         this.name = name;
     }
 
-
-
+    
     /**
      * Sets the departure airport.
      *
@@ -153,7 +144,6 @@ public class Flight {
     public void setDepartureAirport(Airport departureAirport) {
         this.departureAirport = departureAirport;
     }
-
 
 
     /**
@@ -166,7 +156,6 @@ public class Flight {
     }
 
 
-
     /**
      * Sets the departure hour.
      *
@@ -175,7 +164,6 @@ public class Flight {
     public void setDepartureHour(int departureHour) {
         this.departureHour = departureHour;
     }
-
 
 
     /**
@@ -188,7 +176,6 @@ public class Flight {
     }
 
 
-
     /**
      * Sets the duration of the flight in minutes.
      *
@@ -197,7 +184,6 @@ public class Flight {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-
 
 
     /**
@@ -210,7 +196,6 @@ public class Flight {
     }
 
 
-
     /**
      * Gets the flight number.
      *
@@ -219,7 +204,6 @@ public class Flight {
     public int getFlightNumber() {
         return flightNumber;
     }
-
 
 
     /**
@@ -232,7 +216,6 @@ public class Flight {
     }
 
 
-    
     /**
      * Gets the arrival time in minutes since midnight.
      *
@@ -242,3 +225,4 @@ public class Flight {
         return getDepartureTime() + duration;
     }
 }
+
