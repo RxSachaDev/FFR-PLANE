@@ -70,7 +70,7 @@ public class Coloration {
     /**
      * Affiche le graphe en utilisant l'interface utilisateur GraphStream.
      */
-    public void afficherGraphe() {
+    public void afficherGraphe(Graph graph) {
         System.setProperty("org.graphstream.ui", "org.graphstream.ui.swing");
         graph.display();
     }
@@ -341,7 +341,7 @@ public class Coloration {
             Graph graphCopy = copyGraph(g);
             for (Node node : g) {
                 Integer colorIndex = (Integer) node.getAttribute("color");
-                if (colorIndex >= kmax) {
+                if (colorIndex > kmax) {
                     node.removeAttribute("color");
                     node.removeAttribute("nbColor");
                     node.removeAttribute("couleurAutour");
@@ -365,6 +365,18 @@ public class Coloration {
         return countConflicts(g);
     }
 
+    private Graph copyGraphWithAttributes(Graph original) {
+        Graph copy = new MultiGraph("copy");
+        for (Node node : original.getEachNode()) {
+            Node copyNode = copy.addNode(node.getId());
+            copyNode.addAttribute("color", (int) node.getAttribute("color"));
+        }
+        for (Edge edge : original.getEachEdge()) {
+            copy.addEdge(edge.getId(), edge.getNode0().getId(), edge.getNode1().getId());
+        }
+        return copy;
+    }
+
     /**
      * Minimise les conflits de coloration en utilisant les algorithmes DSATUR et Welsh-Powell.
      * @return le nombre de conflits après la coloration
@@ -372,6 +384,7 @@ public class Coloration {
     public int minConflict() {
         int conflict = dsatur(graph);
         System.out.println(conflict);
+        Graph saveGraph = copyGraphWithAttributes(graph);
         graph = new MultiGraph(fichier);
         try {
             charger_graphe();
@@ -379,11 +392,35 @@ public class Coloration {
             e.printStackTrace();
         }
         if (conflict > welshPowell()) {
+            System.out.println("WP");
             conflict = welshPowell();
+            saveGraph = copyGraphWithAttributes(graph);
         }
-        for (Node node : graph) {
-            System.out.println(node + ": " + node.getAttribute("color"));
+        for (Node node : saveGraph) {
+            String[] colors = {
+                "red", "green", "blue", "yellow", "cyan", "magenta", "orange", "pink", "purple", "brown",
+                "maroon", "navy", "teal", "olive", "lime", "aqua", "fuchsia", "silver", "gray", "black",
+                "indianred", "lightcoral", "salmon", "darksalmon", "lightsalmon", "crimson", "firebrick", "darkred", "red",
+                "orangered", "tomato", "coral", "darkorange", "orange", "gold", "yellow", "lightyellow", "lemonchiffon",
+                "lightgoldenrodyellow", "papayawhip", "moccasin", "peachpuff", "palegoldenrod", "khaki", "darkkhaki",
+                "lavender", "thistle", "plum", "violet", "orchid", "fuchsia", "magenta", "mediumorchid", "mediumpurple",
+                "rebeccapurple", "blueviolet", "darkviolet", "darkorchid", "darkmagenta", "purple", "indigo", "slateblue",
+                "darkslateblue", "mediumslateblue", "greenyellow", "chartreuse", "lawngreen", "lime", "limegreen", "palegreen",
+                "lightgreen", "mediumspringgreen", "springgreen", "mediumseagreen", "seagreen", "forestgreen", "green", "darkgreen",
+                "yellowgreen", "olivedrab", "darkolivegreen", "mediumaquamarine", "darkseagreen", "lightseagreen", "darkcyan",
+                "cyan", "lightcyan", "paleturquoise", "aquamarine", "turquoise", "mediumturquoise", "darkturquoise", "cadetblue",
+                "steelblue", "lightsteelblue", "powderblue", "lightblue", "skyblue", "lightskyblue", "deepskyblue", "dodgerblue",
+                "cornflowerblue", "royalblue", "blue", "mediumblue", "darkblue", "navy", "midnightblue", "cornsilk", "blanchedalmond",
+                "bisque", "navajowhite", "wheat", "burlywood", "tan", "rosybrown", "sandybrown", "goldenrod", "darkgoldenrod",
+                "peru", "chocolate", "saddlebrown", "sienna", "brown", "darkred"
+            };
+            if ((int) node.getAttribute("color") < colors.length){
+                String color = colors[(int) node.getAttribute("color")];
+                node.setAttribute("ui.style", "fill-color: " + color + ";");
+            }
+
         }
+        afficherGraphe(saveGraph);
         return conflict;
     }
 }
