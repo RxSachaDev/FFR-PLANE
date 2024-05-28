@@ -56,9 +56,6 @@ public class FileTreatment {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
-                if (values.length != 10) {
-                    throw new FileFormatError(lineCount, filePath);
-                }
                 airportsCatalog.addAirport(new Airport(values[0], values[1],
                         Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), values[5].charAt(0),
                         Integer.parseInt(values[6]), Integer.parseInt(values[7]), Integer.parseInt(values[8]), values[9].charAt(0)));

@@ -24,6 +24,7 @@ public class Test {
             // Flight V1 = new Flight("AF000090",A1,A2,7,33,81);
             // Flight V2 = new Flight("AF000132",A3,A4,7,34,47);
             // System.out.println(FlightCollisionTools.hasCollision(V1,V2));
+            flightsTestFilesResult(flightCatalog,airportCatalog);
             
 
         } catch (FileNotFoundException erreur) {
@@ -31,7 +32,9 @@ public class Test {
         } catch (FileFormatError erreur) {
             System.err.println("    > ERREUR : "+erreur);
         }
+    }
 
+    public static void flightsTestFilesResult(FlightCatalog flightCatalog,AirportCatalog airportCatalog){
         List<Flight> flightsList = flightCatalog.getFlightList();
         for(int ii = 1 ; ii<10 ; ii++){
             String temp = "./data/vol-test"+ii+".csv";
@@ -47,7 +50,6 @@ public class Test {
                     if(FlightCollisionTools.hasCollision(flightsList.get(i), flightsList.get(j))) count++;
                 }
             }
-            
             System.out.println("    | fichier vol-test"+ii+".csv : > "+count+" < collisions");
             flightCatalog.clearCatalog();
         }
