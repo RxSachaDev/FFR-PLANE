@@ -37,7 +37,9 @@ public class MapCustom extends JXMapViewer {
 
     private static int compteur = 0;
     private final Set<Airportpoint> airportPointSet = new HashSet<>();
-    private final Set<Airportpoint> monumentPointSet = new HashSet<>();
+    
+
+    // private final Set<Airportpoint> monumentPointSet = new HashSet<>();
 
 
     /**
@@ -100,7 +102,7 @@ public class MapCustom extends JXMapViewer {
             Airport airport = d.getAirport();
             if (airport != null) {
                 //System.out.println(d.toString());
-                System.out.println(add(d.getButton()));
+               add(d.getButton());
 
                 compteur++;
             } else {
