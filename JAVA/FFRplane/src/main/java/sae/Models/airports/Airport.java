@@ -1,6 +1,7 @@
 package sae.Models.airports;
 
 import org.jxmapviewer.viewer.GeoPosition;
+import static java.lang.Math.*;
 
 /**
  * The Airport class represents an airport with its code, location, and coordinates.
@@ -32,8 +33,8 @@ public class Airport {
                    int longDegree, int longMinute, int longSecond, char longOrientation) {
         this.code = code;
         this.location = location;
-        this.geoPosition = new GeoPosition(latDegree, latMinute, latSecond, longDegree, longMinute, longSecond);
-        this.coordinates = calculateCartesianCoordinates(latDegree,latMinute,latSecond,latOrientation,longDegree,longMinute,longSecond,longOrientation);
+        geoPosition = calGeoPosition(latDegree,latMinute,latSecond,latOrientation,longDegree,longMinute,longSecond,longOrientation);
+        coordinates = calCartesianCoordinates();
     }
 
 
@@ -52,33 +53,26 @@ public class Airport {
     /**
      * Calculates the Cartesian coordinates of the airport.
      *
-     * @param latDegree
-     * @param latMinute
-     * @param latSecond
-     * @param latOrientation
-     * @param longDegree
-     * @param longMinute
-     * @param longSecond
-     * @param longOrientation
+     * 
      * @return the Cartesian coordinates as a double array where coordinates[0] = x and coordinates[1] = y
      */
-    public double[] calculateCartesianCoordinates(int latDegree, int latMinute, int latSecond, 
-            char latOrientation,int longDegree, int longMinute, int longSecond, char longOrientation) { 
+    public double[] calCartesianCoordinates() { 
         int R = 6371; //Rayon de la Terre (km) 
-        int coef_lat = 1;
-        int coef_long = 1;
         double[] result = new double[2];
-        if(latOrientation == 'O' || latOrientation == 'S')
-            coef_lat = -1;
-        if(longOrientation == 'O' || longOrientation == 'S')
-            coef_long = -1;
-        double latitude = Math.toRadians(coef_lat*(latDegree+latMinute/60.0+latSecond/3600.0));
-        double longitude = Math.toRadians(coef_long*(longDegree+longMinute/60.0+longSecond/3600.0));
-        result[0] = R*Math.cos(latitude)*Math.sin(longitude);
-        result[1] = R*Math.cos(latitude)*Math.cos(longitude);
+        result[0] = R * cos(toRadians(geoPosition.getLatitude())) * sin(toRadians(geoPosition.getLongitude()));
+        result[1] = R * cos(toRadians(geoPosition.getLatitude())) * cos(toRadians(geoPosition.getLongitude()));
         return result;
     }
 
+    public GeoPosition calGeoPosition(int latDegree, int latMinute, int latSecond, 
+            char latOrientation,int longDegree, int longMinute, int longSecond, char longOrientation){
+        int coef_lat = 1,coef_long = 1;
+        if(latOrientation == 'O' || latOrientation == 'S') coef_lat = -1;
+        if(longOrientation == 'O' || longOrientation == 'S') coef_long = -1;
+        double latitude = coef_lat * (latDegree+latMinute/60.0+latSecond/3600.0);
+        double longitude = coef_long * (longDegree+longMinute/60.0+longSecond/3600.0);
+        return new GeoPosition(latitude, longitude);
+    }
 
     /**
      * Returns a string representation of the Airport object.
