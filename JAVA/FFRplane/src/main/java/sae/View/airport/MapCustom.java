@@ -37,15 +37,14 @@ public class MapCustom extends JXMapViewer {
 
     private static int compteur = 0;
     private final Set<Airportpoint> airportPointSet = new HashSet<>();
-    
 
-    // private final Set<Airportpoint> monumentPointSet = new HashSet<>();
-
+    private final Set<Airportpoint> monumentPointSet;
 
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
      */
     public MapCustom() {
+        this.monumentPointSet = new HashSet<>();
         easterEgg();
     }
 
@@ -102,7 +101,7 @@ public class MapCustom extends JXMapViewer {
             Airport airport = d.getAirport();
             if (airport != null) {
                 //System.out.println(d.toString());
-               add(d.getButton());
+                add(d.getButton());
 
                 compteur++;
             } else {
@@ -210,15 +209,12 @@ public class MapCustom extends JXMapViewer {
         setAddressLocation(new GeoPosition(latitude, longitude));
     }
 
-
-
     public void addMonuments(MonumentWaypoint mWP) {
         monumentPointSet.add(mWP);
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
         ap.setWaypoints(monumentPointSet);
         setOverlayPainter(ap);
-        add(mWP.getButton()); 
-        validate(); 
+        add(mWP.getButton());
+        validate();
     }
 }
-
