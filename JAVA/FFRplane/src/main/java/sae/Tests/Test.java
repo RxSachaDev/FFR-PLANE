@@ -1,7 +1,9 @@
-package sae.Models;
+package sae.Tests;
 
 import java.io.*;
 import java.util.List;
+import sae.Models.Settings;
+import sae.Models.Settings;
 
 import sae.Models.airports.*;
 import sae.Models.errors.*;
@@ -10,17 +12,16 @@ import sae.Models.intersection.*;
 import sae.Models.toolbox.*;
 
 public class Test {
-    public static final String FICHIER_AEROPORTS = "C:\\Users\\mathe\\OneDrive\\Bureau\\FFRplane\\src\\main\\java\\data\\aeroports.txt";
-    public static final String FICHIER_VOLS = "C:\\Users\\mathe\\OneDrive\\Bureau\\FFRplane\\src\\main\\java\\data\\vol-test4.csv";
-    private static int k_max = 2;
+    
     public static void main(String[] args) {
         AirportCatalog airportCatalog = new AirportCatalog();
         FlightCatalog flightCatalog = new FlightCatalog();
         try {
-            FileTreatment.fillAirportList(FICHIER_AEROPORTS, airportCatalog);
+            FileTreatment.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
             
             Airport A1 = airportCatalog.getAirport("MRS");
-            System.out.println(A1.getCoordinates());
+            System.out.println(A1.getCoordinates()[0]+","+A1.getCoordinates()[1]);
+            System.out.println(A1.getGeoPosition());
             
             Airport A2 = airportCatalog.getAirport("BES");
             Airport A3 = airportCatalog.getAirport("LYS");
@@ -40,16 +41,15 @@ public class Test {
     }
 
     public static void flightsTestFilesResult(FlightCatalog flightCatalog,AirportCatalog airportCatalog){
-        List<Flight> flightsList = flightCatalog.getFlightList();
         for(int ii = 1 ; ii<10 ; ii++){
-            String temp = "C:\\Users\\mathe\\OneDrive\\Bureau\\FFRplane\\src\\main\\java\\data\\vol-test"+ii+".csv";
+            String temp = Settings.getFlightsFilePath()+ii+".csv";
             try {
                 FileTreatment.fillFlightList(temp,flightCatalog,airportCatalog);
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
                 // z
             }
             int count = 0;
-            flightsList = flightCatalog.getFlightList();
+            List<Flight> flightsList = flightCatalog.getFlightList();
             for(int i = 0 ; i<flightsList.size()-1 ; i++) {
                 for(int j = i+1 ; j<flightsList.size() ; j++){
                     if(FlightCollisionTools.hasCollision(flightsList.get(i), flightsList.get(j))) count++;

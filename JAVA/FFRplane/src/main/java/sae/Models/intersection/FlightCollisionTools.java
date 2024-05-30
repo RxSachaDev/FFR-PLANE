@@ -39,8 +39,8 @@ public class FlightCollisionTools {
                 res = Math.abs(flight1.getArrivalTime() - flight2.getDepartureTime());
                 break;
             case 6: // All other cases
-                GeoPosition intersectionPoint = calculateIntersectionPoint(flight1, flight2);
-                if (isOnFlightSegment(intersectionPoint, flight1) && isOnFlightSegment(intersectionPoint, flight2)) {
+                double[] intersectionPoint = calculateIntersectionPoint(flight1, flight2);
+                if (isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], flight1) && isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], flight2)) {
                     double distancePointFlight1 = ToolBox.calDistance(flight1.getDepartureAirport().getCoordinates(), intersectionPoint);
                     double hourAtPoint1 = calculateHourAtPoint(flight1, distancePointFlight1);
                     double distancePointFlight2 = ToolBox.calDistance(flight2.getDepartureAirport().getCoordinates(), intersectionPoint);
@@ -92,29 +92,29 @@ public class FlightCollisionTools {
      * @param flight2 the second flight
      * @return an array containing the coordinates of the intersection point
      */
-    private static GeoPosition calculateIntersectionPoint(Flight flight1, Flight flight2) {
+    private static double[] calculateIntersectionPoint(Flight flight1, Flight flight2) {
         double[] point = {Double.NaN, Double.NaN};
 
-        GeoPosition arrivalCoordinates1 = flight1.getArrivalAirport().getCoordinates();
-        GeoPosition departureCoordinates1 = flight1.getDepartureAirport().getCoordinates();
-        GeoPosition arrivalCoordinates2 = flight2.getArrivalAirport().getCoordinates();
-        GeoPosition departureCoordinates2 = flight2.getDepartureAirport().getCoordinates();
+        double[] arrivalCoordinates1 = flight1.getArrivalAirport().getCoordinates();
+        double[] departureCoordinates1 = flight1.getDepartureAirport().getCoordinates();
+        double[] arrivalCoordinates2 = flight2.getArrivalAirport().getCoordinates();
+        double[] departureCoordinates2 = flight2.getDepartureAirport().getCoordinates();
 
-        double m1 = (arrivalCoordinates1.getLongitude() - departureCoordinates1.getLongitude()) / (arrivalCoordinates1.getLatitude() - departureCoordinates1.getLatitude());
-        double p1 = arrivalCoordinates1.getLongitude() - m1 * arrivalCoordinates1.getLatitude();
+        double slope1 = (arrivalCoordinates1[1] - departureCoordinates1[1]) / (arrivalCoordinates1[0] - departureCoordinates1[0]);
+        double intercept1 = arrivalCoordinates1[1] - slope1 * arrivalCoordinates1[0];
 
-        double m2 = (arrivalCoordinates2.getLongitude() - departureCoordinates2.getLongitude()) / (arrivalCoordinates2.getLatitude() - departureCoordinates2.getLatitude());
-        double p2 = arrivalCoordinates2.getLongitude() - m2 * arrivalCoordinates2.getLatitude();
+        double slope2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
+        double intercept2 = arrivalCoordinates2[1] - slope2 * arrivalCoordinates2[0];
 
-        double x = -(p1 - p2) / (m1 - m2);
-        double y = m1 * x + p1;
+        double x = -(intercept1 - intercept2) / (slope1 - slope2);
+        double y = slope1 * x + intercept1;
 
-        if (isOnFlightSegment(new GeoPosition(x,y), flight1) && isOnFlightSegment(new GeoPosition(x,y), flight2)) {
+        if (isOnFlightSegment(x, y, flight1) && isOnFlightSegment(x, y, flight2)) {
             point[0] = x;
             point[1] = y;
         }
 
-        return new GeoPosition(point);
+        return point;
     }
 
 
@@ -126,17 +126,16 @@ public class FlightCollisionTools {
      * @param flight the flight
      * @return true if the point is on the flight segment, false otherwise
      */
-    private static boolean isOnFlightSegment(GeoPosition point, Flight flight) {
-        GeoPosition departureCoordinates = flight.getDepartureAirport().getCoordinates();
-        GeoPosition arrivalCoordinates = flight.getArrivalAirport().getCoordinates();
+    private static boolean isOnFlightSegment(double x, double y, Flight flight) {
+        double[] departureCoordinates = flight.getDepartureAirport().getCoordinates();
+        double[] arrivalCoordinates = flight.getArrivalAirport().getCoordinates();
 
-        double maxX = Math.max(departureCoordinates.getLatitude(), arrivalCoordinates.getLatitude());
-        double minX = Math.min(departureCoordinates.getLatitude(), arrivalCoordinates.getLatitude());
-        double maxY = Math.max(departureCoordinates.getLongitude(), arrivalCoordinates.getLongitude());
-        double minY = Math.min(departureCoordinates.getLongitude(), arrivalCoordinates.getLongitude());
+        double maxX = Math.max(departureCoordinates[0], arrivalCoordinates[0]);
+        double minX = Math.min(departureCoordinates[0], arrivalCoordinates[0]);
+        double maxY = Math.max(departureCoordinates[1], arrivalCoordinates[1]);
+        double minY = Math.min(departureCoordinates[1], arrivalCoordinates[1]);
 
-        return (minX <= point.getLatitude() && point.getLatitude() <= maxX 
-             && minY <= point.getLongitude() && point.getLongitude() <= maxY);
+        return (minX <= x && x <= maxX && minY <= y && y <= maxY);
     }
 
 

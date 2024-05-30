@@ -15,6 +15,7 @@ sae\Controller\Main.class
 sae\View\jFrame\MainFrame$3.class
 sae\View\jFrame\MainFrame$5.class
 sae\View\easterGame\EasterPoint.class
+sae\Tests\Test.class
 sae\View\jDialog\FonctionsDialog$1.class
 sae\View\jDialog\LoadAgraphDialog$3.class
 sae\Controller\LogicielController.class
@@ -26,7 +27,6 @@ sae\Models\airports\Airport.class
 sae\Models\FontEnum$1.class
 sae\View\easterGame\EasterGame.class
 sae\View\airport\MapCustom.class
-sae\Models\Test.class
 sae\View\easterGame\EasterPoint$1.class
 sae\View\jDialog\LoadAgraphDialog$2.class
 sae\View\airport\AirportpointRender.class
@@ -48,6 +48,7 @@ sae\View\jDialog\LoadAgraphDialog$1.class
 sae\Models\toolbox\FileTreatment.class
 sae\View\jDialog\ColorationsDialog$2.class
 sae\View\jFrame\WelcomeFrame$4.class
+sae\Models\Settings.class
 sae\View\jDialog\FonctionsDialog$3.class
 sae\View\airport\Airportpoint.class
 sae\View\jDialog\ColorationsDialog.class

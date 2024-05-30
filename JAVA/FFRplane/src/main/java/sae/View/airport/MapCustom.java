@@ -17,6 +17,7 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
+import sae.Models.Settings;
 import sae.Models.airports.Airport;
 import sae.Models.airports.AirportCatalog;
 import sae.Models.toolbox.FileTreatment;
@@ -84,7 +85,7 @@ public class MapCustom extends JXMapViewer {
     public void initAirports() {
         AirportCatalog airportCatalog = new AirportCatalog();
         try {
-            FileTreatment.fillAirportList(System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt", airportCatalog);
+            FileTreatment.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
         } catch (Exception e) {
         }
         for (Airport airport : airportCatalog.getAirports()) {
