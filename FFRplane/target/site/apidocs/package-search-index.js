@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"sae"},{"l":"sae.Controller"},{"l":"sae.Models"},{"l":"sae.Utils"},{"l":"sae.View"}];updateSearchResults();

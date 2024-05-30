@@ -91,7 +91,7 @@ public class MapCustom extends JXMapViewer {
             airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
         //easterEgg();
-        afficherSet();
+        //afficherSet();
 
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
         ap.setWaypoints(airportPointSet);
@@ -99,9 +99,7 @@ public class MapCustom extends JXMapViewer {
         for (Airportpoint d : airportPointSet) {
             Airport airport = d.getAirport();
             if (airport != null) {
-                //System.out.println(d.toString());
-                System.out.println(add(d.getButton()));
-
+                add(d.getButton());
                 compteur++;
             } else {
                 System.err.println("Airport associated with AirportWaypoint is null.");

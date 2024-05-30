@@ -91,7 +91,11 @@ public class Airport {
      */
     @Override
     public String toString() {
-        return (" Code : " + code + " \n  Location : " + location + " \n Coordonnées : " + coordinates);
+        return ("> AÉROPORT : \n"+
+                "  - Code : "+code+"\n"+ 
+                "  - Location : "+location+"\n"+
+                "  - Latitude : "+Math.round(coordinates.getLatitude()*1000)/1000.0+"\n"+
+                "  - Longitude : "+Math.round(coordinates.getLongitude()*1000)/1000.0);
 
     }
 

@@ -449,9 +449,8 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * @param text le texte à définir dans le JTextArea
      */
     @Override
-    public void setJTextAreaText(String text) {
-        String actualString = "aéroport : " + text;
-        jTextAreaOnObject.setText(actualString);
+    public void setJTextAreaText(String text) {;
+        jTextAreaOnObject.setText(text);
     }
 
 
