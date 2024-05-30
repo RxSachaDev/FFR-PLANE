@@ -17,7 +17,10 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.View.easterGame.Plane;
+import sae.Models.airports.Airport;
+import sae.Models.airports.AirportCatalog;
+import sae.Models.toolbox.FileTreatment;
+import sae.View.easterGame.MonumentWaypoint;
 
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des
@@ -32,18 +35,23 @@ import sae.View.easterGame.Plane;
  */
 public class MapCustom extends JXMapViewer {
 
-    private final Set<Airportpoint> airportP = new HashSet<>();
+    private static int compteur = 0;
+    private final Set<Airportpoint> airportPointSet = new HashSet<>();
+    private final Set<Airportpoint> monumentPointSet = new HashSet<>();
+
 
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
      */
     public MapCustom() {
         easterEgg();
-        airportP.add(new Airportpoint("Roissy Charles de Gaulle", new GeoPosition(49.0039586, 2.5148261)));
-        airportP.add(new Airportpoint("Lyon-Saint Exupéry", new GeoPosition(45.719036, 5.0739078)));
-        airportP.add(new Airportpoint("Montpellier Méditerranée", new GeoPosition(43.5795989, 3.9652374)));
-        airportP.add(new Airportpoint("Grenoble Alpes Isère", new GeoPosition(45.3621752, 5.3276695)));
-        airportP.add(new Airportpoint("Toulouse-Blagnac", new GeoPosition(43.6314401, 1.3646339)));
+    }
+
+    public void afficherSet() {
+        for (Airportpoint a : airportPointSet) {
+            System.out.println("setAIIRRR");
+            System.out.println(a != null ? a.toString() : "Waypoint data not available");
+        }
     }
 
     /**
@@ -74,22 +82,42 @@ public class MapCustom extends JXMapViewer {
      * Initialise les marqueurs des aéroports sur la carte.
      */
     public void initAirports() {
-        WaypointPainter<Airportpoint> ap = new AirportpointRender();
-        ap.setWaypoints(airportP);
-        setOverlayPainter(ap);
-        for (Airportpoint d : airportP) {
-            add(d.getButton());
+        AirportCatalog airportCatalog = new AirportCatalog();
+        try {
+            FileTreatment.fillAirportList(System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt", airportCatalog);
+        } catch (Exception e) {
         }
+        for (Airport airport : airportCatalog.getAirports()) {
+            airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
+        }
+        //easterEgg();
+        afficherSet();
+
+        WaypointPainter<Airportpoint> ap = new AirportpointRender();
+        ap.setWaypoints(airportPointSet);
+        setOverlayPainter(ap);
+        for (Airportpoint d : airportPointSet) {
+            Airport airport = d.getAirport();
+            if (airport != null) {
+                //System.out.println(d.toString());
+                System.out.println(add(d.getButton()));
+
+                compteur++;
+            } else {
+                System.err.println("Airport associated with AirportWaypoint is null.");
+            }
+        }
+        System.out.print(compteur);
     }
 
     /**
      * Supprime les marqueurs des aéroports de la carte.
      */
     public void removeAirports() {
-        for (Airportpoint d : airportP) {
+        for (Airportpoint d : airportPointSet) {
             remove(d.getButton());
         }
-        airportP.clear();
+        airportPointSet.clear();
         initAirports();
     }
 
@@ -159,7 +187,7 @@ public class MapCustom extends JXMapViewer {
     }
 
     public void easterEgg() {
-        airportP.add(new EasterPoint(new GeoPosition(45.7893371, 4.8808478)));
+        airportPointSet.add(new EasterPoint(new GeoPosition(45.7893371, 4.8808478)));
     }
 
     public void initGameMap(double latitude, double longitude) {
@@ -173,11 +201,22 @@ public class MapCustom extends JXMapViewer {
     }
 
     public void moveMap(double stepX, double stepY) {
-        double slowdownFactor = 0.1; 
+        double slowdownFactor = 0.1;
         GeoPosition currentPosition = getAddressLocation();
         double latitude = currentPosition.getLatitude() + stepY * slowdownFactor;
         double longitude = currentPosition.getLongitude() + stepX * slowdownFactor;
         setAddressLocation(new GeoPosition(latitude, longitude));
     }
 
+
+
+    public void addMonuments(MonumentWaypoint mWP) {
+        monumentPointSet.add(mWP);
+        WaypointPainter<Airportpoint> ap = new AirportpointRender();
+        ap.setWaypoints(monumentPointSet);
+        setOverlayPainter(ap);
+        add(mWP.getButton()); 
+        validate(); 
+    }
 }
+

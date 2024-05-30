@@ -25,7 +25,6 @@ public class CustomAeroportPoint extends JButton {
      */
     public CustomAeroportPoint() {
         setContentAreaFilled(false);        // Rendre le bouton transparent        
-        
         // Définir l'icône pour représenter un aéroport
         setIcon(new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\airportIcon.png"));
         setCursor(new Cursor(Cursor.HAND_CURSOR));      

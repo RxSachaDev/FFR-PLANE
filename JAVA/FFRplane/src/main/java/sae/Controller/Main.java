@@ -4,6 +4,8 @@
  */
 package sae.Controller;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import sae.Utils.IconUtil;
 import sae.View.jFrame.WelcomeFrame;
 
@@ -25,8 +27,7 @@ public class Main {
      * Object IconUtil pour configurer les icônes des composants graphiques.
      */
     private static final IconUtil iconU = new IconUtil();
-    
-    
+
     public static final String FICHIER_AEROPORTS = "./data/aeroports.txt";
     public static final String FICHIER_VOLS = "./data/vol-test4.csv";
     private static int k_max = 2;
@@ -39,6 +40,18 @@ public class Main {
      * cette application).
      */
     public static void main(String[] args) {
+
+        try {
+            // Mettre en place le Look and Feel Nimbus
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         iconU.setIcon(wframe);
         wframe.setVisible(true);
     }
