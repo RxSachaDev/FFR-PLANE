@@ -91,7 +91,7 @@ public class Airport {
      */
     @Override
     public String toString() {
-        return (" Code : " + code + " \n  Location : " + location + " \n Coordonnées : " + coordinates);
+        return (" Code : " + code + "\n Location : " + location + "\n Coordonnées : " + coordinates);
 
     }
 

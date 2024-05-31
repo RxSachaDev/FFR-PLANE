@@ -23,8 +23,9 @@ public class Plane extends JLabel {
     private GeoPosition position;
     private double litresEssence;
     private double vitesse = 0.001;
+    private String typePlane;
 
-    public Plane(String name, GeoPosition position,
+    public Plane(String type, GeoPosition position,
             ImageIcon planeUpIcon, ImageIcon planeDownIcon,
             ImageIcon planeLeftIcon, ImageIcon planeRightIcon,
             ImageIcon planeUpLeftIcon, ImageIcon planeUpRightIcon,
@@ -39,7 +40,7 @@ public class Plane extends JLabel {
         this.planeUpRightIcon = resizeIcon(planeUpRightIcon, 80, 60);
         this.planeDownLeftIcon = resizeIcon(planeDownLeftIcon, 80, 60);
         this.planeDownRightIcon = resizeIcon(planeDownRightIcon, 80, 60);
-
+        this.typePlane = type;
         this.position = position;
     }
 
@@ -60,6 +61,14 @@ public class Plane extends JLabel {
         this.position = position;
     }
 
+    public String getTypePlane() {
+        return this.typePlane;
+    }
+
+    public void setTypePlane(String typePlane) {
+        this.typePlane = typePlane;
+    }
+
     public double getVitesse() {
         return this.vitesse;
     }
@@ -73,5 +82,38 @@ public class Plane extends JLabel {
         this.vitesse = vitesse;
     }
 
-    
+    public void updateTypePlane(String typePlane) {
+        this.typePlane = typePlane;
+    }
+
+    public void setRafaleIcon(ImageIcon planeUpIcon, ImageIcon planeDownIcon,
+            ImageIcon planeLeftIcon, ImageIcon planeRightIcon,
+            ImageIcon planeUpLeftIcon, ImageIcon planeUpRightIcon,
+            ImageIcon planeDownLeftIcon, ImageIcon planeDownRightIcon) {
+        this.planeUpIcon = resizeIcon(planeUpIcon, 60, 80);
+        this.planeDownIcon = resizeIcon(planeDownIcon, 60, 80);
+        this.planeLeftIcon = resizeIcon(planeLeftIcon, 80, 60);
+        this.planeRightIcon = resizeIcon(planeRightIcon, 80, 60);
+        this.planeUpLeftIcon = resizeIcon(planeUpLeftIcon, 80, 60);
+        this.planeUpRightIcon = resizeIcon(planeUpRightIcon, 80, 60);
+        this.planeDownLeftIcon = resizeIcon(planeDownLeftIcon, 80, 60);
+        this.planeDownRightIcon = resizeIcon(planeDownRightIcon, 80, 60);
+        this.setPlaneIcon(this.planeUpIcon, 80, 60);
+    }
+
+    public void setPlaneIcon(ImageIcon planeUpIcon, ImageIcon planeDownIcon,
+            ImageIcon planeLeftIcon, ImageIcon planeRightIcon,
+            ImageIcon planeUpLeftIcon, ImageIcon planeUpRightIcon,
+            ImageIcon planeDownLeftIcon, ImageIcon planeDownRightIcon) {
+        this.planeUpIcon = resizeIcon(planeUpIcon, 60, 80);
+        this.planeDownIcon = resizeIcon(planeDownIcon, 60, 80);
+        this.planeLeftIcon = resizeIcon(planeLeftIcon, 80, 60);
+        this.planeRightIcon = resizeIcon(planeRightIcon, 80, 60);
+        this.planeUpLeftIcon = resizeIcon(planeUpLeftIcon, 80, 60);
+        this.planeUpRightIcon = resizeIcon(planeUpRightIcon, 80, 60);
+        this.planeDownLeftIcon = resizeIcon(planeDownLeftIcon, 80, 60);
+        this.planeDownRightIcon = resizeIcon(planeDownRightIcon, 80, 60);
+        this.setPlaneIcon(this.planeUpIcon, 80, 60);
+    }
+
 }

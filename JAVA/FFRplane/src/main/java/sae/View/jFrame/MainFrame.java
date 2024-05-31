@@ -450,7 +450,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      */
     @Override
     public void setJTextAreaText(String text) {
-        String actualString = "aéroport : " + text;
+        String actualString = text;
         jTextAreaOnObject.setText(actualString);
     }
 
