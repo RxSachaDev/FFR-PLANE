@@ -33,6 +33,7 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
         initComponents();
         iconU.setIcon(this);
+        this.setResizable(false);
     }
 
     /**
@@ -92,9 +93,9 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
         });
         ChoicesPanel.add(OkButton);
 
-        firstFileLabel.setText("Choisissez votre premier fichier :");
+        firstFileLabel.setText("Choisissez votre fichier d'aeroports :");
 
-        secondFileLabel.setText("Choisissez votre deuxième fichier :");
+        secondFileLabel.setText("Choisissez votre fichier de vols :");
 
         choiceFileButton1.setBackground(new java.awt.Color(235, 173, 59));
         choiceFileButton1.setForeground(new java.awt.Color(0, 0, 0));
@@ -127,11 +128,11 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(secondFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(choiceFileButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(firstFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                         .addComponent(choiceFileButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(64, 64, 64))
         );
@@ -148,9 +149,8 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(secondFileLabel)
                     .addComponent(choiceFileButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();

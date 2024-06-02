@@ -47,7 +47,7 @@ sae\View\jDialog\FonctionsDialog.class
 sae\View\jDialog\LoadAgraphDialog$1.class
 sae\Models\toolbox\FileTreatment.class
 sae\View\jDialog\ColorationsDialog$2.class
-sae\View\jFrame\WelcomeFrame$4.class
+sae\View\jPanel\BackgroundPanel.class
 sae\Models\Settings.class
 sae\View\jDialog\FonctionsDialog$3.class
 sae\View\airport\Airportpoint.class

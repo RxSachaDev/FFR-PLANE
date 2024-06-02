@@ -32,12 +32,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="secondFileLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="34" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="choiceFileButton2" min="-2" pref="91" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="firstFileLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="61" max="32767" attributes="0"/>
                       <Component id="choiceFileButton1" min="-2" pref="91" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -60,9 +60,8 @@
                   <Component id="secondFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="choiceFileButton2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="16" max="32767" attributes="0"/>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
               <Component id="ChoicesPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -140,12 +139,12 @@
     </Container>
     <Component class="javax.swing.JLabel" name="firstFileLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Choisissez votre premier fichier :"/>
+        <Property name="text" type="java.lang.String" value="Choisissez votre fichier d&apos;aeroports :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="secondFileLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Choisissez votre deuxi&#xe8;me fichier :"/>
+        <Property name="text" type="java.lang.String" value="Choisissez votre fichier de vols :"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="choiceFileButton1">
