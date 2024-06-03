@@ -44,7 +44,7 @@ public class Airportpoint extends DefaultWaypoint {
                 if (parentFrame instanceof Logiciel) {
                     // Si c'est le cas, affecte le nom de l'aéroport au JTextArea du Logiciel
                     Logiciel textAreaSetter = (Logiciel) parentFrame;
-                    textAreaSetter.setJTextAreaText(airport.toString());
+                    textAreaSetter.setJTextAreaText1(airport.toString());
                 } else {
                     // Sinon, affiche un message d'erreur
                     System.err.println("Le composant parent ne met pas en œuvre JTextAreaSetter.");

@@ -4,6 +4,13 @@
  */
 package sae.View.airport;
 
+import java.awt.Color;
+import java.util.Iterator;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import sae.View.easterGame.EasterPoint;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +44,7 @@ public class MapCustom extends JXMapViewer {
 
     private static int compteur = 0;
     private final Set<Airportpoint> airportPointSet = new HashSet<>();
-
+    private final Set<IntersectionLine> lineSet = new HashSet<>();
     private final Set<Airportpoint> monumentPointSet;
 
     /**
@@ -50,7 +57,6 @@ public class MapCustom extends JXMapViewer {
 
     public void afficherSet() {
         for (Airportpoint a : airportPointSet) {
-            System.out.println("setAIIRRR");
             System.out.println(a != null ? a.toString() : "Waypoint data not available");
         }
     }
@@ -92,7 +98,7 @@ public class MapCustom extends JXMapViewer {
             airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
         //easterEgg();
-        afficherSet();
+        //afficherSet();
 
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
         ap.setWaypoints(airportPointSet);
@@ -108,7 +114,7 @@ public class MapCustom extends JXMapViewer {
                 System.err.println("Airport associated with AirportWaypoint is null.");
             }
         }
-        System.out.print(compteur);
+        // System.out.print(compteur);
     }
 
     /**
@@ -120,6 +126,23 @@ public class MapCustom extends JXMapViewer {
         }
         airportPointSet.clear();
         initAirports();
+    }
+
+    public void initIntersection() {
+        Iterator<Airportpoint> iterator = airportPointSet.iterator();
+        if (airportPointSet.size() >= 2) {
+            Airportpoint airport1 = iterator.next();
+            Airportpoint airport2 = iterator.next();
+
+            GeoPosition airport1Coords = airport1.getAirport().getCoordinates();
+            GeoPosition airport2Coords = airport2.getAirport().getCoordinates();
+
+            Color randomColor = Color.BLACK;
+
+            IntersectionLine newLine = new IntersectionLine(airport1Coords, airport2Coords, randomColor);
+            lineSet.add(newLine);
+        }
+        repaint();
     }
 
     /**
@@ -216,5 +239,23 @@ public class MapCustom extends JXMapViewer {
         setOverlayPainter(ap);
         add(mWP.getButton());
         validate();
+    }
+
+    public void setCoords(int latitude, int longitude) {
+        GeoPosition geo = new GeoPosition(latitude, longitude);
+        setAddressLocation(geo);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        Graphics2D g2 = (Graphics2D) g;
+        //System.out.println(lineSet.size());
+        // Dessiner les lignes
+        for (IntersectionLine line : lineSet) {
+            //System.out.println("add" + line.toString());
+            line.paint(g2, this, getWidth(), getHeight());
+        }
     }
 }
