@@ -195,10 +195,10 @@ public class AlgoColoration {
         System.out.println("Chromatic Number: " + chromaticNumber);
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
-        while (chromaticNumber > kmax ) {
+        while (chromaticNumber > kmax) {
             Graph graphCopy = copyGraph(graph);
-            for (Node node : graph) {
-                Integer colorIndex = node.getAttribute("color");
+            for (Node node : graphCopy) { // Utiliser graphCopy ici
+                Integer colorIndex = (Integer) node.getAttribute("color");
                 // Supprimer les couleurs dépassant kmax
                 if (colorIndex != null && colorIndex >= kmax) {
                     node.removeAttribute("color");
@@ -207,24 +207,34 @@ public class AlgoColoration {
                     graphCopy.removeNode(node.getId());
                 }
             }
-            if (graphCopy.getEdgeCount() != 0) {
+
+            // Vérifier si le graphe copié est vide avant d'appliquer Welsh-Powell
+            if (graphCopy.getNodeCount() == 0 || graphCopy.getEdgeCount() == 0) {
+                break; // Sortir de la boucle si le graphe est vide
+            } else if (graphCopy.getEdgeCount() == 0) {
+
                 wp.init(graphCopy);
                 wp.compute();
             } else {
-                int nbConflit = -1;
-                for (Node aloneNode : graphCopy.getEachNode()) {
-                    Node neighborNode = graph.getNode(aloneNode.getId());
-                    for (int color = 0; color < kmax; color++) {
+                for (Node aloneNode : graph.getEachNode()) {
+                    int minConflicts = Integer.MAX_VALUE;
+                    int bestColor = -1;
 
-                        neighborNode.setAttribute("color", color);
-                        if (nbConflit == -1) {
-                            aloneNode.setAttribute("color", color);
-                            nbConflit = countConflicts(graph);
-                        } else if (countConflicts(graph) < nbConflit) {
-                            aloneNode.setAttribute("color", color);
-                            nbConflit = countConflicts(graph);
+                    // Parcourir toutes les couleurs possibles pour ce nœud
+                    for (int color = 0; color < kmax; color++) {
+                        // Appliquer temporairement la couleur et compter les conflits
+                        aloneNode.setAttribute("color", color);
+                        int nbConflicts = countConflicts(graph);
+
+                        // Mettre à jour la meilleure couleur si elle minimise les conflits
+                        if (nbConflicts < minConflicts) {
+                            minConflicts = nbConflicts;
+                            bestColor = color;
                         }
                     }
+
+                    // Appliquer la meilleure couleur trouvée avec le minimum de conflits
+                    aloneNode.setAttribute("color", bestColor);
                 }
             }
 
@@ -242,7 +252,9 @@ public class AlgoColoration {
                 }
             }
             chromaticNumber = chromaticNumber2;
+            
         }
+        System.out.println(chromaticNumber);
         return countConflicts(graph);
     }
 
@@ -408,6 +420,27 @@ public class AlgoColoration {
                 }
             }
         }
+
+        for (Node aloneNode : g.getEachNode()) {
+            int minConflicts = Integer.MAX_VALUE;
+            int bestColor = -1;
+
+            // Parcourir toutes les couleurs possibles pour ce nœud
+            for (int color = 0; color < kmax; color++) {
+                // Appliquer temporairement la couleur et compter les conflits
+                aloneNode.setAttribute("color", color);
+                int nbConflicts = countConflicts(g);
+
+                // Mettre à jour la meilleure couleur si elle minimise les conflits
+                if (nbConflicts < minConflicts) {
+                    minConflicts = nbConflicts;
+                    bestColor = color;
+                }
+            }
+
+            // Appliquer la meilleure couleur trouvée avec le minimum de conflits
+            aloneNode.setAttribute("color", bestColor);
+        }
         return countConflicts(g);
     }
 
@@ -473,10 +506,18 @@ public class AlgoColoration {
         return conflict;
     }
 
+    /**
+     * Méthode principale pour tester l'algorithme de coloration. Charge un
+     * graphe à partir d'un fichier, applique l'algorithme de DSATUR suivi de
+     * Welsh-Powell pour minimiser les conflits de coloration, et affiche le
+     * graphe colorié avec les conflits réduits.
+     *
+     * @param args les arguments de la ligne de commande (non utilisés)
+     */
     public static void main(String[] args) {
         Graph graph = new MultiGraph(null);
         AlgoColoration test = new AlgoColoration(graph);
-        test.setFichier("data/graph-test3.txt");
+        test.setFichier("data/graph-test10.txt");
         try {
             test.charger_graphe();
         } catch (IOException e) {
