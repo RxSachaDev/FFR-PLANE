@@ -236,6 +236,7 @@ public class AlgoColoration {
                     // Appliquer la meilleure couleur trouvée avec le minimum de conflits
                     aloneNode.setAttribute("color", bestColor);
                 }
+                
             }
 
             // Appliquer les nouvelles couleurs au graphe original
@@ -245,6 +246,7 @@ public class AlgoColoration {
                     graph.getNode(node.getId()).setAttribute("color", colorIndex);
                 }
             }
+            
             int chromaticNumber2 = -1;
             for (Node node : graph) {
                 if ((int) node.getAttribute("color") > chromaticNumber2) {
@@ -254,6 +256,28 @@ public class AlgoColoration {
             chromaticNumber = chromaticNumber2;
             
         }
+        for (int i = 0; i< 10; i++){
+            for (Node aloneNode : graph.getEachNode()) {
+            int minConflicts = Integer.MAX_VALUE;
+            int bestColor = -1;
+
+            // Parcourir toutes les couleurs possibles pour ce nœud
+            for (int color = 0; color < kmax; color++) {
+                // Appliquer temporairement la couleur et compter les conflits
+                aloneNode.setAttribute("color", color);
+                int nbConflicts = countConflicts(graph);
+
+                // Mettre à jour la meilleure couleur si elle minimise les conflits
+                if (nbConflicts < minConflicts) {
+                    minConflicts = nbConflicts;
+                    bestColor = color;
+                }
+            }
+
+            // Appliquer la meilleure couleur trouvée avec le minimum de conflits
+            aloneNode.setAttribute("color", bestColor);
+            }
+       }
         System.out.println(chromaticNumber);
         return countConflicts(graph);
     }
@@ -421,7 +445,8 @@ public class AlgoColoration {
             }
         }
 
-        for (Node aloneNode : g.getEachNode()) {
+        for (int i = 0; i< 10; i++){
+            for (Node aloneNode : g.getEachNode()) {
             int minConflicts = Integer.MAX_VALUE;
             int bestColor = -1;
 
@@ -440,7 +465,8 @@ public class AlgoColoration {
 
             // Appliquer la meilleure couleur trouvée avec le minimum de conflits
             aloneNode.setAttribute("color", bestColor);
-        }
+            }
+       }
         return countConflicts(g);
     }
 
@@ -517,7 +543,7 @@ public class AlgoColoration {
     public static void main(String[] args) {
         Graph graph = new MultiGraph(null);
         AlgoColoration test = new AlgoColoration(graph);
-        test.setFichier("data/graph-test10.txt");
+        test.setFichier("data/graph-test1.txt");
         try {
             test.charger_graphe();
         } catch (IOException e) {
