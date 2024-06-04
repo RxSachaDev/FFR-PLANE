@@ -5,10 +5,12 @@
 package sae.View.jFrame;
 
 import java.awt.Dimension;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import sae.View.jPanel.BackgroundPanel;
 import sae.View.jDialog.JInfosDialog;
-import sae.View.jDialog.LoadAgraphDialog;
+import sae.View.jDialog.LoadAirspaceDialog;
+import sae.View.jDialog.LoadGraphDialog;
 
 /**
  * Fenêtre de bienvenue de l'application FFRplane. Permet à l'utilisateur de
@@ -22,6 +24,12 @@ import sae.View.jDialog.LoadAgraphDialog;
  * @author fillo
  */
 public class WelcomeFrame extends javax.swing.JFrame {
+    private final String backgroundImagePath = System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\background.png";
+    private final ImageIcon iconLoadGraph = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\refresh2.png");
+    private final ImageIcon iconLoadAirspace = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\startIcon.png");
+    private final ImageIcon iconAbout = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\aboutIcon.png");
+    
+    
     /**
      * Crée une nouvelle instance de WelcomeFrame. (constructeur) Initialise les
      * composants graphiques de la fenêtre, la positionne au centre de l'écran
@@ -35,6 +43,7 @@ public class WelcomeFrame extends javax.swing.JFrame {
         setContentPane(panelContent);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("FFRplane - Welcome");
+        
     }
 
     /**
@@ -47,12 +56,12 @@ public class WelcomeFrame extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        panelContent = new BackgroundPanel(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\background.png");
+        panelContent = new BackgroundPanel(backgroundImagePath);
         labelTitle = new javax.swing.JLabel();
         panelOptions = new javax.swing.JPanel();
-        jButtonLoad = new javax.swing.JButton();
-        jButtonStart = new javax.swing.JButton();
-        jButtonAbout = new javax.swing.JButton();
+        buttonLoadGraph = new javax.swing.JButton();
+        buttonLoadAirspace = new javax.swing.JButton();
+        buttonAbout = new javax.swing.JButton();
 
         panelContent.setEnabled(false);
         panelContent.setOpaque(false);
@@ -71,60 +80,60 @@ public class WelcomeFrame extends javax.swing.JFrame {
         panelOptions.setOpaque(false);
         panelOptions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 60, 5));
 
-        jButtonLoad.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButtonLoad.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonLoad.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\loadIcon.png"));
-        jButtonLoad.setText("Charger un graphe");
-        jButtonLoad.setBorder(null);
-        jButtonLoad.setContentAreaFilled(false);
-        jButtonLoad.setFocusPainted(false);
-        jButtonLoad.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonLoad.setIconTextGap(20);
-        jButtonLoad.setPreferredSize(new java.awt.Dimension(145, 180));
-        jButtonLoad.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jButtonLoad.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
+        buttonLoadGraph.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buttonLoadGraph.setForeground(new java.awt.Color(255, 255, 255));
+        buttonLoadGraph.setIcon(iconLoadGraph);
+        buttonLoadGraph.setText("Charger un graphe");
+        buttonLoadGraph.setBorder(null);
+        buttonLoadGraph.setContentAreaFilled(false);
+        buttonLoadGraph.setFocusPainted(false);
+        buttonLoadGraph.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonLoadGraph.setIconTextGap(20);
+        buttonLoadGraph.setPreferredSize(new java.awt.Dimension(145, 180));
+        buttonLoadGraph.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        buttonLoadGraph.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonLoadGraph.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonLoadActionPerformed(evt);
+                buttonLoadGraphActionPerformed(evt);
             }
         });
-        panelOptions.add(jButtonLoad);
+        panelOptions.add(buttonLoadGraph);
 
-        jButtonStart.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButtonStart.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonStart.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\startIcon.png"));
-        jButtonStart.setText("Charger l'espace aérien");
-        jButtonStart.setBorder(null);
-        jButtonStart.setContentAreaFilled(false);
-        jButtonStart.setFocusPainted(false);
-        jButtonStart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonStart.setIconTextGap(10);
-        jButtonStart.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jButtonStart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonStart.addActionListener(new java.awt.event.ActionListener() {
+        buttonLoadAirspace.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buttonLoadAirspace.setForeground(new java.awt.Color(255, 255, 255));
+        buttonLoadAirspace.setIcon(iconLoadAirspace);
+        buttonLoadAirspace.setText("Charger l'espace aérien");
+        buttonLoadAirspace.setBorder(null);
+        buttonLoadAirspace.setContentAreaFilled(false);
+        buttonLoadAirspace.setFocusPainted(false);
+        buttonLoadAirspace.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonLoadAirspace.setIconTextGap(10);
+        buttonLoadAirspace.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        buttonLoadAirspace.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonLoadAirspace.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonStartActionPerformed(evt);
+                buttonLoadAirspaceActionPerformed(evt);
             }
         });
-        panelOptions.add(jButtonStart);
+        panelOptions.add(buttonLoadAirspace);
 
-        jButtonAbout.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButtonAbout.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonAbout.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\aboutIcon.png"));
-        jButtonAbout.setText("A propos");
-        jButtonAbout.setBorder(null);
-        jButtonAbout.setContentAreaFilled(false);
-        jButtonAbout.setFocusPainted(false);
-        jButtonAbout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonAbout.setIconTextGap(10);
-        jButtonAbout.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jButtonAbout.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonAbout.addActionListener(new java.awt.event.ActionListener() {
+        buttonAbout.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buttonAbout.setForeground(new java.awt.Color(255, 255, 255));
+        buttonAbout.setIcon(iconAbout);
+        buttonAbout.setText("A propos");
+        buttonAbout.setBorder(null);
+        buttonAbout.setContentAreaFilled(false);
+        buttonAbout.setFocusPainted(false);
+        buttonAbout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonAbout.setIconTextGap(10);
+        buttonAbout.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        buttonAbout.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAboutActionPerformed(evt);
+                buttonAboutActionPerformed(evt);
             }
         });
-        panelOptions.add(jButtonAbout);
+        panelOptions.add(buttonAbout);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -150,35 +159,36 @@ public class WelcomeFrame extends javax.swing.JFrame {
      * Gère les actions déclenchées par les événements associés aux boutons de
      * la fenêtre WelcomeFrame.
      */
-    private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
-        MainFrame mainf = new MainFrame();
-        mainf.setVisible(true);
-    }//GEN-LAST:event_jButtonStartActionPerformed
+    private void buttonLoadAirspaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoadAirspaceActionPerformed
+        LoadAirspaceDialog loadD = new LoadAirspaceDialog(this, true);
+        loadD.setLocationRelativeTo(this);
+        loadD.setVisible(true);
+    }//GEN-LAST:event_buttonLoadAirspaceActionPerformed
 
     /**
      * Affiche une fenêtre modale JInfosDialog lorsque le bouton "À propos" est
      * cliqué. Cette fenêtre fournit des informations sur l'application.
      */
-    private void jButtonAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAboutActionPerformed
+    private void buttonAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAboutActionPerformed
         JInfosDialog infosD = new JInfosDialog(this, true);
         infosD.setLocationRelativeTo(this);
         infosD.setVisible(true);
-    }//GEN-LAST:event_jButtonAboutActionPerformed
+    }//GEN-LAST:event_buttonAboutActionPerformed
 
     /**
      * Affiche une fenêtre modale LoadAgraphDialog lorsque le bouton "Charger"
      * est cliqué. Cette fenêtre permet à l'utilisateur de charger un graphe.
      */
-    private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
-        LoadAgraphDialog loadD = new LoadAgraphDialog(this, true);
+    private void buttonLoadGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoadGraphActionPerformed
+        LoadGraphDialog loadD = new LoadGraphDialog(this, true);
         loadD.setLocationRelativeTo(this);
         loadD.setVisible(true);
-    }//GEN-LAST:event_jButtonLoadActionPerformed
+    }//GEN-LAST:event_buttonLoadGraphActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAbout;
-    private javax.swing.JButton jButtonLoad;
-    private javax.swing.JButton jButtonStart;
+    private javax.swing.JButton buttonAbout;
+    private javax.swing.JButton buttonLoadAirspace;
+    private javax.swing.JButton buttonLoadGraph;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelOptions;

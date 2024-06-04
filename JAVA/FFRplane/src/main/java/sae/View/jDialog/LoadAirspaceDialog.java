@@ -4,6 +4,7 @@
  */
 package sae.View.jDialog;
 
+import sae.Models.Settings;
 import sae.Utils.IconUtil;
 
 /**
@@ -12,7 +13,7 @@ import sae.Utils.IconUtil;
  *
  * @author fillo
  */
-public class LoadAgraphDialog extends javax.swing.JDialog {
+public class LoadAirspaceDialog extends javax.swing.JDialog {
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -28,12 +29,14 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
      * @param parent La fenêtre parente de la boîte de dialogue.
      * @param modal Spécifie si la boîte de dialogue doit être modale ou non.
      */
-    public LoadAgraphDialog(java.awt.Frame parent, boolean modal) {
+    public LoadAirspaceDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setLocationRelativeTo(parent);
         initComponents();
         iconU.setIcon(this);
         this.setResizable(false);
+        if(Settings.getAirportsFilePath()!=null) airportsFileTextField.setText(Settings.getAirportsFilePath());
+        if(Settings.getFlightsFilePath()!=null) flightsFileTextField.setText(Settings.getFlightsFilePath());
     }
 
     /**
@@ -53,13 +56,15 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
         secondFileLabel = new javax.swing.JLabel();
         choiceFileButton1 = new javax.swing.JButton();
         choiceFileButton2 = new javax.swing.JButton();
+        airportsFileTextField = new javax.swing.JTextField();
+        flightsFileTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("load a graph");
+        setTitle("Charger un espace aérien");
         setResizable(false);
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Sélectionnez votre fichier pour charger votre graphique");
+        titleLabel.setText("Sélectionnez les fichiers suivants");
 
         ChoicesPanel.setMaximumSize(new java.awt.Dimension(360, 80));
         ChoicesPanel.setMinimumSize(new java.awt.Dimension(360, 80));
@@ -95,11 +100,11 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
 
         firstFileLabel.setText("Choisissez votre fichier d'aeroports :");
 
-        secondFileLabel.setText("Choisissez votre fichier de vols :");
+        secondFileLabel.setText("Choisissez votre fichier de vol-test :");
 
         choiceFileButton1.setBackground(new java.awt.Color(235, 173, 59));
         choiceFileButton1.setForeground(new java.awt.Color(0, 0, 0));
-        choiceFileButton1.setText("ouvrir");
+        choiceFileButton1.setText("Ouvrir"); // NOI18N
         choiceFileButton1.setFocusPainted(false);
         choiceFileButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +114,7 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
 
         choiceFileButton2.setBackground(new java.awt.Color(235, 173, 59));
         choiceFileButton2.setForeground(new java.awt.Color(0, 0, 0));
-        choiceFileButton2.setText("ouvrir");
+        choiceFileButton2.setText("Ouvrir");
         choiceFileButton2.setFocusPainted(false);
         choiceFileButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,40 +122,57 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
             }
         });
 
+        flightsFileTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flightsFileTextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(firstFileLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
+                    .addComponent(secondFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(secondFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(choiceFileButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(firstFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                        .addComponent(choiceFileButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(64, 64, 64))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(airportsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(flightsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(choiceFileButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(choiceFileButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(45, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(35, 35, 35)
                 .addComponent(titleLabel)
-                .addGap(47, 47, 47)
+                .addGap(30, 30, 30)
+                .addComponent(firstFileLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(firstFileLabel)
+                    .addComponent(airportsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(choiceFileButton1))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addComponent(secondFileLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(secondFileLabel)
-                    .addComponent(choiceFileButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(choiceFileButton2)
+                    .addComponent(flightsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -172,14 +194,20 @@ public class LoadAgraphDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_choiceFileButton2ActionPerformed
 
+    private void flightsFileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flightsFileTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_flightsFileTextFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JPanel ChoicesPanel;
     private javax.swing.JButton OkButton;
+    private javax.swing.JTextField airportsFileTextField;
     private javax.swing.JButton choiceFileButton1;
     private javax.swing.JButton choiceFileButton2;
     private javax.swing.JLabel firstFileLabel;
+    private javax.swing.JTextField flightsFileTextField;
     private javax.swing.JLabel secondFileLabel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
