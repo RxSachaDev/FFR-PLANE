@@ -14,7 +14,7 @@ import sae.Logiciel;
 import sae.Utils.IconUtil;
 import sae.View.jDialog.ColorationsDialog;
 import sae.View.jDialog.FonctionsDialog;
-import sae.View.jDialog.LoadAgraphDialog;
+import sae.View.jDialog.LoadAirspaceDialog;
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
@@ -362,7 +362,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
     private void jMenuItemOpenGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenGActionPerformed
-        LoadAgraphDialog loadDialog = new LoadAgraphDialog(this, true);
+        LoadAirspaceDialog loadDialog = new LoadAirspaceDialog(this, true);
         loadDialog.setLocationRelativeTo(this);
         loadDialog.setVisible(true);
 
@@ -449,9 +449,8 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * @param text le texte à définir dans le JTextArea
      */
     @Override
-    public void setJTextAreaText(String text) {
-        String actualString = "aéroport : " + text;
-        jTextAreaOnObject.setText(actualString);
+    public void setJTextAreaText(String text) {;
+        jTextAreaOnObject.setText(text);
     }
 
 
