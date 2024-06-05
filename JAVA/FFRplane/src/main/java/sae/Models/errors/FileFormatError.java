@@ -1,4 +1,4 @@
-package sae.Models.errors;
+package sae.models.errors;
 
 /**
  * The FileFormatError class represents a custom exception thrown when a line in a file does not conform to the expected format.

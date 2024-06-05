@@ -2,19 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package sae.View.jFrame;
+package sae.view.jFrame;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import sae.Logiciel;
-import sae.Utils.IconUtil;
-import sae.View.jDialog.ColorationsDialog;
-import sae.View.jDialog.FonctionsDialog;
-import sae.View.jDialog.LoadAgraphDialog;
+import sae.view.jDialog.LoadAirspaceDialog;
+import sae.utils.IconUtil;
+import sae.view.jDialog.ColorationsDialog;
+import sae.view.jDialog.FonctionsDialog;
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
@@ -24,6 +30,11 @@ import sae.View.jDialog.LoadAgraphDialog;
  * @author fillo
  */
 public class MainFrame extends javax.swing.JFrame implements Logiciel {
+    private boolean isMenuVisible = true;
+    private JButton buttonMenu = new JButton("Menu");
+    private Rectangle boundsBar;
+    private Timer slideTimer;
+    private final int stepSize = 10;
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -43,12 +54,17 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * configure l'affichage des champs de texte, configure les icônes et
      * configure l'état de la fenêtre pour être maximisé. (constructeur)
      */
+    
+    
+    
     public MainFrame() {
         initComponents();
+        
+        mapCustom1.add(buttonMenu);
         mapCustom1.init(latitude, longitude, standardZoom);
         mapCustom1.initAirports();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.pack();
+       
+        
         jTextArea2OnOverallInfos.setEditable(false);
         jTextArea2OnOverallInfos.setWrapStyleWord(false);
         jTextAreaOnObject.setEditable(true);
@@ -56,15 +72,73 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         jTextArea2OnOverallInfos.setLineWrap(true);
         jTextAreaOnObject.setLineWrap(true);
         jTextAreaOnObject.setEditable(false);
+        
         iconU.setIcon(this);
+        
+        setMinimumSize(new Dimension(850,900));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                setButtonPosition();
+            }
+        });
+        /*
+        boundsBar = leftBarPanel.getBounds();
+        buttonMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                //isMenuVisible = !isMenuVisible;
+                //leftBarPanel.setVisible(isMenuVisible);
+                //setButtonPosition();
+                toggleMenu();
+            }
+        });*/
+        
     }
+    
+    
+    private void toggleMenu() {
+        if (slideTimer != null && slideTimer.isRunning()) {
+            return; // Empêche le déclenchement de plusieurs animations simultanées
+        }
+        isMenuVisible = !isMenuVisible;
+        slideTimer = new Timer(5, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int currentX = leftBarPanel.getX();
+                int targetX = isMenuVisible ? getWidth() - leftBarPanel.getWidth() : getWidth();
+                int buttonTargetX = isMenuVisible ? getWidth() - leftBarPanel.getWidth() - 50 : getWidth() - 50;
+                int buttonY = (getHeight() - buttonMenu.getHeight()) / 2;
+
+                if (isMenuVisible && currentX > targetX) {
+                    leftBarPanel.setLocation(currentX - stepSize, 0);
+                    ScreenPanel.setBounds(ScreenPanel.getX(), ScreenPanel.getY(), ScreenPanel.getWidth() - stepSize, ScreenPanel.getHeight());
+                    mapCustom1.setBounds(mapCustom1.getX(), mapCustom1.getY(), mapCustom1.getWidth() - stepSize, mapCustom1.getHeight());
+                    buttonMenu.setLocation(currentX - stepSize - 50, buttonY);
+                } else if (!isMenuVisible && currentX < targetX) {
+                    leftBarPanel.setLocation(currentX + stepSize, 0);
+                    ScreenPanel.setBounds(ScreenPanel.getX(), ScreenPanel.getY(), ScreenPanel.getWidth() + stepSize, ScreenPanel.getHeight());
+                    mapCustom1.setBounds(mapCustom1.getX(), mapCustom1.getY(), mapCustom1.getWidth() + stepSize, mapCustom1.getHeight());
+                    buttonMenu.setLocation(currentX + stepSize - 50, buttonY);
+                } else {
+                    slideTimer.stop();
+                    leftBarPanel.setLocation(targetX, 0);
+                    buttonMenu.setLocation(buttonTargetX, buttonY);
+                }
+                repaint();
+            }
+        });
+        slideTimer.start();
+    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         ScreenPanel = new javax.swing.JPanel();
-        mapCustom1 = new sae.View.airport.MapCustom();
+        mapCustom1 = new sae.view.airport.MapCustom();
         ComboMapType = new javax.swing.JComboBox<>();
         leftBarPanel = new javax.swing.JPanel();
         TopPanel = new javax.swing.JPanel();
@@ -111,14 +185,14 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             .addGroup(mapCustom1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(551, Short.MAX_VALUE))
+                .addContainerGap(516, Short.MAX_VALUE))
         );
         mapCustom1Layout.setVerticalGroup(
             mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustom1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(581, Short.MAX_VALUE))
+                .addContainerGap(587, Short.MAX_VALUE))
         );
 
         ScreenPanel.add(mapCustom1);
@@ -243,7 +317,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
                     .addComponent(FunctionsButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
@@ -310,6 +384,17 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+   
+    
+    
+    private void setButtonPosition(){
+        int buttonHeight = 50;
+        int buttonWidth = 50;
+        int buttonY = getHeight()/2 - buttonHeight;
+        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+    }
+    
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur le bouton des
      * fonctions. Elle ouvre une instance de la classe FonctionsDialog en tant
@@ -323,6 +408,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         dialogF.setVisible(true);
     }//GEN-LAST:event_FunctionsButtonActionPerformed
 
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu du mode sombre. Elle active ou désactive le mode sombre en fonction
@@ -341,6 +427,8 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             setLabelForeground(this.getContentPane(), Color.BLACK);
         }
     }//GEN-LAST:event_DarkModeCheckBoxMenuItemActionPerformed
+    
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur le bouton des
      * colorations. Elle ouvre une instance de la classe ColorationsDialog en
@@ -354,6 +442,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         cdialog.setVisible(true);
     }//GEN-LAST:event_ColorationsButtonActionPerformed
 
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu pour ouvrir un graphe. Elle ouvre une instance de la classe
@@ -362,12 +451,13 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
     private void jMenuItemOpenGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenGActionPerformed
-        LoadAgraphDialog loadDialog = new LoadAgraphDialog(this, true);
+        LoadAirspaceDialog loadDialog = new LoadAirspaceDialog(this, true);
         loadDialog.setLocationRelativeTo(this);
         loadDialog.setVisible(true);
 
     }//GEN-LAST:event_jMenuItemOpenGActionPerformed
 
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu pour enregistrer un graphe.
@@ -378,6 +468,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItemSaveAsGActionPerformed
 
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu pour revenir à la fenêtre d'accueil. Elle masque cette fenêtre et
@@ -392,6 +483,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         welcomef.setVisible(true);
     }//GEN-LAST:event_jMenuItemreturnWelcomeFrameActionPerformed
 
+    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur le sélecteur
      * de type de carte. Elle change le style de la carte en fonction de l'index
@@ -404,6 +496,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         mapCustom1.changeStyle(index);
     }//GEN-LAST:event_ComboMapTypeActionPerformed
 
+    
     /**
      * Définit la couleur de fond de tous les composants JPanel dans le
      * conteneur spécifié ainsi que dans ses sous-conteneurs de manière
@@ -423,6 +516,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         }
     }
 
+    
     /**
      * Définit la couleur du texte de tous les composants JLabel dans le
      * conteneur spécifié ainsi que dans ses sous-conteneurs de manière
@@ -443,15 +537,15 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         }
     }
 
+    
     /**
      * Définit le texte du composant JTextArea sur le texte spécifié.
      *
      * @param text le texte à définir dans le JTextArea
      */
     @Override
-    public void setJTextAreaText(String text) {
-        String actualString = text;
-        jTextAreaOnObject.setText(actualString);
+    public void setJTextAreaText(String text) {;
+        jTextAreaOnObject.setText(text);
     }
 
 
@@ -477,7 +571,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private javax.swing.JTextArea jTextArea2OnOverallInfos;
     private javax.swing.JTextArea jTextAreaOnObject;
     private javax.swing.JPanel leftBarPanel;
-    private sae.View.airport.MapCustom mapCustom1;
+    private sae.view.airport.MapCustom mapCustom1;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel titleLabel2;
     // End of variables declaration//GEN-END:variables

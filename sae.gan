@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="SAE" company="FFR Plane" webLink="http://" view-date="2024-03-11" view-index="0" gantt-divider-location="312" resource-divider-location="300" version="3.2.3230" locale="fr_FR">
+    <description/>
+    <view zooming-state="default:7" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="177" order="0"/>
+        <field id="tpd4" name="Date de début" width="67" order="1"/>
+        <field id="tpd5" name="Date de fin" width="67" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Cahier des charges" color="#8cb6ce" meeting="false" start="2024-03-18" duration="34" complete="0" thirdDate="2024-03-18" thirdDate-constraint="0" priority="2" expand="true">
+            <depend id="1" type="2" difference="0" hardness="Strong"/>
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="1" name="Construire le graphe d'intersection des vols" color="#8cb6ce" meeting="false" start="2024-05-03" duration="5" complete="0" thirdDate="2024-05-03" thirdDate-constraint="0" expand="true">
+            <depend id="3" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="3" name="Visualiser le graphe d'intersection d'un fichier de vols" color="#8cb6ce" meeting="false" start="2024-05-10" duration="2" complete="0" thirdDate="2024-04-24" thirdDate-constraint="0" expand="true"/>
+        <task id="4" name="Lire et charger un graphe directement depuis un fichier" color="#8cb6ce" meeting="false" start="2024-05-14" duration="5" complete="0" thirdDate="2024-04-24" thirdDate-constraint="0" expand="true">
+            <depend id="6" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="5" name="Ecrire un/des algorithmes qui colorient un graphe" color="#8cb6ce" meeting="false" start="2024-05-03" duration="12" complete="0" thirdDate="2024-03-04" thirdDate-constraint="0" expand="true">
+            <depend id="6" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="6" name="Interface graphique" color="#8cb6ce" meeting="false" start="2024-05-21" duration="11" complete="0" thirdDate="2024-04-22" thirdDate-constraint="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="7" name="IHM avancée" color="#8cb6ce" meeting="false" start="2024-06-05" duration="10" complete="0" thirdDate="2024-04-29" thirdDate-constraint="0" expand="true">
+            <depend id="8" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="8" name="Personnaliser l'application" color="#8cb6ce" meeting="false" start="2024-06-19" duration="4" complete="0" thirdDate="2024-04-29" thirdDate-constraint="0" expand="true">
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="9" name="Vérifier la qualité du code" color="#8cb6ce" meeting="false" start="2024-06-25" duration="2" complete="0" thirdDate="2024-05-06" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Sacha" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Mathéo" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Florian" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>

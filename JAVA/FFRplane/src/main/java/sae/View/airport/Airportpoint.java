@@ -60,7 +60,7 @@ public class Airportpoint extends DefaultWaypoint {
      */
     public Airportpoint(Airport airport) {
         // Appelle le constructeur de la classe parent avec la position géographique spécifiée
-        super(airport.getCoordinates());
+        super(airport.getGeoPosition());
         // Initialise le nom de l'aéroport et le bouton associé
         this.airport = airport;
         initButton();

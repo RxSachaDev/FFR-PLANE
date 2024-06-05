@@ -24,7 +24,7 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.Logiciel;
+import sae.Models.Settings;
 import sae.Models.airports.Airport;
 import sae.Models.airports.AirportCatalog;
 import sae.Models.toolbox.FileTreatment;
@@ -126,7 +126,7 @@ public class MapCustom extends JXMapViewer {
     public void initAirports() {
         AirportCatalog airportCatalog = new AirportCatalog();
         try {
-            FileTreatment.fillAirportList(System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt", airportCatalog);
+            FileTreatment.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
         } catch (Exception e) {
         }
         for (Airport airport : airportCatalog.getAirports()) {
@@ -141,9 +141,7 @@ public class MapCustom extends JXMapViewer {
         for (Airportpoint d : airportPointSet) {
             Airport airport = d.getAirport();
             if (airport != null) {
-                //System.out.println(d.toString());
                 add(d.getButton());
-
                 compteur++;
             } else {
                 System.err.println("Airport associated with AirportWaypoint is null.");

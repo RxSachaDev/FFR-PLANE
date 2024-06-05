@@ -1,4 +1,4 @@
-package sae.Models.airports;
+package sae.models.airports;
 
 import java.util.*;
 
