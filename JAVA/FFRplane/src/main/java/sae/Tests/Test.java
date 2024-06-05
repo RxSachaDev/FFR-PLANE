@@ -2,14 +2,14 @@ package sae.Tests;
 
 import java.io.*;
 import java.util.List;
-import sae.Models.Settings;
-import sae.Models.Settings;
+import sae.models.Settings;
+import sae.models.Settings;
 
-import sae.Models.airports.*;
-import sae.Models.errors.*;
-import sae.Models.flights.*;
-import sae.Models.intersection.*;
-import sae.Models.toolbox.*;
+import sae.models.airports.*;
+import sae.models.errors.*;
+import sae.models.flights.*;
+import sae.models.intersection.*;
+import sae.models.toolbox.*;
 
 public class Test {
     

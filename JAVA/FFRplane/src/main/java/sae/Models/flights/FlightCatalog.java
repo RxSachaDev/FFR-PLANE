@@ -1,4 +1,4 @@
-package sae.Models.flights;
+package sae.models.flights;
 
 import java.util.*;
 

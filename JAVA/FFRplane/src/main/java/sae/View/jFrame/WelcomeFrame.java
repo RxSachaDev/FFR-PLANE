@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package sae.View.jFrame;
+package sae.view.jFrame;
 
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import sae.View.jPanel.BackgroundPanel;
-import sae.View.jDialog.JInfosDialog;
-import sae.View.jDialog.LoadAirspaceDialog;
-import sae.View.jDialog.LoadGraphDialog;
+import sae.view.jPanel.BackgroundPanel;
+import sae.view.jDialog.JInfosDialog;
+import sae.view.jDialog.LoadAirspaceDialog;
+import sae.view.jDialog.LoadGraphDialog;
 
 /**
  * Fenêtre de bienvenue de l'application FFRplane. Permet à l'utilisateur de
@@ -43,7 +43,6 @@ public class WelcomeFrame extends javax.swing.JFrame {
         setContentPane(panelContent);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("FFRplane - Welcome");
-        
     }
 
     /**

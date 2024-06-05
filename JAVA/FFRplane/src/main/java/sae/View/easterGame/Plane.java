@@ -1,4 +1,4 @@
-package sae.View.easterGame;
+package sae.view.easterGame;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;

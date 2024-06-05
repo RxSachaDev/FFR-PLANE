@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package sae.View.jDialog;
+package sae.view.jDialog;
 
-import sae.Utils.IconUtil;
+import sae.utils.IconUtil;
 
 /**
  * Cette classe correspond à la dialog comportant tout les éléments liés aux

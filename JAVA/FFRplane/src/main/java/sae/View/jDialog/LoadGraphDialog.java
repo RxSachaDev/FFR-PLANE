@@ -2,9 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package sae.View.jDialog;
+package sae.view.jDialog;
 
-import sae.Utils.IconUtil;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import sae.models.errors.FileFormatError;
+import sae.utils.IconUtil;
 
 /**
  * Cette classe représente une boîte de dialogue de chargement de graphique.
@@ -52,6 +56,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         firstFileLabel = new javax.swing.JLabel();
         choiceFileButton1 = new javax.swing.JButton();
         graphFileTextField = new javax.swing.JTextField();
+        labelError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("load a graph");
@@ -104,6 +109,9 @@ public class LoadGraphDialog extends javax.swing.JDialog {
             }
         });
 
+        labelError.setForeground(new java.awt.Color(255, 51, 51));
+        labelError.setText("Le chemin d'accès est introuvable !");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,6 +134,10 @@ public class LoadGraphDialog extends javax.swing.JDialog {
                                     .addGap(6, 6, 6))))
                         .addGap(42, 42, 42)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(186, 186, 186)
+                .addComponent(labelError)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,9 +150,11 @@ public class LoadGraphDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(choiceFileButton1)
                     .addComponent(graphFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(18, 18, 18)
+                .addComponent(labelError)
+                .addGap(3, 3, 3)
                 .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -152,6 +166,16 @@ public class LoadGraphDialog extends javax.swing.JDialog {
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         System.out.println("ok");
+        try {
+            Scanner scan = new Scanner(new File(graphFileTextField.getText())); //Déclanche l'éxception si le chemin d'exces est foireux
+            labelError.setText(null);
+        } catch(FileNotFoundException e){
+            labelError.setText("L'un des chemin d'accès est introuvable !");
+        } catch(FileFormatError e) {
+            
+        }
+        
+        
     }//GEN-LAST:event_OkButtonActionPerformed
 
     private void choiceFileButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceFileButton1ActionPerformed
@@ -166,6 +190,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
     private javax.swing.JButton choiceFileButton1;
     private javax.swing.JLabel firstFileLabel;
     private javax.swing.JTextField graphFileTextField;
+    private javax.swing.JLabel labelError;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

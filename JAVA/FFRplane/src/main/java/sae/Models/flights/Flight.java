@@ -1,7 +1,7 @@
-package sae.Models.flights;
+package sae.models.flights;
 
-import sae.Models.airports.*;
-import sae.Models.toolbox.*;
+import sae.models.airports.*;
+import sae.models.toolbox.*;
 
 /**
  * The Flight class represents a flight with its details including name, departure and arrival airports, 

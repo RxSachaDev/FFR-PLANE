@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.View.easterGame;
+package sae.view.easterGame;
 
-import sae.View.easterGame.EasterGame;
+import sae.view.easterGame.EasterGame;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -14,9 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.Models.airports.Airport;
-import sae.View.airport.Airportpoint;
-import sae.View.airport.CustomAeroportPoint;
+import sae.models.airports.Airport;
+import sae.view.airport.Airportpoint;
+import sae.view.airport.CustomAeroportPoint;
 
 /**
  *

@@ -4,6 +4,7 @@ sae\View\easterGame\MonumentWaypoint$1.class
 sae\View\jFrame\MainFrame$6.class
 sae\Models\toolbox\ToolBox.class
 sae\View\jDialog\ColorationsDialog$1.class
+sae\View\jFrame\MainFrame$9.class
 sae\View\airport\CustomAeroportPoint.class
 sae\View\jFrame\WelcomeFrame$2.class
 sae\View\easterGame\EasterGame$2.class
@@ -42,6 +43,7 @@ sae\View\jFrame\WelcomeFrame$3.class
 sae\View\jFrame\MainFrame$1.class
 sae\Logiciel.class
 sae\Utils\IconUtil.class
+sae\View\jFrame\MainFrame$8.class
 sae\View\jDialog\LoadAirspaceDialog$2.class
 sae\View\jDialog\JInfosDialog.class
 sae\View\jDialog\LoadAirspaceDialog$5.class
