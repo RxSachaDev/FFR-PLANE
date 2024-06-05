@@ -3,21 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package sae.Controller;
-import sae.models.*;
+
+import sae.Logiciel;
 
 /**
- * Classe qui fait le lien entre les différents packages models/view
+ * Classe qui fait le lien entre l'interface Logiciel et les différents packages comme Models ou Views
  * @author fillo
  */
-public class LogicielController {
-    private static String video = "";
-    LogicielController(){}
-    
-    
-    public static void setVideo(String o) {
-        video = o;
-        
+public class LogicielController implements Logiciel {
+
+    @Override
+    public void setJTextAreaText(String text) {
     }
-    
     
 }

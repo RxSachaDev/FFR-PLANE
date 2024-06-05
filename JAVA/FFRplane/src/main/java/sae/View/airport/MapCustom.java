@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.view.airport;
+package sae.View.airport;
 
-import sae.view.easterGame.EasterPoint;
+import sae.View.easterGame.EasterPoint;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.event.MouseInputListener;
@@ -17,11 +17,11 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.models.Settings;
-import sae.models.airports.Airport;
-import sae.models.airports.AirportCatalog;
-import sae.models.toolbox.FileTreatment;
-import sae.view.easterGame.MonumentWaypoint;
+import sae.Models.Settings;
+import sae.Models.airports.Airport;
+import sae.Models.airports.AirportCatalog;
+import sae.Models.toolbox.FileTreatment;
+import sae.View.easterGame.MonumentWaypoint;
 
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des

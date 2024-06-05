@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.view.airport;
+package sae.View.airport;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import sae.Logiciel;
-import sae.models.airports.Airport;
+import sae.Models.airports.Airport;
 
 /**
  * Classe représentant un point d'aéroport sur la carte. Un point d'aéroport est

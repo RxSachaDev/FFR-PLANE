@@ -43,7 +43,7 @@ sae\View\jFrame\WelcomeFrame$3.class
 sae\View\jFrame\MainFrame$1.class
 sae\Logiciel.class
 sae\Utils\IconUtil.class
-sae\View\jFrame\MainFrame$8.class
+sae\Models\algocoloration\AlgoColoration.class
 sae\View\jDialog\LoadAirspaceDialog$2.class
 sae\View\jDialog\JInfosDialog.class
 sae\View\jDialog\LoadAirspaceDialog$5.class

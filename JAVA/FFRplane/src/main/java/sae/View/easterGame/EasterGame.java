@@ -2,7 +2,7 @@
      * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
      * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.view.easterGame;
+package sae.View.easterGame;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,8 +30,8 @@ import javax.swing.border.Border;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
-import sae.utils.IconUtil;
-import sae.view.airport.MapCustom;
+import sae.Utils.IconUtil;
+import sae.View.airport.MapCustom;
 
 public class EasterGame extends JFrame {
 
