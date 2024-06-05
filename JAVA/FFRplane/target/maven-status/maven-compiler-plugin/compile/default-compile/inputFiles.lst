@@ -8,6 +8,7 @@ C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easter
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\airports\Airport.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jFrame\MainFrame.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\airports\AirportCatalog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\algocoloration\AlgoColoration.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jFrame\WelcomeFrame.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\Settings.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\airport\CustomAeroportPoint.java
@@ -21,7 +22,6 @@ C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\airpor
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\FonctionsDialog.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\airport\MapCustom.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\toolbox\FileTreatment.java
-C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\algocoloration\AlgoColoration.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\LoadAirspaceDialog.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Controller\LogicielController.java
 C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\ColorationsDialog.java

@@ -42,9 +42,9 @@ sae\View\jFrame\WelcomeFrame$3.class
 sae\View\jFrame\MainFrame$1.class
 sae\Logiciel.class
 sae\Utils\IconUtil.class
+sae\Models\algocoloration\AlgoColoration.class
 sae\View\jDialog\LoadAirspaceDialog$2.class
 sae\View\jDialog\JInfosDialog.class
-sae\algocoloration\AlgoColoration.class
 sae\View\jDialog\LoadAirspaceDialog$5.class
 sae\View\jDialog\FonctionsDialog.class
 sae\Models\toolbox\FileTreatment.class
