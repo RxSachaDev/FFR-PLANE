@@ -7,6 +7,7 @@ package algocoloration;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import org.graphstream.algorithm.coloring.WelshPowell;
@@ -195,27 +196,8 @@ public class AlgoColoration {
         System.out.println("Chromatic Number: " + chromaticNumber);
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
-        while (chromaticNumber > kmax) {
-            Graph graphCopy = copyGraph(graph);
-            for (Node node : graphCopy) { // Utiliser graphCopy ici
-                Integer colorIndex = (Integer) node.getAttribute("color");
-                // Supprimer les couleurs dépassant kmax
-                if (colorIndex != null && colorIndex >= kmax) {
-                    node.removeAttribute("color");
-                } // Supprimer les nœuds avec des couleurs valides
-                else if (colorIndex != null) {
-                    graphCopy.removeNode(node.getId());
-                }
-            }
-
-            // Vérifier si le graphe copié est vide avant d'appliquer Welsh-Powell
-            if (graphCopy.getNodeCount() == 0 || graphCopy.getEdgeCount() == 0) {
-                break; // Sortir de la boucle si le graphe est vide
-            } else if (graphCopy.getEdgeCount() == 0) {
-
-                wp.init(graphCopy);
-                wp.compute();
-            } else {
+        if (chromaticNumber > kmax) {
+            for (int i = 0; i < 20; i++) {
                 for (Node aloneNode : graph.getEachNode()) {
                     int minConflicts = Integer.MAX_VALUE;
                     int bestColor = -1;
@@ -236,49 +218,16 @@ public class AlgoColoration {
                     // Appliquer la meilleure couleur trouvée avec le minimum de conflits
                     aloneNode.setAttribute("color", bestColor);
                 }
-                
             }
 
-            // Appliquer les nouvelles couleurs au graphe original
-            for (Node node : graphCopy) {
-                Integer colorIndex = node.getAttribute("color");
-                if (colorIndex != null) {
-                    graph.getNode(node.getId()).setAttribute("color", colorIndex);
-                }
-            }
-            
-            int chromaticNumber2 = -1;
-            for (Node node : graph) {
-                if ((int) node.getAttribute("color") > chromaticNumber2) {
-                    chromaticNumber2 = (int) node.getAttribute("color") - 1;
-                }
-            }
-            chromaticNumber = chromaticNumber2;
-            
         }
-        for (int i = 0; i< 10; i++){
-            for (Node aloneNode : graph.getEachNode()) {
-            int minConflicts = Integer.MAX_VALUE;
-            int bestColor = -1;
-
-            // Parcourir toutes les couleurs possibles pour ce nœud
-            for (int color = 0; color < kmax; color++) {
-                // Appliquer temporairement la couleur et compter les conflits
-                aloneNode.setAttribute("color", color);
-                int nbConflicts = countConflicts(graph);
-
-                // Mettre à jour la meilleure couleur si elle minimise les conflits
-                if (nbConflicts < minConflicts) {
-                    minConflicts = nbConflicts;
-                    bestColor = color;
-                }
+        chromaticNumber = 0;
+        for (Node node : graph) {
+            if ((int) node.getAttribute("color") > chromaticNumber) {
+                chromaticNumber = (int) node.getAttribute("color");
             }
-
-            // Appliquer la meilleure couleur trouvée avec le minimum de conflits
-            aloneNode.setAttribute("color", bestColor);
-            }
-       }
-        System.out.println(chromaticNumber);
+        }
+        System.out.println(chromaticNumber + 1);
         return countConflicts(graph);
     }
 
@@ -419,54 +368,37 @@ public class AlgoColoration {
         }
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
-        while (chromaticNumber > kmax) {
-            Graph graphCopy = copyGraph(g);
-            for (Node node : g) {
-                Integer colorIndex = (Integer) node.getAttribute("color");
-                if (colorIndex > kmax) {
-                    node.removeAttribute("color");
-                    node.removeAttribute("nbColor");
-                    node.removeAttribute("couleurAutour");
-                } else {
-                    graphCopy.removeNode(node.getId());
-                }
-            }
-            dsatur(graphCopy);
-            for (Node node : graphCopy) {
-                Integer colorIndex = (Integer) node.getAttribute("color");
-                g.getNode(node.getId()).setAttribute("color", colorIndex.intValue());
-            }
+        if (chromaticNumber > kmax) {
+            for (int i = 0; i < 20; i++) {
+                for (Node aloneNode : g.getEachNode()) {
+                    int minConflicts = Integer.MAX_VALUE;
+                    int bestColor = -1;
 
-            chromaticNumber = 0;
-            for (Node node : g) {
-                if ((int) node.getAttribute("color") > chromaticNumber) {
-                    chromaticNumber = (int) node.getAttribute("color");
+                    // Parcourir toutes les couleurs possibles pour ce nœud
+                    for (int color = 1; color <= kmax; color++) {
+                        // Appliquer temporairement la couleur et compter les conflits
+                        aloneNode.setAttribute("color", color);
+                        int nbConflicts = countConflicts(g);
+
+                        // Mettre à jour la meilleure couleur si elle minimise les conflits
+                        if (nbConflicts < minConflicts) {
+                            minConflicts = nbConflicts;
+                            bestColor = color;
+                        }
+                    }
+
+                    // Appliquer la meilleure couleur trouvée avec le minimum de conflits
+                    aloneNode.setAttribute("color", bestColor);
                 }
             }
         }
-
-        for (int i = 0; i< 10; i++){
-            for (Node aloneNode : g.getEachNode()) {
-            int minConflicts = Integer.MAX_VALUE;
-            int bestColor = -1;
-
-            // Parcourir toutes les couleurs possibles pour ce nœud
-            for (int color = 0; color < kmax; color++) {
-                // Appliquer temporairement la couleur et compter les conflits
-                aloneNode.setAttribute("color", color);
-                int nbConflicts = countConflicts(g);
-
-                // Mettre à jour la meilleure couleur si elle minimise les conflits
-                if (nbConflicts < minConflicts) {
-                    minConflicts = nbConflicts;
-                    bestColor = color;
-                }
+        chromaticNumber = 0;
+        for (Node node : g) {
+            if ((int) node.getAttribute("color") > chromaticNumber) {
+                chromaticNumber = (int) node.getAttribute("color");
             }
-
-            // Appliquer la meilleure couleur trouvée avec le minimum de conflits
-            aloneNode.setAttribute("color", bestColor);
-            }
-       }
+        }
+        System.out.println(chromaticNumber);
         return countConflicts(g);
     }
 
@@ -520,7 +452,16 @@ public class AlgoColoration {
                 "steelblue", "lightsteelblue", "powderblue", "lightblue", "skyblue", "lightskyblue", "deepskyblue", "dodgerblue",
                 "cornflowerblue", "royalblue", "blue", "mediumblue", "darkblue", "navy", "midnightblue", "cornsilk", "blanchedalmond",
                 "bisque", "navajowhite", "wheat", "burlywood", "tan", "rosybrown", "sandybrown", "goldenrod", "darkgoldenrod",
-                "peru", "chocolate", "saddlebrown", "sienna", "brown", "darkred"
+                "peru", "chocolate", "saddlebrown", "sienna", "brown", "darkred","azure", "aliceblue", "mintcream", "honeydew", "lightcoral", "cornflowerblue", "skyblue", "thistle", "seashell", "lavender",
+    "blanchedalmond", "bisque", "antiquewhite", "floralwhite", "ghostwhite", "oldlace", "linen", "mistyrose", "peachpuff", "navajowhite",
+    "palegoldenrod", "lightgoldenrodyellow", "lemonchiffon", "lightyellow", "papayawhip", "moccasin", "khaki", "darkkhaki", "ivory",
+    "beige", "lightgrey", "lightsteelblue", "lightslategray", "slategray", "dimgrey", "darkslategray", "grey", "darkgrey", "lightslategrey",
+    "midnightblue", "navy", "darkblue", "mediumblue", "blue", "darkgreen", "darkolivegreen", "olive", "olivedrab", "yellowgreen",
+    "greenyellow", "darkseagreen", "forestgreen", "limegreen", "lightgreen", "palegreen", "springgreen", "mediumspringgreen", "lawngreen",
+    "chartreuse", "aquamarine", "mediumaquamarine", "paleturquoise", "lightseagreen", "darkturquoise", "cadetblue", "darkcyan", "teal",
+    "lightcyan", "powderblue", "lightblue", "deepskyblue", "dodgerblue", "cornflowerblue", "steelblue", "royalblue", "mediumslateblue",
+    "slateblue", "darkslateblue", "mediumorchid", "blueviolet", "darkviolet", "darkorchid", "darkmagenta", "purple", "indigo", "mediumpurple",
+    "thistle", "plum", "violet", "orchid", "fuchsia", "magenta", "mediumorchid", "mediumpurple", "rebeccapurple"
             };
             if ((int) node.getAttribute("color") < colors.length) {
                 String color = colors[(int) node.getAttribute("color")];
@@ -543,7 +484,7 @@ public class AlgoColoration {
     public static void main(String[] args) {
         Graph graph = new MultiGraph(null);
         AlgoColoration test = new AlgoColoration(graph);
-        test.setFichier("data/graph-test1.txt");
+        test.setFichier("data/graph-test0.txt");
         try {
             test.charger_graphe();
         } catch (IOException e) {
