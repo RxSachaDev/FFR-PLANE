@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-package sae.View.airport;
+package sae.view.airport;
 
 import java.awt.Cursor;
 import java.awt.Dimension;

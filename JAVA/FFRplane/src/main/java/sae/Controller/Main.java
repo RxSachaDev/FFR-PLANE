@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package sae.Controller;
+package sae.controller;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import sae.Utils.IconUtil;
-import sae.View.jFrame.WelcomeFrame;
+import sae.utils.IconUtil;
+import sae.view.jFrame.WelcomeFrame;
 
 /**
  * La classe Main est la classe principale de l'application. Elle initialise et

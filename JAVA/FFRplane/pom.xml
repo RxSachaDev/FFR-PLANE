@@ -59,7 +59,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
-        <exec.mainClass>sae.Controller.Main</exec.mainClass>
+        <exec.mainClass>sae.controller.Main</exec.mainClass>
     </properties>
     <name>FFRplane</name>
     <build>

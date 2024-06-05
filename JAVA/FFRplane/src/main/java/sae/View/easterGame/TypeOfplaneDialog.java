@@ -2,15 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package sae.View.easterGame;
+package sae.view.easterGame;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
-import sae.View.airport.MapCustom;
+import sae.view.airport.MapCustom;
 
 /**
  *
@@ -18,8 +19,9 @@ import sae.View.airport.MapCustom;
  */
 public class TypeOfplaneDialog extends javax.swing.JDialog {
 
+    private EasterGame easterGame;
     private MapCustom map;
-    Plane planeIconChangerObject;
+    private Plane planeIconChangerObject;
 
     /**
      * Creates new form typeOfplaneDialog
@@ -29,22 +31,29 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
         initComponents();
         this.planeIconChangerObject = planeIconChangerObject;
         this.map = map;
+        if (parent instanceof EasterGame) {
+            this.easterGame = (EasterGame) parent;
+        }
         updatePlaneIcon();
 
         // Ajouter un écouteur d'événements à la ComboBox
         jtypeOfPlaneComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updatePlaneIcon(); // Mettre à jour l'icône lorsque l'élément est modifié
+                updatePlaneIcon(); 
             }
         });
-        
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 map.requestFocusInWindow();
             }
         });
+
+        jButtonCancel.setBackground(new Color(235, 173, 59));
+        jButtonOkay.setBackground(new Color(235, 173, 59));
+
     }
 
     private static ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
@@ -60,13 +69,18 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
             case "Avion de ligne":
                 ImageIcon planeUpIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\plane_up.png");
                 planeIconLabel.setIcon(resizeIcon(planeUpIcon, 143, 108)); // Redimensionner l'icône à la taille du label
+                jLabelName.setText(selectedPlaneType);
                 planeIconChangerObject.setTypePlane("Avion de ligne");
                 break;
             case "Rafale":
+                jLabelName.setText(selectedPlaneType);
                 ImageIcon rafaleUpIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up.png");
                 planeIconLabel.setIcon(resizeIcon(rafaleUpIcon, 143, 108)); // Redimensionner l'icône à la taille du label
                 planeIconChangerObject.setTypePlane("Rafale");
                 break;
+        }
+        if (easterGame != null) {
+            easterGame.loadSound();
         }
     }
 
@@ -83,8 +97,13 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
         jtypeOfPlaneComboBox = new javax.swing.JComboBox<>();
         jButtonOkay = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
+        jLabelName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(380, 250));
+        setMinimumSize(new java.awt.Dimension(380, 250));
+        setPreferredSize(new java.awt.Dimension(380, 250));
+        setResizable(false);
 
         planeIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         planeIconLabel.setIcon(new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\plane_up.png"));
@@ -105,6 +124,8 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,24 +138,26 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(73, 73, 73)
                         .addComponent(jButtonOkay, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(planeIconLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(planeIconLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
                         .addGap(29, 29, 29))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(planeIconLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jtypeOfPlaneComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jLabelName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtypeOfPlaneComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(planeIconLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOkay)
@@ -187,6 +210,9 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
 
         // Mettre à jour le type de l'avion dans EasterGame après la fermeture de la boîte de dialogue
         planeIconChangerObject.updateTypePlane(selectedPlaneType);
+        if (easterGame != null) {
+            easterGame.loadSound();
+        }
         dispose();
 
         map.requestFocusInWindow();
@@ -202,6 +228,7 @@ public class TypeOfplaneDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOkay;
+    private javax.swing.JLabel jLabelName;
     private javax.swing.JComboBox<String> jtypeOfPlaneComboBox;
     private javax.swing.JLabel planeIconLabel;
     // End of variables declaration//GEN-END:variables

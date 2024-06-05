@@ -21,4 +21,7 @@ public interface Logiciel {
      */
     void setJTextAreaText(String text);
     
+    void setJTextAreaText1(String text);
+    void setJTextAreaText2(String text);
+    
 }

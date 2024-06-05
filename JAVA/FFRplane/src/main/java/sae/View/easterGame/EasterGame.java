@@ -2,7 +2,7 @@
      * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
      * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.View.easterGame;
+package sae.view.easterGame;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -18,8 +17,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,8 +33,9 @@ import javax.swing.OverlayLayout;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.Utils.IconUtil;
-import sae.View.airport.MapCustom;
+import sae.utils.IconUtil;
+import sae.view.airport.MapCustom;
+import sae.view.easterGame.Plane;
 
 public class EasterGame extends JFrame {
 
@@ -39,6 +45,8 @@ public class EasterGame extends JFrame {
     private JPanel p2 = new JPanel();
     private JPanel p3 = new JPanel();
     private JPanel instrumentboard = new JPanel();
+    private Clip clip;
+    private FloatControl volumeControl;
 
     private final JLabel infosCommandLabel = new JLabel("Appuyez sur ZQSD pour vous déplacer");
 
@@ -68,10 +76,10 @@ public class EasterGame extends JFrame {
     private long sleep;
     private boolean start = true;
 
-    private Plane planeObject = new Plane("Plane", new GeoPosition(40.7115201, 74.015944),
+    private Plane planeObject = new Plane("Avion de ligne", new GeoPosition(40.7115201, 74.015944),
             planeUpIcon, planeDownIcon, planeLeftIcon, planeRightIcon,
             planeUpLeftIcon, planeUpRightIcon, planeDownLeftIcon, planeDownRightIcon);
-    ;
+    
 
     private double STEP_SIZE = planeObject.getVitesse();
 
@@ -84,13 +92,13 @@ public class EasterGame extends JFrame {
     private final int TARGET_TIME = 1000000000 / FPS;
 
     public EasterGame() {
+        loadSound();
         this.setSize(600, 350);
         this.setTitle("Super vous avez trouvé un easter egg !");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        //map.initGameMap(44.6858971, 3.4487081);
+        map.initGameMap(44.6858971, 3.4487081);
         iconU.setIcon(this);
-        map.initGameMap(40.7107653, -74.0130491);
         initComponents();
         drawGame();
         start();
@@ -116,6 +124,13 @@ public class EasterGame extends JFrame {
         double stepX = 0;
         double stepY = 0;
         STEP_SIZE = planeObject.getVitesse();
+
+        if (upPressed || downPressed || leftPressed || rightPressed) {
+            playSound();
+        } else {
+            stopSound();
+        }
+
         if (upPressed) {
             stepY += STEP_SIZE;
         }
@@ -129,7 +144,6 @@ public class EasterGame extends JFrame {
             stepX += STEP_SIZE;
         }
 
-        //System.out.println(STEP_SIZE);
         map.moveMap(stepX, stepY);
         updateSense();
     }
@@ -153,13 +167,13 @@ public class EasterGame extends JFrame {
     }
 
     private void updateSense() {
-        if (upPressed && leftPressed && !rightPressed) {
+        if (upPressed && leftPressed && !rightPressed && !downPressed) {
             planeObject.setPlaneIcon(planeObject.planeUpLeftIcon, 100, 90);
-        } else if (upPressed && rightPressed && !leftPressed) {
+        } else if (upPressed && rightPressed && !leftPressed && !downPressed) {
             planeObject.setPlaneIcon(planeObject.planeUpRightIcon, 100, 90);
-        } else if (downPressed && leftPressed && !rightPressed) {
+        } else if (downPressed && leftPressed && !rightPressed && !upPressed) {
             planeObject.setPlaneIcon(planeObject.planeDownLeftIcon, 100, 90);
-        } else if (downPressed && rightPressed && !leftPressed) {
+        } else if (downPressed && rightPressed && !leftPressed && !upPressed) {
             planeObject.setPlaneIcon(planeObject.planeDownRightIcon, 100, 90);
         } else if (upPressed && !downPressed) {
             planeObject.setPlaneIcon(planeObject.planeUpIcon, 80, 60);
@@ -169,6 +183,14 @@ public class EasterGame extends JFrame {
             planeObject.setPlaneIcon(planeObject.planeLeftIcon, 60, 80);
         } else if (rightPressed && !leftPressed) {
             planeObject.setPlaneIcon(planeObject.planeRightIcon, 60, 80);
+        }
+
+        if (levelGaz == 1) {
+            volumeControl.setValue(-20.0f);
+        } else if (levelGaz == 2) {
+            volumeControl.setValue(-15.0f);
+        } else if (levelGaz == 3) {
+            volumeControl.setValue(-10.0f);
         }
 
         planeObject.repaint();
@@ -223,6 +245,9 @@ public class EasterGame extends JFrame {
                     case KeyEvent.VK_D:
                         rightPressed = true;
                         break;
+                    case KeyEvent.VK_SPACE: // Ajout de la touche Espace
+                        addGazButton.doClick(); // Simuler un clic sur le bouton addGazButton
+                        break;
                 }
             }
 
@@ -259,18 +284,31 @@ public class EasterGame extends JFrame {
         addGazButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (levelGaz == 1 || levelGaz == 4) {
-                    levelGaz = 2;
-                    addGazButton.setIcon(resizeIcon(airplaneThroAvgIcon, 102, 145));
-                    planeObject.setVitesse(0.003);
-                } else if (levelGaz == 2 || levelGaz == 5) {
-                    levelGaz = 3;
-                    addGazButton.setIcon(resizeIcon(airplaneThroMaxIcon, 102, 145));
-                    planeObject.setVitesse(0.005);
-                } else if (levelGaz == 3 || levelGaz == 6) {
-                    levelGaz = 1;
-                    addGazButton.setIcon(resizeIcon(airplaneThroMinIcon, 102, 145));
-                    planeObject.setVitesse(0.001);
+                switch (levelGaz) {
+                    case 1:
+                        levelGaz = 2;
+                        addGazButton.setIcon(resizeIcon(airplaneThroAvgIcon, 102, 145));
+                        planeObject.setVitesse(0.003);
+                        break;
+                    case 2:
+                        levelGaz = 3;
+                        addGazButton.setIcon(resizeIcon(airplaneThroMaxIcon, 102, 145));
+                        planeObject.setVitesse(0.005);
+
+                        if (planeObject.getTypePlane().equals("Rafale")) {
+                            playSonicBoomSound();
+                        }
+                        break;
+                    case 3:
+                        levelGaz = 4;
+                        addGazButton.setIcon(resizeIcon(airplaneThroAvgIcon, 102, 145));
+                        planeObject.setVitesse(0.003);
+                        break;
+                    case 4:
+                        levelGaz = 1;
+                        addGazButton.setIcon(resizeIcon(airplaneThroMinIcon, 102, 145));
+                        planeObject.setVitesse(0.002);
+                        break;
                 }
             }
         });
@@ -301,6 +339,13 @@ public class EasterGame extends JFrame {
         bottomRightPanel.setOpaque(false);
         bottomRightPanel.setLayout(new BoxLayout(bottomRightPanel, BoxLayout.X_AXIS)); // Utiliser un layout en colonne
         bottomRightPanel.add(Box.createHorizontalGlue()); // Ajout d'un espace flexible à gauche
+        actionsPlaneButton.setBackground(new Color(235, 173, 59));
+        planeTypeButton.setBackground(new Color(235, 173, 59));
+        actionsPlaneButton.addActionListener((ActionEvent e) -> {
+            ActionDialog adialog = new ActionDialog(EasterGame.this, true, map);
+            adialog.setLocationRelativeTo(null);
+            adialog.setVisible(true);
+        });
         bottomRightPanel.add(actionsPlaneButton);
 
         planeTypeButton.addActionListener((ActionEvent e) -> {
@@ -324,7 +369,6 @@ public class EasterGame extends JFrame {
         getContentPane().setComponentZOrder(map, 1);
 
         requestFocusInWindowLater();
-
         Timer timer = new Timer(30, e -> updateSense());
         timer.start();
     }
@@ -344,6 +388,117 @@ public class EasterGame extends JFrame {
                 map.requestFocusInWindow();
             }
         });
+    }
+
+    void loadSound() {
+        try {
+            clip = AudioSystem.getClip();
+            AudioInputStream audioInputStream;
+            if (planeObject.getTypePlane().equals("Avion de ligne")) {
+                audioInputStream = AudioSystem.getAudioInputStream(
+                        new File(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\audio\\planeSound1.wav")
+                );
+            } else {
+                audioInputStream = AudioSystem.getAudioInputStream(
+                        new File(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\audio\\planeSound2.wav")
+                );
+            }
+
+            clip.open(audioInputStream);
+            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        } catch (UnsupportedAudioFileException e) {
+            // Gérer l'exception UnsupportedAudioFileException ici
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playSound() {
+        if (clip != null) {
+            if (!clip.isRunning()) {
+                clip.setFramePosition(0); // Rewind to the beginning
+                clip.start();
+            }
+        }
+    }
+
+    private void stopSound() {
+        if (clip != null) {
+            clip.stop();
+        }
+    }
+
+    private void setVolume(float level) {
+        if (volumeControl != null) {
+            volumeControl.setValue(level);
+        }
+    }
+
+    private void playSonicBoomSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
+                    new File(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\audio\\sonicBoom.wav")
+            );
+
+            Clip sonicBoomClip = AudioSystem.getClip();
+            sonicBoomClip.open(audioInputStream);
+
+            FloatControl volumeControl = (FloatControl) sonicBoomClip.getControl(FloatControl.Type.MASTER_GAIN);
+            volumeControl.setValue(0.0f);
+
+            // Définir le délai en millisecondes pour le premier timer (pour changer les icônes en mode boost)
+            int delayBoost = 500; // 0.5 seconde
+            Timer timerBoost = new Timer(delayBoost, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Changer les icônes en mode boost
+                    ImageIcon rafaleUpIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up_3.png");
+                    ImageIcon rafaleDownIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_down_3.png");
+                    ImageIcon rafaleLeftIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_left_3.png");
+                    ImageIcon rafaleRightIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_right_3.png");
+                    ImageIcon rafaleUpLeftIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up_left_3.png");
+                    ImageIcon rafaleUpRightIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up_right_3.png");
+                    ImageIcon rafaleDownLeftIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_down_left_3.png");
+                    ImageIcon rafaleDownRightIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_down_right_3.png");
+
+                    // Utilisation des icônes Rafale en mode boost pour l'avion
+                    planeObject.setRafaleIcon(rafaleUpIcon, rafaleDownIcon, rafaleLeftIcon, rafaleRightIcon,
+                            rafaleUpLeftIcon, rafaleUpRightIcon, rafaleDownLeftIcon, rafaleDownRightIcon);
+                }
+            });
+
+            // Définir le délai en millisecondes pour le deuxième timer (pour remettre les icônes par défaut)
+            int delayReset = 1000; // 1 seconde
+            Timer timerReset = new Timer(delayReset, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Remettre les icônes par défaut
+                    ImageIcon rafaleUpIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up.png");
+                    ImageIcon rafaleDownIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_down.png");
+                    ImageIcon rafaleLeftIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_left.png");
+                    ImageIcon rafaleRightIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_right.png");
+                    ImageIcon rafaleUpLeftIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up_left.png");
+                    ImageIcon rafaleUpRightIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_up_right.png");
+                    ImageIcon rafaleDownLeftIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_down_left.png");
+                    ImageIcon rafaleDownRightIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\rafale_down_right.png");
+
+                    // Utilisation des icônes Rafale par défaut pour l'avion
+                    planeObject.setRafaleIcon(rafaleUpIcon, rafaleDownIcon, rafaleLeftIcon, rafaleRightIcon,
+                            rafaleUpLeftIcon, rafaleUpRightIcon, rafaleDownLeftIcon, rafaleDownRightIcon);
+                }
+            });
+
+            // Démarrer les deux timers
+            sonicBoomClip.start();
+            timerBoost.setRepeats(false); // Pour ne déclencher l'événement qu'une seule fois
+            timerBoost.start();
+            timerReset.setRepeats(false); // Pour ne déclencher l'événement qu'une seule fois
+            timerReset.start();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

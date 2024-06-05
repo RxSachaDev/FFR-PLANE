@@ -2,8 +2,9 @@
      * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
      * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.View.airport;
+package sae.view.airport;
 
+import sae.Logiciel;
 import java.awt.Color;
 import java.util.Iterator;
 import java.awt.Graphics;
@@ -11,7 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import sae.View.easterGame.EasterPoint;
+import sae.view.easterGame.EasterPoint;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.event.MouseInputListener;
@@ -24,11 +25,11 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.Models.Settings;
-import sae.Models.airports.Airport;
-import sae.Models.airports.AirportCatalog;
-import sae.Models.toolbox.FileTreatment;
-import sae.View.easterGame.MonumentWaypoint;
+import sae.models.Settings;
+import sae.models.airports.Airport;
+import sae.models.airports.AirportCatalog;
+import sae.models.toolbox.FileTreatment;
+import sae.view.easterGame.MonumentWaypoint;
 
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des
@@ -69,10 +70,14 @@ public class MapCustom extends JXMapViewer {
         if (geo != null) {
             String coords = geo.getLatitude() + " " + geo.getLongitude();
             System.out.println(coords);
-            checkLineInterception(e.getPoint());
+            //checkLineInterception(e.getPoint());
         }
     }
 
+    /**
+     * Partie qui color les lignes de vols
+     * @param clickPoint 
+     */
     private void checkLineInterception(Point clickPoint) {
         GeoPosition clickGeo = getTileFactory().pixelToGeo(clickPoint, getZoom());
 
@@ -174,8 +179,10 @@ public class MapCustom extends JXMapViewer {
             Airportpoint airport1 = iterator.next();
             Airportpoint airport2 = iterator.next();
 
-            GeoPosition airport1Coords = airport1.getAirport().getCoordinates();
-            GeoPosition airport2Coords = airport2.getAirport().getCoordinates();
+            GeoPosition airport1Coords = airport1.getAirport().getGeoPosition();
+            System.out.println(airport1Coords);
+            GeoPosition airport2Coords = airport2.getAirport().getGeoPosition();
+            System.out.println(airport2Coords);
 
             Color randomColor = Color.BLACK;
 

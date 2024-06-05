@@ -32,7 +32,7 @@ import sae.view.jDialog.FonctionsDialog;
 public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private boolean isMenuVisible = true;
     private JButton buttonMenu = new JButton("Menu");
-    private Rectangle boundsBar;
+    //private Rectangle boundsBar;
     private Timer slideTimer;
     private final int stepSize = 10;
 
@@ -63,7 +63,8 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         mapCustom1.add(buttonMenu);
         mapCustom1.init(latitude, longitude, standardZoom);
         mapCustom1.initAirports();
-       
+        mapCustom1.initIntersection();
+        
         
         jTextArea2OnOverallInfos.setEditable(false);
         jTextArea2OnOverallInfos.setWrapStyleWord(false);
@@ -391,7 +392,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         int buttonHeight = 50;
         int buttonWidth = 50;
         int buttonY = getHeight()/2 - buttonHeight;
-        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        buttonMenu.setBounds(getWidth() - (isMenuVisible ? leftBarPanel.getWidth() + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
     }
     
     
@@ -544,10 +545,17 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * @param text le texte à définir dans le JTextArea
      */
     @Override
-    public void setJTextAreaText(String text) {;
-        jTextAreaOnObject.setText(text);
+    public void setJTextAreaText1(String text) {
+        String actualString = text;
+        jTextAreaOnObject.setText(actualString);
     }
-
+    
+    @Override
+    public void setJTextAreaText2(String text) {
+        String actualString = text;
+        jTextArea2OnOverallInfos.setText(actualString);
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BottomPanel;
@@ -575,4 +583,9 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel titleLabel2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setJTextAreaText(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

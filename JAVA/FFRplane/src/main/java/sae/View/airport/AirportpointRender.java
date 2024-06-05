@@ -1,6 +1,6 @@
 
 
-package sae.View.airport;
+package sae.view.airport;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
