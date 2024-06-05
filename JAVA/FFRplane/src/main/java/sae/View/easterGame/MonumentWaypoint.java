@@ -44,9 +44,17 @@ public class MonumentWaypoint extends EasterPoint {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Logique de gestion de l'action lorsque le bouton est cliqué
-                JOptionPane.showMessageDialog(null,"La tour eiffel");  
+                JOptionPane.showMessageDialog(null, name);
+                // Redonner le focus à la carte après la fermeture du JOptionPane
+                // On va utiliser SwingUtilities.invokeLater pour s'assurer que le focus soit redonné après que le JOptionPane soit fermé
+                javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        button.getParent().requestFocusInWindow(); // Ou utilisez map.requestFocusInWindow() si 'map' est accessible ici
+                    }
+                });
             }
         });
+
     }
 
     @Override

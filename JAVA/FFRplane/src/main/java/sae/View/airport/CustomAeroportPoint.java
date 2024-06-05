@@ -33,6 +33,5 @@ public class CustomAeroportPoint extends JButton {
         setVerticalAlignment(SwingConstants.CENTER);        
         setBorder(null);       
         setFocusable(false);        
-
     }  
 }

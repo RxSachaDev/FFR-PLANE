@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -17,19 +18,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.OverlayLayout;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Waypoint;
-import org.jxmapviewer.viewer.WaypointPainter;
 import sae.Utils.IconUtil;
 import sae.View.airport.MapCustom;
 
@@ -59,7 +57,10 @@ public class EasterGame extends JFrame {
     ImageIcon artificialHorizonIndicatorIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\artificialH.gif");
 
     ImageIcon eiffelTowerIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\eiffelTowerIcon.png");
-    
+    ImageIcon tour1 = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\tour1.png");
+    ImageIcon tour2 = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\tour2.png");
+    ImageIcon liberteIcon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\liberté.png");
+
     private JLabel labelInstru = new JLabel();
     private JButton addGazButton = new JButton(airplaneThroMinIcon);
     private int levelGaz = 1;
@@ -88,9 +89,10 @@ public class EasterGame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         //map.initGameMap(44.6858971, 3.4487081);
-        map.initGameMap(48.8584, 2.2945);
-        initComponents();
         iconU.setIcon(this);
+        map.initGameMap(40.7107653, -74.0130491);
+        initComponents();
+        drawGame();
         start();
     }
 
@@ -133,16 +135,21 @@ public class EasterGame extends JFrame {
     }
 
     private void drawGame() {
-        map.addMonuments(new MonumentWaypoint("Tour Eiffel", new GeoPosition(48.8568764,2.2948237), eiffelTowerIcon));
-        /*map.addMonuments(new MonumentWaypoint("Statue de la Liberté", new GeoPosition(40.6892, -74.0445), new ImageIcon("path/to/statueOfLibertyIcon.png")));
-        map.addMonuments(new MonumentWaypoint("Big Ben", new GeoPosition(51.5007, -0.1246), new ImageIcon("path/to/bigBenIcon.png")));
-        map.addMonuments(new MonumentWaypoint("Colisée", new GeoPosition(41.8902, 12.4922), new ImageIcon("path/to/colosseumIcon.png")));
-        map.addMonuments(new MonumentWaypoint("Pyramides de Gizeh", new GeoPosition(29.9792, 31.1342), new ImageIcon("path/to/pyramidsIcon.png")));
+        map.addMonuments(new MonumentWaypoint("Tour Eiffel", new GeoPosition(48.8568764, 2.2948237), eiffelTowerIcon));
+        map.addMonuments(new MonumentWaypoint("WORLD TRADE CENTER 1", new GeoPosition(40.7118114, -74.0126466), tour1));
+        map.addMonuments(new MonumentWaypoint("WORLD TRADE CENTER 2", new GeoPosition(40.7107653, -74.0130491), tour2));
+        map.addMonuments(new MonumentWaypoint("Statue de la Liberté", new GeoPosition(40.6892, -74.0445), liberteIcon));
+        /*map.addMonuments(new MonumentWaypoint("Pyramides de Gizeh", new GeoPosition(29.9792, 31.1342), new ImageIcon("path/to/pyramidsIcon.png")));
         map.addMonuments(new MonumentWaypoint("Taj Mahal", new GeoPosition(27.1751, 78.0421), new ImageIcon("path/to/tajMahalIcon.png")));
         map.addMonuments(new MonumentWaypoint("Muraille de Chine", new GeoPosition(40.4319, 116.5704), new ImageIcon("path/to/greatWallIcon.png")));
         map.addMonuments(new MonumentWaypoint("Sydney Opera House", new GeoPosition(-33.8568, 151.2153), new ImageIcon("path/to/sydneyOperaHouseIcon.png")));
         map.addMonuments(new MonumentWaypoint("Christ Rédempteur", new GeoPosition(-22.9519, -43.2105), new ImageIcon("path/to/christRedeemerIcon.png")));
         map.addMonuments(new MonumentWaypoint("Empire State Building", new GeoPosition(40.748817, -73.985428), new ImageIcon("path/to/empireStateBuildingIcon.png")));*/
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                map.requestFocusInWindow();
+            }
+        });
     }
 
     private void updateSense() {
@@ -168,7 +175,6 @@ public class EasterGame extends JFrame {
     }
 
     private void render() {
-        drawGame();
         map.repaint();
     }
 
@@ -293,11 +299,20 @@ public class EasterGame extends JFrame {
         instrumentboard.setOpaque(false); // Rendre le panneau transparent
         instrumentboard.add(instrumentboard_2, BorderLayout.PAGE_END);
         bottomRightPanel.setOpaque(false);
-        bottomRightPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        bottomRightPanel.setLayout(new BoxLayout(bottomRightPanel, BoxLayout.X_AXIS)); // Utiliser un layout en colonne
+        bottomRightPanel.add(Box.createHorizontalGlue()); // Ajout d'un espace flexible à gauche
         bottomRightPanel.add(actionsPlaneButton);
+
+        planeTypeButton.addActionListener((ActionEvent e) -> {
+            TypeOfplaneDialog tdialog = new TypeOfplaneDialog(EasterGame.this, true, planeObject, map);
+            tdialog.setLocationRelativeTo(null);
+            tdialog.setVisible(true);
+        });
+
         bottomRightPanel.add(planeTypeButton);
+        bottomRightPanel.add(Box.createHorizontalGlue()); // Ajout d'un espace flexible à droite
         bottomRightPanel.setBackground(new Color(0, 0, 0, 0));
-        //instrumentboard.add(bottomRightPanel, BorderLayout.PAGE_START));
+        instrumentboard.add(bottomRightPanel, BorderLayout.LINE_END); // Ajouter à droite
         p1.add(instrumentboard, BorderLayout.PAGE_START);
 
         // Ajout des composants au conteneur principal
@@ -308,13 +323,27 @@ public class EasterGame extends JFrame {
         getContentPane().setComponentZOrder(p1, 0);
         getContentPane().setComponentZOrder(map, 1);
 
+        requestFocusInWindowLater();
+
         Timer timer = new Timer(30, e -> updateSense());
         timer.start();
+    }
+
+    public void updateTypePlane(String typePlane) {
+        planeObject.setTypePlane(typePlane);
     }
 
     private static ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
+    }
+
+    private void requestFocusInWindowLater() {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                map.requestFocusInWindow();
+            }
+        });
     }
 
     public static void main(String[] args) {
