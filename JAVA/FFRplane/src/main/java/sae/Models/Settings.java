@@ -11,7 +11,7 @@ package sae.models;
 public class Settings {
     private static int kmax = 0;
     private static String airportsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
-    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test1.csv";
+    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test2.csv";
 
     public Settings() {}
     

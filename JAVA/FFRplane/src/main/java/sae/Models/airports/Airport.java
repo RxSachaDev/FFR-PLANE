@@ -151,10 +151,5 @@ public class Airport {
 
     public GeoPosition getGeoPosition() {
         return geoPosition;
-    }
-    
-    
+    }   
 }
-
-
-

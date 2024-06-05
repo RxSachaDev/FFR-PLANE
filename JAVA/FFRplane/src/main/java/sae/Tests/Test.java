@@ -49,7 +49,7 @@ public class Test {
                 // z
             }
             int count = 0;
-            List<Flight> flightsList = flightCatalog.getFlightList();
+            List<Flight> flightsList = flightCatalog.getFlights();
             for(int i = 0 ; i<flightsList.size()-1 ; i++) {
                 for(int j = i+1 ; j<flightsList.size() ; j++){
                     if(FlightCollisionTools.hasCollision(flightsList.get(i), flightsList.get(j))) count++;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package sae.Models.algocoloration;
+package sae.models.algocoloration;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -30,6 +30,7 @@ sae\View\jFrame\MainFrame$2.class
 sae\View\easterGame\ActionDialog$1.class
 sae\Models\airports\Airport.class
 sae\Models\FontEnum$1.class
+sae\View\airport\FlightLine.class
 sae\View\easterGame\EasterGame.class
 sae\View\jDialog\LoadAirspaceDialog$1.class
 sae\View\jDialog\LoadAirspaceDialog$4.class
@@ -54,7 +55,6 @@ sae\View\jDialog\LoadAirspaceDialog$2.class
 sae\View\jDialog\JInfosDialog.class
 sae\View\easterGame\ActionDialog$2.class
 sae\View\easterGame\EasterGame$4.class
-sae\View\airport\IntersectionLine.class
 sae\View\jDialog\LoadAirspaceDialog$5.class
 sae\View\jDialog\FonctionsDialog.class
 sae\Models\toolbox\FileTreatment.class

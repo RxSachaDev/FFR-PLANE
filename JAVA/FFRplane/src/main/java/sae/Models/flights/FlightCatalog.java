@@ -54,7 +54,7 @@ public class FlightCatalog {
      *
      * @return the list of flights
      */
-    public List<Flight> getFlightList() {
+    public List<Flight> getFlights() {
         return flightList;
     }
 }
