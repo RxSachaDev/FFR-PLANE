@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.Models;
+package sae.models;
 
 /**
  *
@@ -11,7 +11,7 @@ package sae.Models;
 public class Settings {
     private static int kmax = 0;
     private static String airportsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
-    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test";
+    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test1.csv";
 
     public Settings() {}
     

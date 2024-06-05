@@ -1,4 +1,4 @@
-package sae.Models.toolbox;
+package sae.models.toolbox;
 
 import org.jxmapviewer.viewer.GeoPosition;
 

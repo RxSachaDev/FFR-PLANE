@@ -1,13 +1,13 @@
-package sae.Models.toolbox;
+package sae.models.toolbox;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
-import sae.Models.airports.*;
-import sae.Models.flights.*;
-import sae.Models.errors.*;
+import sae.models.airports.*;
+import sae.models.flights.*;
+import sae.models.errors.*;
 
 /**
  * The FileTreatment class provides methods for reading and processing files containing flight and airport data.

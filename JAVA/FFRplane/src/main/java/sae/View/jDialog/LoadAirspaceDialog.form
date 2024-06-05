@@ -26,31 +26,40 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="firstFileLabel" alignment="1" max="32767" attributes="0"/>
-                      <Component id="ChoicesPanel" alignment="0" pref="467" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="secondFileLabel" alignment="0" min="-2" pref="370" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="airportsFileTextField" min="-2" pref="370" max="-2" attributes="0"/>
-                          <Component id="flightsFileTextField" min="-2" pref="370" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="titleLabel" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="choiceFileButton1" min="-2" pref="91" max="-2" attributes="0"/>
-                          <Component id="choiceFileButton2" min="-2" pref="91" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="firstFileLabel" alignment="1" max="32767" attributes="0"/>
+                              <Component id="ChoicesPanel" alignment="0" pref="467" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="secondFileLabel" alignment="0" min="-2" pref="370" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="airportsFileTextField" min="-2" pref="370" max="-2" attributes="0"/>
+                                  <Component id="flightsFileTextField" min="-2" pref="370" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="choiceFileButton1" min="-2" pref="91" max="-2" attributes="0"/>
+                                  <Component id="choiceFileButton2" min="-2" pref="91" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
+                      <EmptySpace min="0" pref="39" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="45" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="titleLabel" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="labelError" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="171" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -66,14 +75,16 @@
                   <Component id="airportsFileTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="choiceFileButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="25" max="32767" attributes="0"/>
+              <EmptySpace pref="35" max="32767" attributes="0"/>
               <Component id="secondFileLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="choiceFileButton2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="flightsFileTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="labelError" min="-2" pref="22" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="ChoicesPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
           </Group>
@@ -97,9 +108,7 @@
         </Property>
       </Properties>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-        <Property name="verticalGap" type="int" value="15"/>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
       <SubComponents>
         <Component class="javax.swing.JButton" name="CancelButton">
           <Properties>
@@ -207,6 +216,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="flightsFileTextFieldActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelError">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color type="null"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="33" red="ff" type="rgb"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

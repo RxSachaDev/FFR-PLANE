@@ -1,9 +1,9 @@
-package sae.Models.intersection;
+package sae.models.intersection;
 
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.Models.airports.*;
-import sae.Models.flights.*;
-import sae.Models.toolbox.*;
+import sae.models.airports.*;
+import sae.models.flights.*;
+import sae.models.toolbox.*;
 
 /**
  * The FlightCollisionTools class provides methods to detect potential collisions between flights.
