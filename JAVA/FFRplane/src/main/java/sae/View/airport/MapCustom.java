@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+     * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+     * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package sae.View.airport;
 
@@ -24,6 +24,7 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
+import sae.Logiciel;
 import sae.Models.airports.Airport;
 import sae.Models.airports.AirportCatalog;
 import sae.Models.toolbox.FileTreatment;
@@ -42,10 +43,12 @@ import sae.View.easterGame.MonumentWaypoint;
  */
 public class MapCustom extends JXMapViewer {
 
+    private Logiciel logiciel;
     private static int compteur = 0;
     private final Set<Airportpoint> airportPointSet = new HashSet<>();
     private final Set<IntersectionLine> lineSet = new HashSet<>();
     private final Set<Airportpoint> monumentPointSet;
+    private IntersectionLine lastSelectedLine = null;
 
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
@@ -53,12 +56,44 @@ public class MapCustom extends JXMapViewer {
     public MapCustom() {
         this.monumentPointSet = new HashSet<>();
         easterEgg();
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleMapClick(e);
+            }
+        });
     }
 
-    public void afficherSet() {
-        for (Airportpoint a : airportPointSet) {
-            System.out.println(a != null ? a.toString() : "Waypoint data not available");
+    private void handleMapClick(MouseEvent e) {
+        GeoPosition geo = convertPointToGeoPosition(e.getPoint());
+        if (geo != null) {
+            String coords = geo.getLatitude() + " " + geo.getLongitude();
+            System.out.println(coords);
+            checkLineInterception(e.getPoint());
         }
+    }
+
+    private void checkLineInterception(Point clickPoint) {
+        GeoPosition clickGeo = getTileFactory().pixelToGeo(clickPoint, getZoom());
+
+        for (IntersectionLine line : lineSet) {
+            GeoPosition pt1 = line.getPoint1();
+            GeoPosition pt2 = line.getPoint2();
+
+            double threshold = 150;
+            double distance = line.pointLineDistance(clickGeo, pt1, pt2);
+            if (distance <= threshold) {
+                if (lastSelectedLine != null && lastSelectedLine == line) {
+                    lastSelectedLine.setColor(Color.BLACK);
+                    lastSelectedLine = null;
+                } else {
+                    line.setColor(Color.ORANGE);
+                    lastSelectedLine = line;
+                    System.out.println("Ligne intersectée : " + line.toString());
+                }
+            }
+        }
+        repaint();
     }
 
     /**
@@ -128,6 +163,13 @@ public class MapCustom extends JXMapViewer {
         initAirports();
     }
 
+    private void setupMouseListeners() {
+        MouseInputListener ml = new PanMouseInputListener(this);
+        addMouseListener(ml);
+        addMouseMotionListener(ml);
+        addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
+    }
+
     public void initIntersection() {
         Iterator<Airportpoint> iterator = airportPointSet.iterator();
         if (airportPointSet.size() >= 2) {
@@ -139,7 +181,7 @@ public class MapCustom extends JXMapViewer {
 
             Color randomColor = Color.BLACK;
 
-            IntersectionLine newLine = new IntersectionLine(airport1Coords, airport2Coords, randomColor);
+            IntersectionLine newLine = new IntersectionLine(airport1Coords, airport2Coords, Color.BLACK, this, logiciel);
             lineSet.add(newLine);
         }
         repaint();
@@ -256,6 +298,9 @@ public class MapCustom extends JXMapViewer {
         for (IntersectionLine line : lineSet) {
             //System.out.println("add" + line.toString());
             line.paint(g2, this, getWidth(), getHeight());
+            /*line.addMouseMotionListener( new MouseListener(){
+
+                });*/
         }
     }
 }

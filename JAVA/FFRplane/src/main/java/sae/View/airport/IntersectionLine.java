@@ -12,59 +12,27 @@ import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 import java.awt.RenderingHints;
 import java.awt.BasicStroke;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Line2D;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import sae.Logiciel;
 
-public class IntersectionLine extends JButton implements Painter<JXMapViewer> {
+public class IntersectionLine implements Painter<JXMapViewer>, MouseListener {
 
     private Color couleur;
     private GeoPosition point1;
     private GeoPosition point2;
     private Logiciel logiciel;
+    private MapCustom map;
 
-public IntersectionLine(GeoPosition point1, GeoPosition point2, Color couleur) {
+    public IntersectionLine(GeoPosition point1, GeoPosition point2, Color couleur, MapCustom map, Logiciel logiciel) {
         this.point1 = point1;
         this.point2 = point2;
         this.couleur = couleur;
+        this.map = map;
+        this.logiciel = logiciel;
 
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
-        setBackground(Color.RED);
-        setPreferredSize(new Dimension(100, 100));
-        addActionListener(e -> System.out.println("Clic sur la ligne détecté !"));
-
-        // Set the size of the icon
-        int iconSize = 20;
-
-        // Create an image to draw the line
-        ImageIcon icon = new ImageIcon(new java.awt.image.BufferedImage(iconSize, iconSize, java.awt.image.BufferedImage.TYPE_INT_ARGB));
-        Graphics2D g2 = (Graphics2D) icon.getImage().getGraphics();
-
-        // Draw the line
-        
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setStroke(new java.awt.BasicStroke(2));
-        Point pt1 = new Point(0, iconSize);
-        Point pt2 = new Point(iconSize, 0);
-        g2.draw(new Line2D.Double(pt1, pt2));
-
-        // Set the icon
-        setIcon(icon);
-
-        // Make the button transparent and remove border
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-
-        // Dispose graphics object
-        g2.dispose();
     }
 
     public void setColor(Color couleur) {
@@ -83,23 +51,68 @@ public IntersectionLine(GeoPosition point1, GeoPosition point2, Color couleur) {
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(couleur);
-
         g.setStroke(new BasicStroke(2));
 
         Point2D pt1 = map.getTileFactory().geoToPixel(point1, map.getZoom());
         Point2D pt2 = map.getTileFactory().geoToPixel(point2, map.getZoom());
 
         g.drawLine((int) pt1.getX(), (int) pt1.getY(), (int) pt2.getX(), (int) pt2.getY());
-
         g.dispose();
     }
 
-    public void setLogiciel(Logiciel logiciel) {
-        this.logiciel = logiciel;
+    public boolean isPointOnLineSegment(GeoPosition clickPoint, GeoPosition pt1, GeoPosition pt2, double threshold) {
+        double distance = pointLineDistance(clickPoint, pt1, pt2);
+        return distance <= threshold;
+    }
+
+    public double pointLineDistance(GeoPosition clickPoint, GeoPosition pt1, GeoPosition pt2) {
+        double x0 = clickPoint.getLatitude();
+        double y0 = clickPoint.getLongitude();
+        double x1 = pt1.getLatitude();
+        double y1 = pt1.getLongitude();
+        double x2 = pt2.getLatitude();
+        double y2 = pt2.getLongitude();
+
+        double A = y2 - y1;
+        double B = x1 - x2;
+        double C = x2 * y1 - x1 * y2;
+
+        return Math.abs(A * x0 + B * y0 + C) / Math.sqrt(A * A + B * B);
+    }
+
+    public GeoPosition getPoint1() {
+        return point1;
+    }
+
+    public GeoPosition getPoint2() {
+        return point2;
     }
 
     @Override
     public String toString() {
         return "{Couleur : " + this.couleur + " pt1  : " + this.point1 + " pt2 : " + this.point2 + "}";
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        logiciel.setJTextAreaText1("Le texte que vous voulez définir dans JTextArea 1");
+        logiciel.setJTextAreaText2("Le texte que vous voulez définir dans JTextArea 2");
+        System.out.println("La ligne a été cliquée");
+    }
+   
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
 }
