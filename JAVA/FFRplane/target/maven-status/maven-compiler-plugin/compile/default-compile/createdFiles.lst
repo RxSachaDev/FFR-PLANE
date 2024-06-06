@@ -55,6 +55,7 @@ sae\View\jDialog\JInfosDialog.class
 sae\View\easterGame\ActionDialog$2.class
 sae\View\easterGame\EasterGame$4.class
 sae\View\airport\IntersectionLine.class
+sae\Models\algocoloration\AlgoColoration$ResultatColoration.class
 sae\View\jDialog\LoadAirspaceDialog$5.class
 sae\View\jDialog\FonctionsDialog.class
 sae\Models\toolbox\FileTreatment.class
