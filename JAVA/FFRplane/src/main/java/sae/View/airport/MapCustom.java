@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import sae.view.easterGame.EasterPoint;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
@@ -24,7 +25,7 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.models.Settings;
+import sae.utils.Settings;
 import sae.models.airports.Airport;
 import sae.models.airports.AirportCatalog;
 import sae.models.flights.Flight;
@@ -51,8 +52,8 @@ public class MapCustom extends JXMapViewer {
     private final Set<FlightLine> flightLineSet = new HashSet<>();
     private final Set<Airportpoint> monumentPointSet;
     private FlightLine lastSelectedLine = null;
-    private AirportCatalog airportsCatalog = new AirportCatalog();
-    private FlightCatalog flightsCatalog = new FlightCatalog();
+    private final AirportCatalog airportsCatalog = new AirportCatalog();
+    private final FlightCatalog flightsCatalog = new FlightCatalog();
 
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
@@ -67,42 +68,110 @@ public class MapCustom extends JXMapViewer {
             }
         });
     }
-
+/*
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
         if (geo != null) {
-            String coords = geo.getLatitude() + " " + geo.getLongitude();
-            System.out.println(coords);
-            checkLineInterception(e.getPoint());
-        }
-    }
-
-    /**
-     * Partie qui color les lignes de vols
-     * @param clickPoint 
-     */
-    private void checkLineInterception(Point clickPoint) {
-        GeoPosition clickGeo = getTileFactory().pixelToGeo(clickPoint, getZoom());
-
-        for (FlightLine line : flightLineSet) {
-            GeoPosition pt1 = line.getPoint1();
-            GeoPosition pt2 = line.getPoint2();
-
-            double threshold = 150;
-            double distance = line.pointLineDistance(clickGeo, pt1, pt2);
-            if (distance <= threshold) {
-                if (lastSelectedLine != null && lastSelectedLine == line) {
-                    lastSelectedLine.setColor(Color.BLACK);
-                    lastSelectedLine = null;
-                } else {
-                    line.setColor(Color.ORANGE);
-                    lastSelectedLine = line;
-                    System.out.println("Ligne intersectée : " + line.toString());
+            FlightLine flightLine;
+            boolean bool=false;
+            Iterator<FlightLine> iterator = flightLineSet.iterator();
+            while(iterator.hasNext() && !bool) {
+                flightLine = iterator.next();
+                if(isOnFlightLine(geo, flightLine,0.5)) {
+                    bool = false;
+                    flightLine.setColor(Color.ORANGE);
+                    if(lastSelectedLine != null){
+                        lastSelectedLine.setColor(Color.BLACK);
+                    }
+                    lastSelectedLine = flightLine;
+                    lastSelectedLine.setColor(Color.ORANGE);
+                    
                 }
             }
+            repaint();
         }
-        repaint();
     }
+    
+    private static boolean isOnInterval(GeoPosition pose, FlightLine flightLine) {
+        GeoPosition departureCoordinates = flightLine.getPoint1();
+        GeoPosition arrivalCoordinates = flightLine.getPoint2();
+
+        double maxLatitude = Math.max(departureCoordinates.getLatitude(), arrivalCoordinates.getLatitude());
+        double minLatitude = Math.min(departureCoordinates.getLatitude(), arrivalCoordinates.getLatitude());
+        double maxLongitude = Math.max(departureCoordinates.getLongitude(), arrivalCoordinates.getLongitude());
+        double minLongitude = Math.min(departureCoordinates.getLongitude(), arrivalCoordinates.getLongitude());
+
+        return (minLatitude <= pose.getLatitude() && pose.getLatitude() <= maxLatitude && 
+                minLongitude <= pose.getLongitude() && pose.getLongitude() <= maxLongitude);
+    }
+    
+    private static boolean isOnFlightLine(GeoPosition point, FlightLine flightLine,double margin) {
+        GeoPosition point1 = flightLine.getPoint1();
+        GeoPosition point2 = flightLine.getPoint2();
+        
+
+        double m = (point2.getLongitude() - point1.getLongitude()) / (point2.getLatitude() - point1.getLatitude());
+        double p = point2.getLongitude() - m * point2.getLatitude();
+
+        double y = m * point.getLatitude() + p;
+        if(point.getLongitude() - margin<=y && y<=point.getLongitude() + margin)
+            if(isOnInterval(point,flightLine))
+                return true;
+        return false;
+    }*/
+    private void handleMapClick(MouseEvent e) {
+        GeoPosition geo = convertPointToGeoPosition(e.getPoint());
+        if (geo != null) {
+            FlightLine closestFlightLine = null;
+            double closestDistance = Double.MAX_VALUE;
+
+            for (FlightLine flightLine : flightLineSet) {
+                double distance = distanceFromPointToLine(geo, flightLine.getPoint1(), flightLine.getPoint2());
+                if (distance < closestDistance) {
+                    
+                    System.out.println(closestDistance+" - ");
+                    closestDistance = distance;
+                    closestFlightLine = flightLine;
+                }
+            }
+
+            if (closestFlightLine != null && closestDistance <= 0.05) {  // Assurez-vous que la distance est dans la marge
+                closestFlightLine.setColor(Color.ORANGE);
+                if (lastSelectedLine != null && lastSelectedLine != closestFlightLine) {
+                    lastSelectedLine.setColor(Color.BLACK);
+                }
+                lastSelectedLine = closestFlightLine;
+            }
+
+            repaint();
+        }
+    }
+
+    private static double distanceFromPointToLine(GeoPosition point, GeoPosition lineStart, GeoPosition lineEnd) {
+        double x0 = point.getLongitude();
+        double y0 = point.getLatitude();
+        
+        double x1 = lineStart.getLongitude();
+        double y1 = lineStart.getLatitude();
+        
+        double x2 = lineEnd.getLongitude();
+        double y2 = lineEnd.getLatitude();
+
+        // Calcul des coordonnées du point projeté sur le segment
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double t = ((x0 - x1) * dx + (y0 - y1) * dy) / (dx * dx + dy * dy);
+        t = Math.max(0, Math.min(1, t)); // Garantit que le point projeté est sur le segment
+        double projX = x1 + t * dx;
+        double projY = y1 + t * dy;
+
+        // Calcul de la distance entre le point et le point projeté
+        double distX = projX - x0;
+        double distY = projY - y0;
+        return Math.sqrt(distX * distX + distY * distY);
+    }
+
+
 
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.

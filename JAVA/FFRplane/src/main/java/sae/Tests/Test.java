@@ -2,8 +2,8 @@ package sae.Tests;
 
 import java.io.*;
 import java.util.List;
-import sae.models.Settings;
-import sae.models.Settings;
+import sae.utils.Settings;
+import sae.utils.Settings;
 
 import sae.models.airports.*;
 import sae.models.errors.*;

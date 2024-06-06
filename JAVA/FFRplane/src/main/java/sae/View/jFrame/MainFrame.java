@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,10 +32,10 @@ import sae.view.jDialog.FonctionsDialog;
  */
 public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private boolean isMenuVisible = true;
-    private JButton buttonMenu = new JButton("Menu");
-    //private Rectangle boundsBar;
-    private Timer slideTimer;
-    private final int stepSize = 10;
+    private JButton buttonMenu = new JButton();
+    private ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
+    private ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
+    private Rectangle boundsMenuBar;
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -47,6 +48,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private static final double longitude = 2.7105474;
     private static final int standardZoom = 14;
 
+    
     /**
      * Crée une nouvelle instance de la classe MainFrame. Initialise les
      * composants de la fenêtre, configure la carte personnalisée avec les
@@ -54,12 +56,11 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * configure l'affichage des champs de texte, configure les icônes et
      * configure l'état de la fenêtre pour être maximisé. (constructeur)
      */
-    
-    
-    
     public MainFrame() {
         initComponents();
         
+        buttonMenu.setContentAreaFilled(false);
+
         mapCustom1.add(buttonMenu);
         mapCustom1.init(latitude, longitude, standardZoom);
         mapCustom1.initAirports();
@@ -84,56 +85,19 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
                 setButtonPosition();
             }
         });
-        /*
-        boundsBar = leftBarPanel.getBounds();
+        
+        boundsMenuBar = panelRightBar.getBounds();
         buttonMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                //isMenuVisible = !isMenuVisible;
-                //leftBarPanel.setVisible(isMenuVisible);
-                //setButtonPosition();
-                toggleMenu();
+                isMenuVisible = !isMenuVisible;
+                panelRightBar.setVisible(isMenuVisible);
+                setButtonPosition();
             }
-        });*/
+        });
         
     }
     
-    
-    private void toggleMenu() {
-        if (slideTimer != null && slideTimer.isRunning()) {
-            return; // Empêche le déclenchement de plusieurs animations simultanées
-        }
-        isMenuVisible = !isMenuVisible;
-        slideTimer = new Timer(5, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int currentX = panelRightBar.getX();
-                int targetX = isMenuVisible ? getWidth() - panelRightBar.getWidth() : getWidth();
-                int buttonTargetX = isMenuVisible ? getWidth() - panelRightBar.getWidth() - 50 : getWidth() - 50;
-                int buttonY = (getHeight() - buttonMenu.getHeight()) / 2;
-
-                if (isMenuVisible && currentX > targetX) {
-                    panelRightBar.setLocation(currentX - stepSize, 0);
-                    ScreenPanel.setBounds(ScreenPanel.getX(), ScreenPanel.getY(), ScreenPanel.getWidth() - stepSize, ScreenPanel.getHeight());
-                    mapCustom1.setBounds(mapCustom1.getX(), mapCustom1.getY(), mapCustom1.getWidth() - stepSize, mapCustom1.getHeight());
-                    buttonMenu.setLocation(currentX - stepSize - 50, buttonY);
-                } else if (!isMenuVisible && currentX < targetX) {
-                    panelRightBar.setLocation(currentX + stepSize, 0);
-                    ScreenPanel.setBounds(ScreenPanel.getX(), ScreenPanel.getY(), ScreenPanel.getWidth() + stepSize, ScreenPanel.getHeight());
-                    mapCustom1.setBounds(mapCustom1.getX(), mapCustom1.getY(), mapCustom1.getWidth() + stepSize, mapCustom1.getHeight());
-                    buttonMenu.setLocation(currentX + stepSize - 50, buttonY);
-                } else {
-                    slideTimer.stop();
-                    panelRightBar.setLocation(targetX, 0);
-                    buttonMenu.setLocation(buttonTargetX, buttonY);
-                }
-                repaint();
-            }
-        });
-        slideTimer.start();
-    }
-    
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -405,13 +369,12 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     }// </editor-fold>//GEN-END:initComponents
 
    
-    
-    
     private void setButtonPosition(){
         int buttonHeight = 50;
         int buttonWidth = 50;
         int buttonY = getHeight()/2 - buttonHeight;
-        buttonMenu.setBounds(getWidth() - (isMenuVisible ? panelRightBar.getWidth() + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsMenuBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        buttonMenu.setIcon(isMenuVisible ? iconButtonMenuOpen : iconButtonMenuClose);
     }
     
     
@@ -477,7 +440,6 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
 
     }//GEN-LAST:event_jMenuItemOpenGActionPerformed
 
-    
     
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de

@@ -5,8 +5,10 @@
 package sae.view.jFrame;
 
 import java.awt.Dimension;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import sae.utils.IconUtil;
 import sae.view.jPanel.BackgroundPanel;
 import sae.view.jDialog.JInfosDialog;
 import sae.view.jDialog.LoadAirspaceDialog;
@@ -28,7 +30,7 @@ public class WelcomeFrame extends javax.swing.JFrame {
     private final ImageIcon iconLoadGraph = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\refresh2.png");
     private final ImageIcon iconLoadAirspace = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\startIcon.png");
     private final ImageIcon iconAbout = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\aboutIcon.png");
-    
+    private final IconUtil iconU = new IconUtil();
     
     /**
      * Crée une nouvelle instance de WelcomeFrame. (constructeur) Initialise les
@@ -43,6 +45,7 @@ public class WelcomeFrame extends javax.swing.JFrame {
         setContentPane(panelContent);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("FFRplane - Welcome");
+        iconU.setIcon(this);
     }
 
     /**

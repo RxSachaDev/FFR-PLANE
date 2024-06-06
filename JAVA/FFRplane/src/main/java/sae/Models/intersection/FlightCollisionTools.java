@@ -100,14 +100,14 @@ public class FlightCollisionTools {
         double[] arrivalCoordinates2 = flight2.getArrivalAirport().getCoordinates();
         double[] departureCoordinates2 = flight2.getDepartureAirport().getCoordinates();
 
-        double slope1 = (arrivalCoordinates1[1] - departureCoordinates1[1]) / (arrivalCoordinates1[0] - departureCoordinates1[0]);
-        double intercept1 = arrivalCoordinates1[1] - slope1 * arrivalCoordinates1[0];
+        double m1 = (arrivalCoordinates1[1] - departureCoordinates1[1]) / (arrivalCoordinates1[0] - departureCoordinates1[0]);
+        double p1 = arrivalCoordinates1[1] - m1 * arrivalCoordinates1[0];
 
-        double slope2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
-        double intercept2 = arrivalCoordinates2[1] - slope2 * arrivalCoordinates2[0];
+        double m2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
+        double p2 = arrivalCoordinates2[1] - m2 * arrivalCoordinates2[0];
 
-        double x = -(intercept1 - intercept2) / (slope1 - slope2);
-        double y = slope1 * x + intercept1;
+        double x = -(p1 - p2) / (m1 - m2);
+        double y = m1 * x + p1;
 
         if (isOnFlightSegment(x, y, flight1) && isOnFlightSegment(x, y, flight2)) {
             point[0] = x;
