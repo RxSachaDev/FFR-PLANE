@@ -15,6 +15,7 @@ import sae.utils.IconUtil;
  * Elle étend la classe javax.swing.JDialog.
  *
  * @author fillo
+ * @author mathe
  */
 public class LoadGraphDialog extends javax.swing.JDialog {
 

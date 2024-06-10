@@ -8,12 +8,10 @@ import sae.Logiciel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import sae.view.easterGame.EasterPoint;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
@@ -30,7 +28,7 @@ import sae.models.airports.Airport;
 import sae.models.airports.AirportCatalog;
 import sae.models.flights.Flight;
 import sae.models.flights.FlightCatalog;
-import sae.models.toolbox.FileTreatment;
+import sae.models.toolbox.ToolBox;
 import sae.view.easterGame.MonumentWaypoint;
 
 /**
@@ -43,6 +41,7 @@ import sae.view.easterGame.MonumentWaypoint;
  * OpenStreetMap ou Virtual Earth.
  *
  * @author fillo
+ * @author mathe
  */
 public class MapCustom extends JXMapViewer {
 
@@ -66,61 +65,9 @@ public class MapCustom extends JXMapViewer {
             public void mouseClicked(MouseEvent e) {
                 handleMapClick(e);
             }
+            
         });
     }
-
-    /*
-    private void handleMapClick(MouseEvent e) {
-        GeoPosition geo = convertPointToGeoPosition(e.getPoint());
-        if (geo != null) {
-            FlightLine flightLine;
-            boolean bool=false;
-            Iterator<FlightLine> iterator = flightLineSet.iterator();
-            while(iterator.hasNext() && !bool) {
-                flightLine = iterator.next();
-                if(isOnFlightLine(geo, flightLine,0.5)) {
-                    bool = false;
-                    flightLine.setColor(Color.ORANGE);
-                    if(lastSelectedLine != null){
-                        lastSelectedLine.setColor(Color.BLACK);
-                    }
-                    lastSelectedLine = flightLine;
-                    lastSelectedLine.setColor(Color.ORANGE);
-                    
-                }
-            }
-            repaint();
-        }
-    }
-    
-    private static boolean isOnInterval(GeoPosition pose, FlightLine flightLine) {
-        GeoPosition departureCoordinates = flightLine.getPoint1();
-        GeoPosition arrivalCoordinates = flightLine.getPoint2();
-
-        double maxLatitude = Math.max(departureCoordinates.getLatitude(), arrivalCoordinates.getLatitude());
-        double minLatitude = Math.min(departureCoordinates.getLatitude(), arrivalCoordinates.getLatitude());
-        double maxLongitude = Math.max(departureCoordinates.getLongitude(), arrivalCoordinates.getLongitude());
-        double minLongitude = Math.min(departureCoordinates.getLongitude(), arrivalCoordinates.getLongitude());
-
-        return (minLatitude <= pose.getLatitude() && pose.getLatitude() <= maxLatitude && 
-                minLongitude <= pose.getLongitude() && pose.getLongitude() <= maxLongitude);
-    }
-    
-    private static boolean isOnFlightLine(GeoPosition point, FlightLine flightLine,double margin) {
-        GeoPosition point1 = flightLine.getPoint1();
-        GeoPosition point2 = flightLine.getPoint2();
-        
-
-        double m = (point2.getLongitude() - point1.getLongitude()) / (point2.getLatitude() - point1.getLatitude());
-        double p = point2.getLongitude() - m * point2.getLatitude();
-
-        double y = m * point.getLatitude() + p;
-        System.out.println(Math.abs(y-point.getLongitude()));
-        if(point.getLongitude() - margin<=y && y<=point.getLongitude() + margin)
-            if(isOnInterval(point,flightLine))
-                return true;
-        return false;
-    }*/
     
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
@@ -195,15 +142,13 @@ public class MapCustom extends JXMapViewer {
      */
     public void initAirports() {
         try {
-            FileTreatment.fillAirportList(Settings.getAirportsFilePath(),airportsCatalog);
+            ToolBox.fillAirportList(Settings.getAirportsFilePath(),airportsCatalog);
         } catch (Exception e) {
         }
         for (Airport airport : airportsCatalog.getAirports()) {
             airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
-        //easterEgg();
-        //afficherSet();
-
+        
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
         ap.setWaypoints(airportPointSet);
         setOverlayPainter(ap);
@@ -216,7 +161,6 @@ public class MapCustom extends JXMapViewer {
                 System.err.println("Airport associated with AirportWaypoint is null.");
             }
         }
-        // System.out.print(compteur);
     }
 
     /**
@@ -230,16 +174,9 @@ public class MapCustom extends JXMapViewer {
         initAirports();
     }
 
-    private void setupMouseListeners() {
-        MouseInputListener ml = new PanMouseInputListener(this);
-        addMouseListener(ml);
-        addMouseMotionListener(ml);
-        addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
-    }
-
-    public void initIntersection() {
+    public void initFlightLines() {
         try {
-            FileTreatment.fillFlightList(Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
+            ToolBox.fillFlightList(Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
         } catch (Exception e) {
         }
         for (Flight flight : flightsCatalog.getFlights()) {
@@ -247,6 +184,7 @@ public class MapCustom extends JXMapViewer {
             flightLineSet.add(new FlightLine(flight,Color.BLACK,this,logiciel)); // Utilisation du constructeur avec Airport comme argument
         }
         repaint();
+        ToolBox.createGraphTextFile(flightsCatalog);
     }
 
     /**
@@ -353,16 +291,10 @@ public class MapCustom extends JXMapViewer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
-        //System.out.println(lineSet.size());
         // Dessiner les lignes
         for (FlightLine line : flightLineSet) {
-            //System.out.println("add" + line.toString());
             line.paint(g2, this, getWidth(), getHeight());
-            /*line.addMouseMotionListener( new MouseListener(){
-
-                });*/
         }
     }
 }

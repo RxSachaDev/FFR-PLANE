@@ -29,6 +29,7 @@ import sae.view.jDialog.FonctionsDialog;
  * javax.swing.JFrame et implémente l'interface Logiciel.
  *
  * @author fillo
+ * @author mathe
  */
 public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private boolean isMenuVisible = true;
@@ -64,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         mapCustom1.add(buttonMenu);
         mapCustom1.init(latitude, longitude, standardZoom);
         mapCustom1.initAirports();
-        mapCustom1.initIntersection();
+        mapCustom1.initFlightLines();
         
         
         textAreaInfosGene.setEditable(false);

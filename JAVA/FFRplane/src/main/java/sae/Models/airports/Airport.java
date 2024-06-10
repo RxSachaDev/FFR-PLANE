@@ -4,30 +4,32 @@ import org.jxmapviewer.viewer.GeoPosition;
 import static java.lang.Math.*;
 
 /**
- * The Airport class represents an airport with its code, location, and coordinates.
- * It provides methods to calculate Cartesian coordinates and accessors and mutators for its fields.
+ * La classe Airport représente un aéroport avec son code, sa localisation et ses coordonnées.
+ * Elle fournit des méthodes pour calculer les coordonnées cartésiennes et des accesseurs et mutateurs pour ses champs.
+ * 
+ * @author mathe
  */
 public class Airport {
     private String code;
     private String location;
     
-    private GeoPosition geoPosition; //Position latitude longitude de l'aeroport
+    private GeoPosition geoPosition; // Position latitude longitude de l'aéroport
     
-    private double[] coordinates; // coordinates[0] = x and coordinates[1] = y
+    private double[] coordinates; // coordinates[0] = x et coordinates[1] = y
 
     /**
-     * Constructor to instantiate an Airport with detailed location information.
+     * Constructeur pour instancier un Airport avec des informations de localisation détaillées.
      *
-     * @param code the airport code
-     * @param location the location of the airport
-     * @param latDegree latitude degree
-     * @param latMinute latitude minute
-     * @param latSecond latitude second
-     * @param latOrientation latitude orientation ('N', 'S', 'E', 'W')
-     * @param longDegree longitude degree
-     * @param longMinute longitude minute
-     * @param longSecond longitude second
-     * @param longOrientation longitude orientation ('N', 'S', 'E', 'W')
+     * @param code le code de l'aéroport
+     * @param location la localisation de l'aéroport
+     * @param latDegree degré de latitude
+     * @param latMinute minute de latitude
+     * @param latSecond seconde de latitude
+     * @param latOrientation orientation de latitude ('N', 'S', 'E', 'W')
+     * @param longDegree degré de longitude
+     * @param longMinute minute de longitude
+     * @param longSecond seconde de longitude
+     * @param longOrientation orientation de longitude ('N', 'S', 'E', 'W')
      */
     public Airport(String code, String location, int latDegree, int latMinute, int latSecond, char latOrientation, 
                    int longDegree, int longMinute, int longSecond, char longOrientation) {
@@ -39,9 +41,9 @@ public class Airport {
 
 
     /**
-     * Constructor to instantiate an Airport with a code and coordinates.
+     * Constructeur pour instancier un Airport avec un code et des coordonnées.
      *
-     * @param code the airport code
+     * @param code le code de l'aéroport
      * @param geoPosition
      */
     public Airport(String code, GeoPosition geoPosition) {
@@ -51,13 +53,13 @@ public class Airport {
 
 
     /**
-     * Calculates the Cartesian coordinates of the airport.
+     * Calcule les coordonnées cartésiennes de l'aéroport.
      *
      * 
-     * @return the Cartesian coordinates as a double array where coordinates[0] = x and coordinates[1] = y
+     * @return les coordonnées cartésiennes sous forme d'un tableau double où coordinates[0] = x et coordinates[1] = y
      */
     public double[] calCartesianCoordinates() { 
-        int R = 6371; //Rayon de la Terre (km) 
+        int R = 6371; // Rayon de la Terre (km) 
         double[] result = new double[2];
         result[0] = R * cos(toRadians(geoPosition.getLatitude())) * sin(toRadians(geoPosition.getLongitude()));
         result[1] = R * cos(toRadians(geoPosition.getLatitude())) * cos(toRadians(geoPosition.getLongitude()));
@@ -75,9 +77,9 @@ public class Airport {
     }
 
     /**
-     * Returns a string representation of the Airport object.
+     * Retourne une représentation en chaîne de caractères de l'objet Airport.
      *
-     * @return a string representation of the Airport object
+     * @return une représentation en chaîne de caractères de l'objet Airport
      */
     @Override
     public String toString() {
@@ -91,9 +93,9 @@ public class Airport {
 
 
     /**
-     * Gets the airport code.
+     * Obtient le code de l'aéroport.
      *
-     * @return the airport code
+     * @return le code de l'aéroport
      */
     public String getCode() {
         return code;
@@ -101,9 +103,9 @@ public class Airport {
 
 
     /**
-     * Gets the location of the airport.
+     * Obtient la localisation de l'aéroport.
      *
-     * @return the location of the airport
+     * @return la localisation de l'aéroport
      */
     public String getLocation() {
         return location;
@@ -111,9 +113,9 @@ public class Airport {
 
 
     /**
-     * Gets the Cartesian coordinates of the airport.
+     * Obtient les coordonnées cartésiennes de l'aéroport.
      *
-     * @return the Cartesian coordinates of the airport
+     * @return les coordonnées cartésiennes de l'aéroport
      */
     public double[] getCoordinates() {
         return coordinates;
@@ -121,9 +123,9 @@ public class Airport {
 
 
     /**
-     * Sets the airport code.
+     * Définit le code de l'aéroport.
      *
-     * @param code the new airport code
+     * @param code le nouveau code de l'aéroport
      */
     public void setCode(String code) {
         this.code = code;
@@ -131,9 +133,9 @@ public class Airport {
 
 
     /**
-     * Sets the location of the airport.
+     * Définit la localisation de l'aéroport.
      *
-     * @param location the new location of the airport
+     * @param location la nouvelle localisation de l'aéroport
      */
     public void setLocation(String location) {
         this.location = location;
@@ -141,9 +143,9 @@ public class Airport {
 
     
     /**
-     * Sets the Cartesian coordinates of the airport.
+     * Définit les coordonnées cartésiennes de l'aéroport.
      *
-     * @param coordinates the new Cartesian coordinates of the airport
+     * @param coordinates les nouvelles coordonnées cartésiennes de l'aéroport
      */
     public void setCoordinates(double[] coordinates) {
         this.coordinates = coordinates;

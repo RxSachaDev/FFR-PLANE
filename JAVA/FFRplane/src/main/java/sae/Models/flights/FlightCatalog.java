@@ -3,13 +3,15 @@ package sae.models.flights;
 import java.util.*;
 
 /**
- * The FlightCatalog class manages a catalog of flights.
+ * La classe FlightCatalog gère un catalogue de vols.
+ * 
+ * @author mathe
  */
 public class FlightCatalog {
     private List<Flight> flightList;
 
     /**
-     * Constructs a new FlightCatalog with an empty list of flights.
+     * Construit un nouveau FlightCatalog avec une liste vide de vols.
      */
     public FlightCatalog() {
         flightList = new ArrayList<Flight>();
@@ -17,10 +19,10 @@ public class FlightCatalog {
 
 
     /**
-     * Adds a flight to the catalog if it is not already present.
+     * Ajoute un vol au catalogue s'il n'est pas déjà présent.
      *
-     * @param flight the flight to be added
-     * @return true if the flight was added, false otherwise
+     * @param flight le vol à ajouter
+     * @return true si le vol a été ajouté, false sinon
      */
     public boolean addFlight(Flight flight) {
         boolean isAdded = false;
@@ -32,7 +34,7 @@ public class FlightCatalog {
 
 
     /**
-     * Displays all flights in the catalog.
+     * Affiche tous les vols dans le catalogue.
      */
     public void displayFlights() {
         for (int i = 0; i < flightList.size(); i++) {
@@ -42,7 +44,7 @@ public class FlightCatalog {
 
     
     /**
-     * Clears all flights from the catalog.
+     * Efface tous les vols du catalogue.
      */
     public void clearCatalog() {
         flightList.clear();
@@ -50,9 +52,9 @@ public class FlightCatalog {
 
 
     /**
-     * Gets the list of flights in the catalog.
+     * Obtient la liste des vols dans le catalogue.
      *
-     * @return the list of flights
+     * @return la liste des vols
      */
     public List<Flight> getFlights() {
         return flightList;

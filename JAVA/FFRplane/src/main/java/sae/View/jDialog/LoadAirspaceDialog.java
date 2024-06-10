@@ -18,6 +18,7 @@ import sae.view.jFrame.MainFrame;
  * Elle étend la classe javax.swing.JDialog.
  *
  * @author fillo
+ * @author mathe
  */
 public class LoadAirspaceDialog extends javax.swing.JDialog {
 

@@ -58,7 +58,6 @@ sae\view\jFrame\MainFrame$2.class
 sae\view\jDialog\JInfosDialog.class
 sae\view\jFrame\WelcomeFrame.class
 sae\view\jDialog\FonctionsDialog.class
-sae\models\toolbox\FileTreatment.class
 sae\models\FontEnum$1.class
 sae\view\jFrame\MainFrame$6.class
 sae\view\jDialog\LoadGraphDialog$1.class

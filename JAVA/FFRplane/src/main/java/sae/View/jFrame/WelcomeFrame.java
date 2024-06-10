@@ -24,6 +24,7 @@ import sae.view.jDialog.LoadGraphDialog;
  * élaborée.
  *
  * @author fillo
+ * @author mathe
  */
 public class WelcomeFrame extends javax.swing.JFrame {
     private final String backgroundImagePath = System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\background.png";
