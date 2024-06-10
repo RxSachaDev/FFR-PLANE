@@ -50,7 +50,7 @@ public class AlgoColoration {
      * Constructeur par défaut qui initialise un nouveau MultiGraph.
      */
     public AlgoColoration() {
-        graph = new MultiGraph(fichier);
+        graph = new MultiGraph("test");
     }
 
     /**
@@ -59,7 +59,7 @@ public class AlgoColoration {
      * @param graph le graphe à utiliser
      */
     public AlgoColoration(Graph graph) {
-        this.graph = graph = new MultiGraph(fichier);
+        this.graph = graph = new MultiGraph("test");
     }
 
     /**
@@ -96,6 +96,10 @@ public class AlgoColoration {
      */
     public Graph getGraph() {
         return graph;
+    }
+
+    public int getNbSommet() {
+        return nbSommet;
     }
 
     /**
@@ -423,7 +427,7 @@ public class AlgoColoration {
         return countConflicts(g);
     }
 
-    private Graph copyGraphWithAttributes(Graph original) {
+    public Graph copyGraphWithAttributes(Graph original) {
         Graph copy = new MultiGraph("copy");
         for (Node node : original.getEachNode()) {
             Node copyNode = copy.addNode(node.getId());
@@ -435,53 +439,7 @@ public class AlgoColoration {
         return copy;
     }
 
-    /**
-     * La classe ResultatColoration représente le résultat d'une tentative de
-     * coloration de graphe, incluant le nombre de conflits et le graphe coloré.
-     *
-     * @author Sacha
-     */
-    private class ResultatColoration {
-
-        /**
-         * Le nombre de conflits dans la coloration du graphe.
-         */
-        private int conflict;
-
-        /**
-         * Le graphe coloré résultant.
-         */
-        private Graph graph;
-
-        /**
-         * Constructeur de la classe ResultatColoration.
-         *
-         * @param conflict Le nombre de conflits dans la coloration.
-         * @param graph Le graphe coloré.
-         */
-        public ResultatColoration(int conflict, Graph graph) {
-            this.conflict = conflict;
-            this.graph = graph;
-        }
-
-        /**
-         * Retourne le nombre de conflits dans la coloration du graphe.
-         *
-         * @return Le nombre de conflits.
-         */
-        public int getConflict() {
-            return conflict;
-        }
-
-        /**
-         * Retourne le graphe coloré.
-         *
-         * @return Le graphe coloré.
-         */
-        public Graph getGraph() {
-            return graph;
-        }
-    }
+   
 
     /**
      * Minimise les conflits de coloration en utilisant les algorithmes DSATUR
@@ -505,6 +463,9 @@ public class AlgoColoration {
                 System.out.println("WP");
                 conflict = wp;
                 saveGraph = copyGraphWithAttributes(graph);
+                for (Node node : saveGraph.getEachNode()){
+                    node.setAttribute("color", (int) node.getAttribute("color") + 1);
+                }
             }
         }
 
@@ -656,7 +617,7 @@ public class AlgoColoration {
      * @param args les arguments de la ligne de commande (non utilisés)
      */
     public static void main(String[] args) {
-        Graph graph = new MultiGraph(null);
+        Graph graph = new MultiGraph("test");
         AlgoColoration test = new AlgoColoration(graph);
         test.setFichier("src/main/java/data/test/graph-test7.txt");
         try {
