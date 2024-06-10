@@ -1,8 +1,7 @@
-package sae.Tests;
+package sae.tests;
 
 import java.io.*;
 import java.util.List;
-import sae.utils.Settings;
 import sae.utils.Settings;
 
 import sae.models.airports.*;
@@ -42,12 +41,10 @@ public class Test {
 
     public static void flightsTestFilesResult(FlightCatalog flightCatalog,AirportCatalog airportCatalog){
         for(int ii = 1 ; ii<10 ; ii++){
-            String temp = Settings.getFlightsFilePath()+ii+".csv";
+            String temp = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test"+ii+".csv";
             try {
                 FileTreatment.fillFlightList(temp,flightCatalog,airportCatalog);
-            } catch (FileNotFoundException e) {
-                // z
-            }
+            } catch (FileNotFoundException e) {}
             int count = 0;
             List<Flight> flightsList = flightCatalog.getFlights();
             for(int i = 0 ; i<flightsList.size()-1 ; i++) {

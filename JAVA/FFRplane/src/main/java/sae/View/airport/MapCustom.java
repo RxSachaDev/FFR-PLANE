@@ -68,7 +68,8 @@ public class MapCustom extends JXMapViewer {
             }
         });
     }
-/*
+
+    /*
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
         if (geo != null) {
@@ -114,65 +115,57 @@ public class MapCustom extends JXMapViewer {
         double p = point2.getLongitude() - m * point2.getLatitude();
 
         double y = m * point.getLatitude() + p;
+        System.out.println(Math.abs(y-point.getLongitude()));
         if(point.getLongitude() - margin<=y && y<=point.getLongitude() + margin)
             if(isOnInterval(point,flightLine))
                 return true;
         return false;
     }*/
+    
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
+        System.out.println(geo);
         if (geo != null) {
             FlightLine closestFlightLine = null;
             double closestDistance = Double.MAX_VALUE;
 
             for (FlightLine flightLine : flightLineSet) {
-                double distance = distanceFromPointToLine(geo, flightLine.getPoint1(), flightLine.getPoint2());
+                double distance = distToFlightLine(flightLine,geo);
+                System.out.println("Distance to flightLine: " + distance);
                 if (distance < closestDistance) {
-                    
-                    System.out.println(closestDistance+" - ");
                     closestDistance = distance;
                     closestFlightLine = flightLine;
                 }
             }
+            
 
-            if (closestFlightLine != null && closestDistance <= 0.05) {  // Assurez-vous que la distance est dans la marge
+            System.out.println("Closest distance: " + closestDistance);
+            if (closestFlightLine != null && closestDistance <= 0.1) {  
                 closestFlightLine.setColor(Color.ORANGE);
                 if (lastSelectedLine != null && lastSelectedLine != closestFlightLine) {
                     lastSelectedLine.setColor(Color.BLACK);
                 }
                 lastSelectedLine = closestFlightLine;
             }
-
             repaint();
         }
     }
-
-    private static double distanceFromPointToLine(GeoPosition point, GeoPosition lineStart, GeoPosition lineEnd) {
-        double x0 = point.getLongitude();
-        double y0 = point.getLatitude();
+   
+    private static double distToFlightLine(FlightLine flightLine,GeoPosition point) {
+        GeoPosition point1 = flightLine.getPoint1();
+        GeoPosition point2 = flightLine.getPoint2();
         
-        double x1 = lineStart.getLongitude();
-        double y1 = lineStart.getLatitude();
+        double x = point.getLatitude();
+        double y = point.getLongitude();
         
-        double x2 = lineEnd.getLongitude();
-        double y2 = lineEnd.getLatitude();
 
-        // Calcul des coordonnées du point projeté sur le segment
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        double t = ((x0 - x1) * dx + (y0 - y1) * dy) / (dx * dx + dy * dy);
-        t = Math.max(0, Math.min(1, t)); // Garantit que le point projeté est sur le segment
-        double projX = x1 + t * dx;
-        double projY = y1 + t * dy;
+        double a = (point2.getLongitude()- point1.getLongitude()) / (point2.getLatitude()- point1.getLatitude());
+        double b = point2.getLongitude()- a * point2.getLatitude();
 
-        // Calcul de la distance entre le point et le point projeté
-        double distX = projX - x0;
-        double distY = projY - y0;
-        return Math.sqrt(distX * distX + distY * distY);
+        double distance = Math.abs(a*x - y+b)/Math.sqrt(Math.pow(a, 2)+1);
+        return distance;
     }
-
-
-
+    
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
      *

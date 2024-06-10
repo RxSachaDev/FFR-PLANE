@@ -1,6 +1,4 @@
 package sae.models.intersection;
-
-import org.jxmapviewer.viewer.GeoPosition;
 import sae.models.airports.*;
 import sae.models.flights.*;
 import sae.models.toolbox.*;
@@ -106,7 +104,7 @@ public class FlightCollisionTools {
         double m2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
         double p2 = arrivalCoordinates2[1] - m2 * arrivalCoordinates2[0];
 
-        double x = -(p1 - p2) / (m1 - m2);
+        double x = -(p2 - p1) / (m2 - m1); //PK YA UN - ICI
         double y = m1 * x + p1;
 
         if (isOnFlightSegment(x, y, flight1) && isOnFlightSegment(x, y, flight2)) {

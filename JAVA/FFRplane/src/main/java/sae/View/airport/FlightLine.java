@@ -26,6 +26,7 @@ public class FlightLine implements Painter<JXMapViewer>, MouseListener {
     private GeoPosition point2;
     private Logiciel logiciel;
     private MapCustom map;
+    private Flight flight;
 
     public FlightLine(Flight flight, Color couleur, MapCustom map, Logiciel logiciel) {
         this.point1 = flight.getDepartureAirport().getGeoPosition();
@@ -33,6 +34,7 @@ public class FlightLine implements Painter<JXMapViewer>, MouseListener {
         this.couleur = couleur;
         this.map = map;
         this.logiciel = logiciel;
+        this.flight = flight;
 
     }
 
@@ -52,7 +54,7 @@ public class FlightLine implements Painter<JXMapViewer>, MouseListener {
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(couleur);
-        g.setStroke(new BasicStroke(2));
+        g.setStroke(new BasicStroke(1));
 
         Point2D pt1 = map.getTileFactory().geoToPixel(point1, map.getZoom());
         Point2D pt2 = map.getTileFactory().geoToPixel(point2, map.getZoom());
@@ -115,5 +117,9 @@ public class FlightLine implements Painter<JXMapViewer>, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    }
+    
+    public Flight getFlight(){
+        return flight;
     }
 }

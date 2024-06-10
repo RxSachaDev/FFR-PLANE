@@ -12,7 +12,7 @@ public class Settings {
     private static int kmax; // =0 Initialement : Signifie qu'il n'y a pas de limite de couleur
     private static int safetyMargin = 15;
     private static String airportsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
-    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test5.csv";
+    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test1.csv";
 
     public Settings() {}
     
