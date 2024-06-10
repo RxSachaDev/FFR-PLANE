@@ -1,12 +1,7 @@
-import java.io.FileWriter;
+
 import java.io.IOException;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.MultiGraph;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import sae.Models.algocoloration.AlgoColoration;
