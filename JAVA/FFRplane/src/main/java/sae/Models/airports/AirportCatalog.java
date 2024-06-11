@@ -3,13 +3,15 @@ package sae.models.airports;
 import java.util.*;
 
 /**
- * The AirportCatalog class manages a catalog of airports.
+ * La classe AirportCatalog gère un catalogue d'aéroports.
+ * 
+ * @author mathe
  */
 public class AirportCatalog {
     private Map<String, Airport> airportMap;
   
     /**
-     * Constructs a new AirportCatalog with an empty map of airports.
+     * Construit un nouveau AirportCatalog avec une map vide d'aéroports.
      */
     public AirportCatalog() {
         airportMap = new HashMap<>();
@@ -17,10 +19,10 @@ public class AirportCatalog {
 
 
     /**
-     * Adds an airport to the catalog if it is not already present.
+     * Ajoute un aéroport au catalogue s'il n'est pas déjà présent.
      *
-     * @param airport the airport to be added
-     * @return true if the airport was added, false otherwise
+     * @param airport l'aéroport à ajouter
+     * @return true si l'aéroport a été ajouté, false sinon
      */
     public boolean addAirport(Airport airport) {
         boolean isAdded = false;
@@ -33,10 +35,10 @@ public class AirportCatalog {
 
 
     /**
-     * Gets an airport from the catalog by its code.
+     * Obtient un aéroport du catalogue par son code.
      *
-     * @param code the code of the airport
-     * @return the airport with the specified code, or null if not found
+     * @param code le code de l'aéroport
+     * @return l'aéroport avec le code spécifié, ou null s'il n'est pas trouvé
      */
     public Airport getAirport(String code) {
         return airportMap.get(code);
@@ -44,7 +46,7 @@ public class AirportCatalog {
     
 
     /**
-     * Displays all airports in the catalog and the total count.
+     * Affiche tous les aéroports dans le catalogue et le nombre total.
      */
     public void displayAirports() {
         int count = 0;
@@ -55,18 +57,20 @@ public class AirportCatalog {
         System.out.println("###### " + count + " ######");
     }
     
+    
     public Set<Airport> getAirports(){
         Set<Airport> airportSet = new HashSet<>();
         
-        // Loop through the entry set of the airport map
+        // Parcours de l'ensemble des entrées de la map d'aéroports
         for (Map.Entry<String, Airport> entry : airportMap.entrySet()) {
-            // Add each airport to the set
+            // Ajout de chaque aéroport à l'ensemble
             airportSet.add(entry.getValue());
         }
         
-        // Return the set of airports
+        // Retour de l'ensemble d'aéroports
         return airportSet;
     }
+    
     
     public int size(){
         return airportMap.size();

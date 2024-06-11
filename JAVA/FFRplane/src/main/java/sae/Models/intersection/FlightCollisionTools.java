@@ -1,44 +1,44 @@
 package sae.models.intersection;
-
-import org.jxmapviewer.viewer.GeoPosition;
 import sae.models.airports.*;
 import sae.models.flights.*;
 import sae.models.toolbox.*;
 
 /**
- * The FlightCollisionTools class provides methods to detect potential collisions between flights.
+ * La classe FlightCollisionTools fournit des méthodes pour détecter les collisions potentielles entre les vols.
+ * 
+ * @author mathe
  */
 public class FlightCollisionTools {
     /**
-     * Determines if there is a collision between two flights.
+     * Détermine s'il y a une collision entre deux vols.
      *
-     * @param flight1 the first flight
-     * @param flight2 the second flight
-     * @return true if there is a collision, false otherwise
+     * @param flight1 le premier vol
+     * @param flight2 le deuxième vol
+     * @return true s'il y a une collision, false sinon
      */
     public static boolean hasCollision(Flight flight1, Flight flight2) {
         double res = 16; // (PARAMETRE MODIFIABLE)
         int intersectionCase = calculateIntersectionCase(flight1, flight2);
         switch (intersectionCase) {
-            case 1: // Case where flight1 and flight2 have the same trajectories (opposite directions)
+            case 1: // Cas où flight1 et flight2 ont les mêmes trajectoires (directions opposées)
                 if (flight1.getDepartureTime() < flight2.getDepartureTime())
                     res = flight2.getDepartureTime() - flight1.getArrivalTime();
                 else
                     res = flight1.getDepartureTime() - flight2.getArrivalTime();
                 break;
-            case 2: // Case where flight1 and flight2 have the same departure airport
+            case 2: // Cas où flight1 et flight2 ont le même aéroport de départ
                 res = Math.abs(flight1.getDepartureTime() - flight2.getDepartureTime());
                 break;
-            case 3: // Case where flight1 and flight2 have the same arrival airport
+            case 3: // Cas où flight1 et flight2 ont le même aéroport d'arrivée
                 res = Math.abs(flight1.getArrivalTime() - flight2.getArrivalTime());
                 break;
-            case 4: // Case where the departure airport of flight1 = arrival airport of flight2
+            case 4: // Cas où l'aéroport de départ de flight1 = l'aéroport d'arrivée de flight2
                 res = Math.abs(flight1.getDepartureTime() - flight2.getArrivalTime());
                 break;
-            case 5: // Case where the departure airport of flight2 = arrival airport of flight1
+            case 5: // Cas où l'aéroport de départ de flight2 = l'aéroport d'arrivée de flight1
                 res = Math.abs(flight1.getArrivalTime() - flight2.getDepartureTime());
                 break;
-            case 6: // All other cases
+            case 6: // Tous les autres cas
                 double[] intersectionPoint = calculateIntersectionPoint(flight1, flight2);
                 if (isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], flight1) && isOnFlightSegment(intersectionPoint[0], intersectionPoint[1], flight2)) {
                     double distancePointFlight1 = ToolBox.calDistance(flight1.getDepartureAirport().getCoordinates(), intersectionPoint);
@@ -54,11 +54,11 @@ public class FlightCollisionTools {
 
 
     /**
-     * Calculates the intersection case between two flights.
+     * Calcule le cas d'intersection entre deux vols.
      *
-     * @param flight1 the first flight
-     * @param flight2 the second flight
-     * @return an integer representing the intersection case
+     * @param flight1 le premier vol
+     * @param flight2 le deuxième vol
+     * @return un entier représentant le cas d'intersection
      */
     private static int calculateIntersectionCase(Flight flight1, Flight flight2) {
         Airport departureAirport1 = flight1.getDepartureAirport();
@@ -67,30 +67,30 @@ public class FlightCollisionTools {
         Airport arrivalAirport2 = flight2.getArrivalAirport();
 
         if (departureAirport1 == arrivalAirport2 && arrivalAirport1 == departureAirport2) {
-            return 1; // Case where flight1 and flight2 have the same trajectories (opposite directions)
+            return 1; // Cas où flight1 et flight2 ont les mêmes trajectoires (directions opposées)
         }
         if (departureAirport1 == departureAirport2) {
-            return 2; // Case where flight1 and flight2 have the same departure airport
+            return 2; // Cas où flight1 et flight2 ont le même aéroport de départ
         }
         if (arrivalAirport1 == arrivalAirport2) {
-            return 3; // Case where flight1 and flight2 have the same arrival airport
+            return 3; // Cas où flight1 et flight2 ont le même aéroport d'arrivée
         }
         if (departureAirport1 == arrivalAirport2) {
-            return 4; // Case where the departure airport of flight1 = arrival airport of flight2
+            return 4; // Cas où l'aéroport de départ de flight1 = l'aéroport d'arrivée de flight2
         }
         if (arrivalAirport1 == departureAirport2) {
-            return 5; // Case where the departure airport of flight2 = arrival airport of flight1
+            return 5; // Cas où l'aéroport de départ de flight2 = l'aéroport d'arrivée de flight1
         }
-        return 6; // All other cases
+        return 6; // Tous les autres cas
     }
 
 
     /**
-     * Calculates the intersection point between two flights.
+     * Calcule le point d'intersection entre deux vols.
      *
-     * @param flight1 the first flight
-     * @param flight2 the second flight
-     * @return an array containing the coordinates of the intersection point
+     * @param flight1 le premier vol
+     * @param flight2 le deuxième vol
+     * @return un tableau contenant les coordonnées du point d'intersection
      */
     private static double[] calculateIntersectionPoint(Flight flight1, Flight flight2) {
         double[] point = {Double.NaN, Double.NaN};
@@ -100,14 +100,14 @@ public class FlightCollisionTools {
         double[] arrivalCoordinates2 = flight2.getArrivalAirport().getCoordinates();
         double[] departureCoordinates2 = flight2.getDepartureAirport().getCoordinates();
 
-        double slope1 = (arrivalCoordinates1[1] - departureCoordinates1[1]) / (arrivalCoordinates1[0] - departureCoordinates1[0]);
-        double intercept1 = arrivalCoordinates1[1] - slope1 * arrivalCoordinates1[0];
+        double m1 = (arrivalCoordinates1[1] - departureCoordinates1[1]) / (arrivalCoordinates1[0] - departureCoordinates1[0]);
+        double p1 = arrivalCoordinates1[1] - m1 * arrivalCoordinates1[0];
 
-        double slope2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
-        double intercept2 = arrivalCoordinates2[1] - slope2 * arrivalCoordinates2[0];
+        double m2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
+        double p2 = arrivalCoordinates2[1] - m2 * arrivalCoordinates2[0];
 
-        double x = -(intercept1 - intercept2) / (slope1 - slope2);
-        double y = slope1 * x + intercept1;
+        double x = -(p2 - p1) / (m2 - m1); //PK YA UN - ICI
+        double y = m1 * x + p1;
 
         if (isOnFlightSegment(x, y, flight1) && isOnFlightSegment(x, y, flight2)) {
             point[0] = x;
@@ -119,12 +119,12 @@ public class FlightCollisionTools {
 
 
     /**
-     * Checks if a point is on the flight segment.
+     * Vérifie si un point est sur le segment de vol.
      *
-     * @param x the x-coordinate of the point
-     * @param y the y-coordinate of the point
-     * @param flight the flight
-     * @return true if the point is on the flight segment, false otherwise
+     * @param x la coordonnée x du point
+     * @param y la coordonnée y du point
+     * @param flight le vol
+     * @return true si le point est sur le segment de vol, false sinon
      */
     private static boolean isOnFlightSegment(double x, double y, Flight flight) {
         double[] departureCoordinates = flight.getDepartureAirport().getCoordinates();
@@ -140,15 +140,14 @@ public class FlightCollisionTools {
 
 
     /**
-     * Calculates the hour at a given point on the flight segment.
+     * Calcule l'heure à un point donné sur le segment de vol.
      *
-     * @param flight the flight
-     * @param distanceToPoint the distance to the point
-     * @return the hour at the given point
+     * @param flight le vol
+     * @param distanceToPoint la distance jusqu'au point
+     * @return l'heure au point donné
      */
     private static double calculateHourAtPoint(Flight flight, double distanceToPoint) {
         double durationToPoint = (distanceToPoint * flight.getDuration()) / flight.getFlightDistance();
         return flight.getDepartureTime() + durationToPoint;
     }
 }
-           

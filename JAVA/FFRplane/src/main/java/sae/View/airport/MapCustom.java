@@ -6,10 +6,8 @@ package sae.view.airport;
 
 import sae.Logiciel;
 import java.awt.Color;
-import java.util.Iterator;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import sae.view.easterGame.EasterPoint;
@@ -25,10 +23,12 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.models.Settings;
+import sae.utils.Settings;
 import sae.models.airports.Airport;
 import sae.models.airports.AirportCatalog;
-import sae.models.toolbox.FileTreatment;
+import sae.models.flights.Flight;
+import sae.models.flights.FlightCatalog;
+import sae.models.toolbox.ToolBox;
 import sae.view.easterGame.MonumentWaypoint;
 
 /**
@@ -41,15 +41,18 @@ import sae.view.easterGame.MonumentWaypoint;
  * OpenStreetMap ou Virtual Earth.
  *
  * @author fillo
+ * @author mathe
  */
 public class MapCustom extends JXMapViewer {
 
     private Logiciel logiciel;
     private static int compteur = 0;
     private final Set<Airportpoint> airportPointSet = new HashSet<>();
-    private final Set<IntersectionLine> lineSet = new HashSet<>();
+    private final Set<FlightLine> flightLineSet = new HashSet<>();
     private final Set<Airportpoint> monumentPointSet;
-    private IntersectionLine lastSelectedLine = null;
+    private FlightLine lastSelectedLine = null;
+    private final AirportCatalog airportsCatalog = new AirportCatalog();
+    private final FlightCatalog flightsCatalog = new FlightCatalog();
 
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
@@ -62,45 +65,54 @@ public class MapCustom extends JXMapViewer {
             public void mouseClicked(MouseEvent e) {
                 handleMapClick(e);
             }
+            
         });
     }
-
+    
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
+        System.out.println(geo);
         if (geo != null) {
-            String coords = geo.getLatitude() + " " + geo.getLongitude();
-            System.out.println(coords);
-            //checkLineInterception(e.getPoint());
-        }
-    }
+            FlightLine closestFlightLine = null;
+            double closestDistance = Double.MAX_VALUE;
 
-    /**
-     * Partie qui color les lignes de vols
-     * @param clickPoint 
-     */
-    private void checkLineInterception(Point clickPoint) {
-        GeoPosition clickGeo = getTileFactory().pixelToGeo(clickPoint, getZoom());
-
-        for (IntersectionLine line : lineSet) {
-            GeoPosition pt1 = line.getPoint1();
-            GeoPosition pt2 = line.getPoint2();
-
-            double threshold = 150;
-            double distance = line.pointLineDistance(clickGeo, pt1, pt2);
-            if (distance <= threshold) {
-                if (lastSelectedLine != null && lastSelectedLine == line) {
-                    lastSelectedLine.setColor(Color.BLACK);
-                    lastSelectedLine = null;
-                } else {
-                    line.setColor(Color.ORANGE);
-                    lastSelectedLine = line;
-                    System.out.println("Ligne intersectée : " + line.toString());
+            for (FlightLine flightLine : flightLineSet) {
+                double distance = distToFlightLine(flightLine,geo);
+                System.out.println("Distance to flightLine: " + distance);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestFlightLine = flightLine;
                 }
             }
-        }
-        repaint();
-    }
+            
 
+            System.out.println("Closest distance: " + closestDistance);
+            if (closestFlightLine != null && closestDistance <= 0.1) {  
+                closestFlightLine.setColor(Color.ORANGE);
+                if (lastSelectedLine != null && lastSelectedLine != closestFlightLine) {
+                    lastSelectedLine.setColor(Color.BLACK);
+                }
+                lastSelectedLine = closestFlightLine;
+            }
+            repaint();
+        }
+    }
+   
+    private static double distToFlightLine(FlightLine flightLine,GeoPosition point) {
+        GeoPosition point1 = flightLine.getPoint1();
+        GeoPosition point2 = flightLine.getPoint2();
+        
+        double x = point.getLatitude();
+        double y = point.getLongitude();
+        
+
+        double a = (point2.getLongitude()- point1.getLongitude()) / (point2.getLatitude()- point1.getLatitude());
+        double b = point2.getLongitude()- a * point2.getLatitude();
+
+        double distance = Math.abs(a*x - y+b)/Math.sqrt(Math.pow(a, 2)+1);
+        return distance;
+    }
+    
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
      *
@@ -129,17 +141,14 @@ public class MapCustom extends JXMapViewer {
      * Initialise les marqueurs des aéroports sur la carte.
      */
     public void initAirports() {
-        AirportCatalog airportCatalog = new AirportCatalog();
         try {
-            FileTreatment.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
+            ToolBox.fillAirportList(Settings.getAirportsFilePath(),airportsCatalog);
         } catch (Exception e) {
         }
-        for (Airport airport : airportCatalog.getAirports()) {
+        for (Airport airport : airportsCatalog.getAirports()) {
             airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
-        //easterEgg();
-        //afficherSet();
-
+        
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
         ap.setWaypoints(airportPointSet);
         setOverlayPainter(ap);
@@ -152,7 +161,6 @@ public class MapCustom extends JXMapViewer {
                 System.err.println("Airport associated with AirportWaypoint is null.");
             }
         }
-        // System.out.print(compteur);
     }
 
     /**
@@ -166,30 +174,17 @@ public class MapCustom extends JXMapViewer {
         initAirports();
     }
 
-    private void setupMouseListeners() {
-        MouseInputListener ml = new PanMouseInputListener(this);
-        addMouseListener(ml);
-        addMouseMotionListener(ml);
-        addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
-    }
-
-    public void initIntersection() {
-        Iterator<Airportpoint> iterator = airportPointSet.iterator();
-        if (airportPointSet.size() >= 2) {
-            Airportpoint airport1 = iterator.next();
-            Airportpoint airport2 = iterator.next();
-
-            GeoPosition airport1Coords = airport1.getAirport().getGeoPosition();
-            System.out.println(airport1Coords);
-            GeoPosition airport2Coords = airport2.getAirport().getGeoPosition();
-            System.out.println(airport2Coords);
-
-            Color randomColor = Color.BLACK;
-
-            IntersectionLine newLine = new IntersectionLine(airport1Coords, airport2Coords, Color.BLACK, this, logiciel);
-            lineSet.add(newLine);
+    public void initFlightLines() {
+        try {
+            ToolBox.fillFlightList(Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
+        } catch (Exception e) {
+        }
+        for (Flight flight : flightsCatalog.getFlights()) {
+            System.out.println(flight);
+            flightLineSet.add(new FlightLine(flight,Color.BLACK,this,logiciel)); // Utilisation du constructeur avec Airport comme argument
         }
         repaint();
+        ToolBox.createGraphTextFile(flightsCatalog);
     }
 
     /**
@@ -296,16 +291,10 @@ public class MapCustom extends JXMapViewer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
-        //System.out.println(lineSet.size());
         // Dessiner les lignes
-        for (IntersectionLine line : lineSet) {
-            //System.out.println("add" + line.toString());
+        for (FlightLine line : flightLineSet) {
             line.paint(g2, this, getWidth(), getHeight());
-            /*line.addMouseMotionListener( new MouseListener(){
-
-                });*/
         }
     }
 }

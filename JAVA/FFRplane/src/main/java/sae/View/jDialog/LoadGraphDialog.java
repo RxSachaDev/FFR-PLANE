@@ -7,6 +7,7 @@ package sae.view.jDialog;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import sae.View.jFrame.GraphstreamFrame;
 import sae.models.errors.FileFormatError;
 import sae.utils.IconUtil;
 
@@ -15,6 +16,7 @@ import sae.utils.IconUtil;
  * Elle étend la classe javax.swing.JDialog.
  *
  * @author fillo
+ * @author mathe
  */
 public class LoadGraphDialog extends javax.swing.JDialog {
 
@@ -109,8 +111,14 @@ public class LoadGraphDialog extends javax.swing.JDialog {
             }
         });
 
+        graphFileTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graphFileTextFieldActionPerformed(evt);
+            }
+        });
+
         labelError.setForeground(new java.awt.Color(255, 51, 51));
-        labelError.setText("Le chemin d'accès est introuvable !");
+        labelError.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,8 +177,10 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         try {
             Scanner scan = new Scanner(new File(graphFileTextField.getText())); //Déclanche l'éxception si le chemin d'exces est foireux
             labelError.setText(null);
+            new GraphstreamFrame(graphFileTextField.getText());
+            this.dispose();
         } catch(FileNotFoundException e){
-            labelError.setText("L'un des chemin d'accès est introuvable !");
+            labelError.setText("Le chemin d'accès est introuvable !");
         } catch(FileFormatError e) {
             
         }
@@ -178,10 +188,15 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         
     }//GEN-LAST:event_OkButtonActionPerformed
 
+    
+    
     private void choiceFileButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceFileButton1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_choiceFileButton1ActionPerformed
 
+    private void graphFileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphFileTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_graphFileTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;

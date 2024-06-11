@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.SwingUtilities;
-import sae.models.Settings;
+import sae.utils.Settings;
 import sae.models.errors.FileFormatError;
 import sae.utils.IconUtil;
 import sae.view.jFrame.MainFrame;
@@ -18,6 +18,7 @@ import sae.view.jFrame.MainFrame;
  * Elle étend la classe javax.swing.JDialog.
  *
  * @author fillo
+ * @author mathe
  */
 public class LoadAirspaceDialog extends javax.swing.JDialog {
 

@@ -52,6 +52,7 @@ public class AlgoColoration {
     public AlgoColoration() {
         graph = new MultiGraph("test");
     }
+    
 
     /**
      * Constructeur qui initialise un nouveau MultiGraph avec un graphe donné.
@@ -61,6 +62,7 @@ public class AlgoColoration {
     public AlgoColoration(Graph graph) {
         this.graph = graph = new MultiGraph("test");
     }
+    
 
     /**
      * Définit le fichier source du graphe.
@@ -70,6 +72,7 @@ public class AlgoColoration {
     public void setFichier(String fichier) {
         this.fichier = fichier;
     }
+    
 
     /**
      * Définit le graphe.
@@ -80,6 +83,13 @@ public class AlgoColoration {
         this.graph = g;
     }
 
+    public void setKmax(int kmax) {
+        this.kmax = kmax;
+    }
+    
+    
+    
+
     /**
      * Renvoie le fichier source du graphe.
      *
@@ -88,6 +98,7 @@ public class AlgoColoration {
     public String getFichier() {
         return fichier;
     }
+    
 
     /**
      * Renvoie le graphe.
@@ -97,6 +108,12 @@ public class AlgoColoration {
     public Graph getGraph() {
         return graph;
     }
+
+    public int getKmax() {
+        return kmax;
+    }
+    
+    
 
     public int getNbSommet() {
         return nbSommet;
@@ -111,6 +128,7 @@ public class AlgoColoration {
         System.setProperty("org.graphstream.ui", "org.graphstream.ui.swing");
         graph.display();
     }
+    
 
     /**
      * Charge le graphe à partir du fichier source.
@@ -159,6 +177,7 @@ public class AlgoColoration {
             }
         }
     }
+    
 
     /**
      * Crée une copie d'un graphe.
@@ -183,6 +202,7 @@ public class AlgoColoration {
 
         return copy;
     }
+    
 
     /**
      * Compte le nombre de conflits de coloration dans un graphe.
@@ -205,6 +225,17 @@ public class AlgoColoration {
         }
         return conflictCount;
     }
+    
+    public int countChromaticcNumber(Graph g){
+        int chromaticNumber = 0;
+        for (Node node : g) {
+            if ((int) node.getAttribute("color") > chromaticNumber) {
+                chromaticNumber = (int) node.getAttribute("color");
+            }
+        }
+        return chromaticNumber;
+    }
+    
 
     /**
      * Applique l'algorithme de Welsh-Powell pour colorier le graphe. Réduit les
@@ -218,7 +249,6 @@ public class AlgoColoration {
         wp.compute();
 
         int chromaticNumber = wp.getChromaticNumber();
-        System.out.println("Chromatic Number: " + chromaticNumber);
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
         if (chromaticNumber > kmax) {
@@ -246,15 +276,10 @@ public class AlgoColoration {
             }
 
         }
-        chromaticNumber = 0;
-        for (Node node : graph) {
-            if ((int) node.getAttribute("color") > chromaticNumber) {
-                chromaticNumber = (int) node.getAttribute("color");
-            }
-        }
-        System.out.println(chromaticNumber + 1);
+        
         return countConflicts(graph);
     }
+    
 
     /**
      * Trie les nœuds par degré décroissant.
@@ -277,6 +302,7 @@ public class AlgoColoration {
         }
         return tab;
     }
+    
 
     /**
      * Vérifie si tous les nœuds du tableau ont été coloriés.
@@ -293,6 +319,7 @@ public class AlgoColoration {
         }
         return pasRempli;
     }
+    
 
     /**
      * Trouve le nœud non utilisé avec le degré le plus élevé.
@@ -314,6 +341,7 @@ public class AlgoColoration {
         }
         return val;
     }
+    
 
     /**
      * Met à jour le nombre de couleurs des nœuds adjacents.
@@ -336,6 +364,7 @@ public class AlgoColoration {
             }
         }
     }
+    
 
     /**
      * Applique une couleur à un nœud en évitant les conflits.
@@ -363,6 +392,7 @@ public class AlgoColoration {
             }
         }
     }
+    
 
     /**
      * Applique l'algorithme DSATUR pour colorier le graphe.
@@ -438,6 +468,7 @@ public class AlgoColoration {
         }
         return copy;
     }
+    
 
    
 
@@ -607,6 +638,7 @@ public class AlgoColoration {
             e.printStackTrace();
         }
     }
+    
 
     /**
      * Méthode principale pour tester l'algorithme de coloration. Charge un
@@ -619,7 +651,7 @@ public class AlgoColoration {
     public static void main(String[] args) {
         Graph graph = new MultiGraph("test");
         AlgoColoration test = new AlgoColoration(graph);
-        test.setFichier("src/main/java/data/test/graph-test7.txt");
+        test.setFichier("src/main/java/data/test/graph-test15.txt");
         try {
             test.charger_graphe();
         } catch (IOException e) {
@@ -629,5 +661,4 @@ public class AlgoColoration {
 
         //test.genererFichiers("src/main/java/data/test");
     }
-
 }
