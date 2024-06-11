@@ -1,5 +1,6 @@
 sae\view\airport\CustomAeroportPoint.class
 sae\view\easterGame\EasterGame$1.class
+sae\view\jFileChooser\OpenFileChooser.class
 sae\view\jPanel\BackgroundPanel.class
 sae\utils\IconUtil.class
 sae\models\algocoloration\AlgoColoration.class

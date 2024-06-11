@@ -16,7 +16,9 @@ public class Settings {
     private static int safetyMargin = 15;
     private static String airportsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
     private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test1.csv";
-
+    private static String graphTestPath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\test\\graph-test0.txt";
+    
+    
     /**
      * Constructeur par défaut de la classe Settings.
      */
@@ -30,6 +32,11 @@ public class Settings {
      */
     public static String getAirportsFilePath() {
         return airportsFilePath;
+    }
+
+    
+    public static String getGraphTestPath() {
+        return graphTestPath;
     }
     
     
