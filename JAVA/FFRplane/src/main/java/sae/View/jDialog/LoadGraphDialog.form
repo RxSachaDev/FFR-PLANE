@@ -40,7 +40,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="graphFileTextField" min="-2" pref="370" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="choiceFileButton1" min="-2" pref="91" max="-2" attributes="0"/>
+                                  <Component id="buttonChooseFile" min="-2" pref="91" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -66,7 +66,7 @@
               <Component id="firstFileLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="choiceFileButton1" min="-2" max="-2" attributes="0"/>
+                  <Component id="buttonChooseFile" min="-2" max="-2" attributes="0"/>
                   <Component id="graphFileTextField" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -154,7 +154,7 @@
         <Property name="text" type="java.lang.String" value="Choisissez votre fichier graph-test :"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="choiceFileButton1">
+    <Component class="javax.swing.JButton" name="buttonChooseFile">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="3b" green="ad" red="eb" type="rgb"/>
@@ -166,7 +166,7 @@
         <Property name="focusPainted" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="choiceFileButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonChooseFileActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="graphFileTextField">

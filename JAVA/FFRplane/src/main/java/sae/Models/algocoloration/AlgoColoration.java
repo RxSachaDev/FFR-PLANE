@@ -276,6 +276,9 @@ public class AlgoColoration {
             }
 
         }
+        for (Node node : graph.getEachNode()){
+            node.setAttribute("color", (int) node.getAttribute("color")+1);
+        }
         
         return countConflicts(graph);
     }
@@ -491,12 +494,9 @@ public class AlgoColoration {
             }
             int wp = welshPowell();
             if (conflict > wp) {
-                System.out.println("WP");
+                
                 conflict = wp;
                 saveGraph = copyGraphWithAttributes(graph);
-                for (Node node : saveGraph.getEachNode()){
-                    node.setAttribute("color", (int) node.getAttribute("color") + 1);
-                }
             }
         }
 
@@ -531,7 +531,6 @@ public class AlgoColoration {
                 String color = colors[(int) node.getAttribute("color")];
                 node.setAttribute("ui.style", "fill-color: " + color + ";");
             }
-
         }
         //afficherGraphe(saveGraph);
         return new ResultatColoration(conflict, saveGraph);
@@ -651,7 +650,7 @@ public class AlgoColoration {
     public static void main(String[] args) {
         Graph graph = new MultiGraph("test");
         AlgoColoration test = new AlgoColoration(graph);
-        test.setFichier("src/main/java/data/test/graph-test15.txt");
+        test.setFichier("src/main/java/data/test/graph-test6.txt");
         try {
             test.charger_graphe();
         } catch (IOException e) {

@@ -5,66 +5,104 @@
 package sae.View.jFrame;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.Collection;
-import javax.swing.text.View;
-import org.graphstream.ui.graphicGraph.GraphicElement;
-import org.graphstream.ui.graphicGraph.GraphicGraph;
-import org.graphstream.ui.swing_viewer.ViewPanel;
-import org.graphstream.ui.view.Camera;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 import org.graphstream.ui.view.Viewer;
-import org.graphstream.ui.view.util.MouseManager;
-import org.graphstream.ui.view.util.ShortcutManager;
 import sae.Models.algocoloration.AlgoColoration;
+import sae.view.jDialog.LoadGraphDialog;
 
 /**
+ * La classe GraphstreamFrame représente une interface graphique (GUI) pour
+ * visualiser un graphe en utilisant la bibliothèque GraphStream. Elle affiche
+ * des informations sur le graphe et ses propriétés.
  *
- * @author sacha
+ * @author Sacha
  */
 public class GraphstreamFrame extends javax.swing.JFrame {
+
     private AlgoColoration algoColoration = new AlgoColoration();
+
     /**
-     * Creates new form GraphstreamFrame
+     * Construit une nouvelle instance de GraphstreamFrame.
+     *
+     * @param chemin Le chemin vers le fichier du graphe.
      */
     public GraphstreamFrame(String chemin) {
         initComponents();
 
-        // Set layout manager for jPanel1
         jPanel1.setLayout(new BorderLayout());
 
-        // Load graph data
-        algoColoration.setFichier(chemin);
-        try {
-            algoColoration.charger_graphe();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Mettre la frame en plein écran immédiatement
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setVisible(true);
 
-        // Get the graph from AlgoColoration
-        org.graphstream.graph.Graph graph = algoColoration.minConflict().getGraph();
-
-        // Create the Viewer
-        Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-        viewer.enableAutoLayout();
-
-        // Create the ViewPanel and add it to jPanel1
-        org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
-        jPanel1.add(viewPanel, BorderLayout.CENTER);
-        
-
-        // Refresh jPanel1
-        jPanel1.revalidate();
-        jPanel1.repaint();
-        setJLabel();
+        // Charger le graph en arrière-plan
+        new GraphLoader(chemin).execute();
     }
-    
-    private void setJLabel(){
+
+    /**
+     * Met à jour les étiquettes avec les valeurs actuelles du graphe.
+     */
+    private void setJLabel() {
         kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
         nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbSommet());
-        nbEdgeLabel.setText("Nombre d'arrêtes : " + algoColoration.getGraph().getEdgeCount());
-        chromaticNumberLabel.setText("Nombre chromatique : " +algoColoration.countChromaticcNumber( algoColoration.minConflict().getGraph()));
+        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getGraph().getEdgeCount());
+        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticcNumber(algoColoration.minConflict().getGraph()));
         conflictLabel.setText("Nombre de conflits : " + algoColoration.minConflict().getConflict());
+    }
+
+    /**
+     * La classe GraphLoader charge le graphe en arrière-plan.
+     */
+    private class GraphLoader extends SwingWorker<Void, Void> {
+
+        private String chemin;
+
+        /**
+         * Construit une nouvelle instance de GraphLoader.
+         *
+         * @param chemin Le chemin vers le fichier du graphe.
+         */
+        public GraphLoader(String chemin) {
+            this.chemin = chemin;
+        }
+
+        @Override
+        protected Void doInBackground() {
+            algoColoration.setFichier(chemin);
+            try {
+                algoColoration.charger_graphe();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            // Récupère le graph 
+            org.graphstream.graph.Graph graph = algoColoration.minConflict().getGraph();
+
+            // Création de la vision de graphstream
+            Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+            viewer.enableAutoLayout();
+
+            org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
+            jPanel1.add(viewPanel, BorderLayout.CENTER);
+
+            // Mettre à jour jPanel1
+            jPanel1.revalidate();
+            jPanel1.repaint();
+            // Modifier les labels avec les bonnes valeurs
+            setJLabel();
+
+        }
     }
 
     /**
@@ -90,22 +128,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel1.setBackground(new java.awt.Color(221, 221, 221));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
         getContentPane().add(jPanel1);
 
-        jPanel3.setBackground(new java.awt.Color(221, 221, 221));
+        jPanel3.setBackground(java.awt.Color.white);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Information sur la coloration");
@@ -158,6 +185,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(235, 173, 59));
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("Charger un autre graphe");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -168,7 +200,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,6 +216,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        LoadGraphDialog loadGraphDialog = new LoadGraphDialog(this, true);
+        loadGraphDialog.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

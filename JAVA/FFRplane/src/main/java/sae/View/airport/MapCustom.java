@@ -71,22 +71,21 @@ public class MapCustom extends JXMapViewer {
     
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
+        
         System.out.println(geo);
         if (geo != null) {
             FlightLine closestFlightLine = null;
             double closestDistance = Double.MAX_VALUE;
-
             for (FlightLine flightLine : flightLineSet) {
+                
                 double distance = distToFlightLine(flightLine,geo);
-                System.out.println("Distance to flightLine: " + distance);
+                System.out.println(distance);
                 if (distance < closestDistance) {
                     closestDistance = distance;
                     closestFlightLine = flightLine;
                 }
+                
             }
-            
-
-            System.out.println("Closest distance: " + closestDistance);
             if (closestFlightLine != null && closestDistance <= 0.1) {  
                 closestFlightLine.setColor(Color.ORANGE);
                 if (lastSelectedLine != null && lastSelectedLine != closestFlightLine) {
@@ -113,6 +112,9 @@ public class MapCustom extends JXMapViewer {
         return distance;
     }
     
+    
+
+    
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
      *
@@ -136,7 +138,39 @@ public class MapCustom extends JXMapViewer {
         // rendre la map zoomable
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
     }
+    
+    //TEMPORAIRE <
+    public static double distanceBetween(GeoPosition p1, GeoPosition p2) {
+        double deltaX = p2.getLatitude()- p1.getLatitude();
+        double deltaY = p2.getLongitude()- p1.getLongitude();
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+    
+    public static GeoPosition orthogonalProjection(GeoPosition p1, GeoPosition p2, GeoPosition p3) {
+        // Convertir les points en coordonnées cartésiennes (latitude, longitude)
+        double x1 = p1.getLongitude(), y1 = p1.getLatitude();
+        double x2 = p2.getLongitude(), y2 = p2.getLatitude();
+        double x3 = p3.getLongitude(), y3 = p3.getLatitude();
 
+        // Vecteur directeur de la droite P2P3
+        double dx = x3 - x2;
+        double dy = y3 - y2;
+
+        // Vecteur de P2 à P1
+        double px = x1 - x2;
+        double py = y1 - y2;
+
+        // Calculer la projection scalaire de P2P1 sur P2P3
+        double scalarProjection = (px * dx + py * dy) / (dx * dx + dy * dy);
+
+        // Calculer les coordonnées du projeté orthogonal
+        double xProj = x2 + scalarProjection * dx;
+        double yProj = y2 + scalarProjection * dy;
+
+        return new GeoPosition(yProj, xProj);
+    }
+    // >
+    
     /**
      * Initialise les marqueurs des aéroports sur la carte.
      */
@@ -149,7 +183,15 @@ public class MapCustom extends JXMapViewer {
             airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
         
+        //TEMPORAIRE <
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
+        airportPointSet.add(new Airportpoint(new GeoPosition(45.20858185060021,1.9104409217834473)));
+        airportPointSet.add(new Airportpoint(orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(45.72638888888889,5.090833333333333), new GeoPosition(44.82833333333333,-0.7155555555555555))));
+        airportPointSet.add(new Airportpoint(orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(43.43555555555555,5.213611111111112), new GeoPosition(48.44777777777777,-4.418333333333334))));
+        System.out.println(distanceBetween(new GeoPosition(45.20858185060021,1.9104409217834473), orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(45.72638888888889,5.090833333333333), new GeoPosition(44.82833333333333,-0.7155555555555555))));
+        System.out.println(distanceBetween(new GeoPosition(45.20858185060021,1.9104409217834473), orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(43.43555555555555,5.213611111111112), new GeoPosition(48.44777777777777,-4.418333333333334))));
+        // >
+        
         ap.setWaypoints(airportPointSet);
         setOverlayPainter(ap);
         for (Airportpoint d : airportPointSet) {
@@ -158,6 +200,7 @@ public class MapCustom extends JXMapViewer {
                 add(d.getButton());
                 compteur++;
             } else {
+                add(d.getButton());
                 System.err.println("Airport associated with AirportWaypoint is null.");
             }
         }

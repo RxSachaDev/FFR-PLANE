@@ -7,10 +7,12 @@ package sae.view.jDialog;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import sae.utils.Settings;
 import sae.models.errors.FileFormatError;
 import sae.utils.IconUtil;
+import sae.view.jFileChooser.OpenFileChooser;
 import sae.view.jFrame.MainFrame;
 
 /**
@@ -61,8 +63,8 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         OkButton = new javax.swing.JButton();
         firstFileLabel = new javax.swing.JLabel();
         secondFileLabel = new javax.swing.JLabel();
-        choiceFileButton1 = new javax.swing.JButton();
-        choiceFileButton2 = new javax.swing.JButton();
+        buttonChooseAirportFile = new javax.swing.JButton();
+        buttonChooseFlightsFile = new javax.swing.JButton();
         airportsFileTextField = new javax.swing.JTextField();
         flightsFileTextField = new javax.swing.JTextField();
         labelError = new javax.swing.JLabel();
@@ -109,23 +111,23 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
 
         secondFileLabel.setText("Choisissez votre fichier de vol-test :");
 
-        choiceFileButton1.setBackground(new java.awt.Color(235, 173, 59));
-        choiceFileButton1.setForeground(new java.awt.Color(0, 0, 0));
-        choiceFileButton1.setText("Ouvrir"); // NOI18N
-        choiceFileButton1.setFocusPainted(false);
-        choiceFileButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonChooseAirportFile.setBackground(new java.awt.Color(235, 173, 59));
+        buttonChooseAirportFile.setForeground(new java.awt.Color(0, 0, 0));
+        buttonChooseAirportFile.setText("Ouvrir"); // NOI18N
+        buttonChooseAirportFile.setFocusPainted(false);
+        buttonChooseAirportFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                choiceFileButton1ActionPerformed(evt);
+                buttonChooseAirportFileActionPerformed(evt);
             }
         });
 
-        choiceFileButton2.setBackground(new java.awt.Color(235, 173, 59));
-        choiceFileButton2.setForeground(new java.awt.Color(0, 0, 0));
-        choiceFileButton2.setText("Ouvrir");
-        choiceFileButton2.setFocusPainted(false);
-        choiceFileButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonChooseFlightsFile.setBackground(new java.awt.Color(235, 173, 59));
+        buttonChooseFlightsFile.setForeground(new java.awt.Color(0, 0, 0));
+        buttonChooseFlightsFile.setText("Ouvrir");
+        buttonChooseFlightsFile.setFocusPainted(false);
+        buttonChooseFlightsFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                choiceFileButton2ActionPerformed(evt);
+                buttonChooseFlightsFileActionPerformed(evt);
             }
         });
 
@@ -135,7 +137,6 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
             }
         });
 
-        labelError.setBackground(null);
         labelError.setForeground(new java.awt.Color(255, 51, 51));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -160,8 +161,8 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
                                     .addComponent(flightsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(choiceFileButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(choiceFileButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(buttonChooseAirportFile, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonChooseFlightsFile, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -179,12 +180,12 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(airportsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(choiceFileButton1))
+                    .addComponent(buttonChooseAirportFile))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(secondFileLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(choiceFileButton2)
+                    .addComponent(buttonChooseFlightsFile)
                     .addComponent(flightsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -208,26 +209,38 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
             Settings.setAirportsFilePath(airportsFileTextField.getText());
             Settings.setFlightsFilePath(flightsFileTextField.getText());
             dispose();
+            //GERER L'EXCEPTION FileFormatError
             SwingUtilities.getWindowAncestor(this).dispose();
             MainFrame object = new MainFrame();
-            
             object.setVisible(true);
             
             
         } catch(FileNotFoundException e){
             labelError.setText("L'un des chemin d'accès est introuvable !");
         } catch(FileFormatError e) {
-            
+            labelError.setText("Format Invalide !");
         }
     }//GEN-LAST:event_OkButtonActionPerformed
 
-    private void choiceFileButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceFileButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_choiceFileButton1ActionPerformed
+    private void buttonChooseAirportFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseAirportFileActionPerformed
+        JFileChooser fileChooser = new OpenFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\src\\main\\java\\data\\"));
+        
+        int result = fileChooser.showOpenDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION) {
+            airportsFileTextField.setText(fileChooser.getSelectedFile().getPath());
+        } else if(result == JFileChooser.CANCEL_OPTION) {}
+    }//GEN-LAST:event_buttonChooseAirportFileActionPerformed
 
-    private void choiceFileButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceFileButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_choiceFileButton2ActionPerformed
+    private void buttonChooseFlightsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFlightsFileActionPerformed
+        JFileChooser fileChooser = new OpenFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\src\\main\\java\\data\\"));
+        
+        int result = fileChooser.showOpenDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION) {
+            flightsFileTextField.setText(fileChooser.getSelectedFile().getPath());
+        } else if(result == JFileChooser.CANCEL_OPTION) {}
+    }//GEN-LAST:event_buttonChooseFlightsFileActionPerformed
 
     private void flightsFileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flightsFileTextFieldActionPerformed
         // TODO add your handling code here:
@@ -239,8 +252,8 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
     private javax.swing.JPanel ChoicesPanel;
     private javax.swing.JButton OkButton;
     private javax.swing.JTextField airportsFileTextField;
-    private javax.swing.JButton choiceFileButton1;
-    private javax.swing.JButton choiceFileButton2;
+    private javax.swing.JButton buttonChooseAirportFile;
+    private javax.swing.JButton buttonChooseFlightsFile;
     private javax.swing.JLabel firstFileLabel;
     private javax.swing.JTextField flightsFileTextField;
     private javax.swing.JLabel labelError;
