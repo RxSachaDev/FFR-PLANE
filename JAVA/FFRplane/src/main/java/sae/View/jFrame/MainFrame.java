@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 import sae.Logiciel;
 import sae.view.jDialog.LoadAirspaceDialog;
@@ -169,7 +170,6 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelRightBar.setPreferredSize(new java.awt.Dimension(250, 526));
         panelRightBar.setLayout(new java.awt.GridBagLayout());
 
-        panelContainerRightBar.setBackground(null);
         panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
 
         labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
@@ -179,9 +179,9 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelInfosGene.setBackground(new java.awt.Color(204, 204, 204));
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
-        textAreaInfosGene.setBackground(null);
         textAreaInfosGene.setColumns(20);
         textAreaInfosGene.setRows(5);
+        textAreaInfosGene.setText("  Pour avoir plus d'informations \n      veuillez colorier le graphe\n");
         textAreaInfosGene.setBorder(null);
 
         javax.swing.GroupLayout panelInfosGeneLayout = new javax.swing.GroupLayout(panelInfosGene);
@@ -213,7 +213,6 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelInfosSelect.setBackground(new java.awt.Color(204, 204, 204));
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
-        textAreaInfosSelect.setBackground(null);
         textAreaInfosSelect.setColumns(20);
         textAreaInfosSelect.setForeground(new java.awt.Color(0, 0, 0));
         textAreaInfosSelect.setRows(5);
@@ -237,8 +236,6 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         );
 
         labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
-
-        panelButton.setBackground(null);
 
         buttonColoration.setBackground(new java.awt.Color(235, 173, 59));
         buttonColoration.setForeground(new java.awt.Color(0, 0, 0));
@@ -554,5 +551,9 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     @Override
     public void setJTextAreaText(String text) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public JTextArea getTextAreaInfosGene() {
+        return textAreaInfosGene;
     }
 }

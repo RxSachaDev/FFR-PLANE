@@ -426,7 +426,7 @@ public class AlgoColoration {
         }
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
-        if (chromaticNumber > kmax) {
+        if (chromaticNumber > kmax && kmax != -1) {
             for (int i = 0; i < 20; i++) {
                 for (Node aloneNode : g.getEachNode()) {
                     int minConflicts = Integer.MAX_VALUE;

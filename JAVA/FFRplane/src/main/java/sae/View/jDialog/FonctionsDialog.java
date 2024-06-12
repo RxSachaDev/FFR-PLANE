@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import sae.View.jDialog.ChooseAlgorithmDialog;
 import sae.utils.IconUtil;
+import sae.view.jFrame.MainFrame;
 
 /**
  * Cette classe représente une boîte de dialogue pour les fonctions de
@@ -39,7 +40,7 @@ public class FonctionsDialog extends javax.swing.JDialog {
      * @param modal Un booléen indiquant si la boîte de dialogue est modale ou
      * non.
      */
-    public FonctionsDialog(java.awt.Frame parent, boolean modal) {
+    public FonctionsDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         iconU.setIcon(this);

@@ -5,16 +5,13 @@
 package sae.View.jFrame;
 
 import java.awt.BorderLayout;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
+import org.graphstream.graph.Graph;
 import org.graphstream.ui.view.Viewer;
 import sae.Models.algocoloration.AlgoColoration;
+import sae.Models.algocoloration.ResultatColoration;
 import sae.view.jDialog.LoadGraphDialog;
 
 /**
@@ -26,6 +23,11 @@ import sae.view.jDialog.LoadGraphDialog;
  */
 public class GraphstreamFrame extends javax.swing.JFrame {
 
+    /**
+     * Instance de la classe AlgoColoration utilisée pour gérer les opérations
+     * de coloration. Cette instance est initialisée au moment de la
+     * déclaration.
+     */
     private AlgoColoration algoColoration = new AlgoColoration();
 
     /**
@@ -46,16 +48,6 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         new GraphLoader(chemin).execute();
     }
 
-    /**
-     * Met à jour les étiquettes avec les valeurs actuelles du graphe.
-     */
-    private void setJLabel() {
-        kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
-        nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbSommet());
-        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getGraph().getEdgeCount());
-        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticcNumber(algoColoration.minConflict().getGraph()));
-        conflictLabel.setText("Nombre de conflits : " + algoColoration.minConflict().getConflict());
-    }
 
     /**
      * La classe GraphLoader charge le graphe en arrière-plan.
@@ -87,7 +79,9 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         @Override
         protected void done() {
             // Récupère le graph 
-            org.graphstream.graph.Graph graph = algoColoration.minConflict().getGraph();
+            
+            ResultatColoration resultatColoration = algoColoration.minConflict();
+            Graph graph = resultatColoration.getGraph();
 
             // Création de la vision de graphstream
             Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
@@ -100,7 +94,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             jPanel1.revalidate();
             jPanel1.repaint();
             // Modifier les labels avec les bonnes valeurs
-            setJLabel();
+            kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
+        nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbSommet());
+        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getGraph().getEdgeCount());
+        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticcNumber(graph));
+        conflictLabel.setText("Nombre de conflits : " + resultatColoration.getConflict());
 
         }
     }
@@ -217,6 +215,12 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Gère l'action lorsque le bouton jButton1 est cliqué. Cette méthode
+     * affiche une boîte de dialogue LoadGraphDialog.
+     *
+     * @param evt l'événement d'action déclenché par le clic.
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         LoadGraphDialog loadGraphDialog = new LoadGraphDialog(this, true);
         loadGraphDialog.setVisible(true);

@@ -6,6 +6,7 @@ package sae.View.jDialog;
 
 import java.io.IOException;
 import sae.Models.algocoloration.AlgoColoration;
+import sae.view.jFrame.MainFrame;
 
 /**
  *
@@ -19,12 +20,13 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
     public ChooseAlgorithmDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setLocationRelativeTo(parent);
-        algoColoration.setFichier("src/main/java/data/temp/graph-testTEMP.txt");
+        algoColoration.setFichier("src/main/java/data/test/graph-test0.txt");
         try {
             algoColoration.charger_graphe();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(algoColoration.getGraph().getNodeCount());
         initComponents();
     }
 
@@ -116,12 +118,27 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_bestalgoButtonActionPerformed
 
     private void wpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wpButtonActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        int conflict = algoColoration.welshPowell();
+        StringBuilder generalInformation = new StringBuilder();
+    generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+                      .append(" Nombre d'arrêtes : ").append(algoColoration.getGraph().getEdgeCount()).append("\n")
+                      .append(" Nombre de sommets : ").append(algoColoration.getGraph().getNodeCount()).append("\n")
+                      .append(" Nombre de conflits : ").append(conflict).append("\n");
+        MainFrame mainFrame = (MainFrame) this.getParent();
+        mainFrame.setJTextAreaText2(generalInformation.toString());
     }//GEN-LAST:event_wpButtonActionPerformed
 
     private void dsaturButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsaturButtonActionPerformed
         this.dispose();
-        algoColoration.dsatur(algoColoration.getGraph());
+        int conflict = algoColoration.dsatur(algoColoration.getGraph());
+        StringBuilder generalInformation = new StringBuilder();
+    generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+                      .append(" Nombre d'arrêtes : ").append(algoColoration.getGraph().getEdgeCount()).append("\n")
+                      .append(" Nombre de sommets : ").append(algoColoration.getGraph().getNodeCount()).append("\n")
+                      .append(" Nombre de conflits : ").append(conflict).append("\n");
+        MainFrame mainFrame = (MainFrame) this.getParent();
+        mainFrame.setJTextAreaText2(generalInformation.toString());
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
     /**

@@ -26,6 +26,7 @@ sae\View\jDialog\LoadGraphDialog$1.class
 sae\Controller\LogicielController.class
 sae\View\airport\Airportpoint$1.class
 sae\View\easterGame\ActionDialog.class
+sae\View\jDialog\LoadingDialog$1.class
 sae\View\jDialog\ChooseAlgorithmDialog.class
 sae\View\easterGame\EasterGame$1.class
 sae\Models\flights\Flight.class
@@ -71,12 +72,14 @@ sae\View\jDialog\ColorationsDialog$2.class
 sae\View\jDialog\LoadAirspaceDialog$3.class
 sae\View\jDialog\LoadGraphDialog.class
 sae\View\jPanel\BackgroundPanel.class
+sae\View\jDialog\LoadingDialog.class
 sae\View\easterGame\TypeOfplaneDialog$1.class
 sae\View\easterGame\EasterGame$6.class
 sae\View\jFrame\viewer.class
 sae\View\easterGame\MonumentWaypoint$1$1.class
 sae\View\easterGame\EasterGame$3.class
 sae\View\jDialog\FonctionsDialog$3.class
+sae\View\jDialog\LoadingDialog$1$1.class
 sae\View\airport\Airportpoint.class
 sae\View\jDialog\ChooseAlgorithmDialog$3.class
 sae\View\jDialog\LoadGraphDialog$3.class
