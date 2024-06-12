@@ -5,7 +5,8 @@
 package sae.view.jDialog;
 
 import javax.swing.DefaultComboBoxModel;
-import sae.utils.IconUtil;
+
+import sae.utils.*;
 
 /**
  * Cette classe représente une boîte de dialogue pour les fonctions de

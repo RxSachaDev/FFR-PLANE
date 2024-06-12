@@ -1,11 +1,11 @@
-package sae.models.errors;
+package sae.exceptions;
 
 /**
  * La classe FileFormatError représente une exception personnalisée lancée lorsqu'une ligne dans un fichier ne respecte pas le format attendu.
  * 
  * @author mathe
  */
-public class FileFormatError extends NumberFormatException {
+public class FileFormatException extends NumberFormatException {
     private int line;
     private String file;
 
@@ -15,7 +15,7 @@ public class FileFormatError extends NumberFormatException {
      * @param lineInFile le numéro de ligne où l'erreur s'est produite
      * @param fileName le nom du fichier où l'erreur s'est produite
      */
-    public FileFormatError(int lineInFile, String fileName) {
+    public FileFormatException(int lineInFile, String fileName) {
         this.line = lineInFile;
         this.file = fileName;
     }

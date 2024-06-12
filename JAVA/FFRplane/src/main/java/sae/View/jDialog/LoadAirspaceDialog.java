@@ -9,11 +9,11 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import sae.utils.Settings;
-import sae.models.errors.FileFormatError;
-import sae.utils.IconUtil;
-import sae.view.jFileChooser.OpenFileChooser;
-import sae.view.jFrame.MainFrame;
+
+import sae.utils.*;
+import sae.exceptions.*;
+import sae.view.jFrame.*;
+import sae.view.jFileChooser.*;
 
 /**
  * Cette classe représente une boîte de dialogue de chargement de graphique.
@@ -211,13 +211,12 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
             dispose();
             //GERER L'EXCEPTION FileFormatError
             SwingUtilities.getWindowAncestor(this).dispose();
-            MainFrame object = new MainFrame();
-            object.setVisible(true);
-            
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
             
         } catch(FileNotFoundException e){
             labelError.setText("L'un des chemin d'accès est introuvable !");
-        } catch(FileFormatError e) {
+        } catch(FileFormatException e) {
             labelError.setText("Format Invalide !");
         }
     }//GEN-LAST:event_OkButtonActionPerformed

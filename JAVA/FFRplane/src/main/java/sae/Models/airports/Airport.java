@@ -1,6 +1,8 @@
 package sae.models.airports;
 
+import sae.controller.Interfaces.ModelPoint;
 import org.jxmapviewer.viewer.GeoPosition;
+import sae.controller.*;
 import static java.lang.Math.*;
 
 /**
@@ -9,7 +11,7 @@ import static java.lang.Math.*;
  * 
  * @author mathe
  */
-public class Airport {
+public class Airport implements ModelPoint{
     private String code;
     private String location;
     
@@ -151,6 +153,7 @@ public class Airport {
         this.coordinates = coordinates;
     }
 
+    @Override
     public GeoPosition getGeoPosition() {
         return geoPosition;
     }   

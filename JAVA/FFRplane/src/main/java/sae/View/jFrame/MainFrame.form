@@ -84,7 +84,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Container class="sae.view.airport.MapCustom" name="mapCustom1">
+        <Container class="sae.view.mapCustom.MapCustom" name="mapCustom">
 
           <Layout>
             <DimensionLayout dim="0">

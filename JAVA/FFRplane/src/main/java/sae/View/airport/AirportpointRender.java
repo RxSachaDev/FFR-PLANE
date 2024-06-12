@@ -9,12 +9,14 @@ import javax.swing.JButton;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.WaypointPainter;
 
+import sae.view.mapCustom.*;
+
 /**
  * Classe peintre de points d'aéroport pour afficher les points d'aéroport sur une carte.
  * Ce peintre positionne les boutons associés aux points d'aéroport sur la carte.
  * @author fillo
  */
-public class AirportpointRender extends WaypointPainter<Airportpoint> {
+public class AirportpointRender extends WaypointPainter<MapPoint> {
     
     /**
      * Peint les points d'aéroport sur la carte et positionne les boutons associés.
@@ -25,7 +27,7 @@ public class AirportpointRender extends WaypointPainter<Airportpoint> {
      */
     @Override
     protected void doPaint(Graphics2D g, JXMapViewer map, int width, int height){
-        for(Airportpoint ap : getWaypoints()){  // Parcours tous les points d'aéroport à peindre
+        for(MapPoint ap : getWaypoints()){  // Parcours tous les points d'aéroport à peindre
             Point2D p = map.getTileFactory().geoToPixel(ap.getPosition(), map.getZoom()); // Convertit la position géographique du point en coordonnées de pixels sur la carte
             Rectangle rec = map.getViewportBounds();
             int x = (int)(p.getX() - rec.getX());

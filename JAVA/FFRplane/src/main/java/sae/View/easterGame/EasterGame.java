@@ -4,10 +4,7 @@
  */
 package sae.view.easterGame;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,17 +22,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.OverlayLayout;
-import javax.swing.Timer;
 import javax.swing.border.Border;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.utils.IconUtil;
-import sae.view.airport.MapCustom;
-import sae.view.easterGame.Plane;
+
+import sae.utils.*;
+import sae.view.mapCustom.MapCustom;
 
 public class EasterGame extends JFrame {
 
@@ -149,10 +140,10 @@ public class EasterGame extends JFrame {
     }
 
     private void drawGame() {
-        map.addMonuments(new MonumentWaypoint("Tour Eiffel", new GeoPosition(48.8568764, 2.2948237), eiffelTowerIcon));
-        map.addMonuments(new MonumentWaypoint("WORLD TRADE CENTER 1", new GeoPosition(40.7118114, -74.0126466), tour1));
-        map.addMonuments(new MonumentWaypoint("WORLD TRADE CENTER 2", new GeoPosition(40.7107653, -74.0130491), tour2));
-        map.addMonuments(new MonumentWaypoint("Statue de la Liberté", new GeoPosition(40.6892, -74.0445), liberteIcon));
+       // map.addMonuments(new MonumentWaypoint("Tour Eiffel", new GeoPosition(48.8568764, 2.2948237), eiffelTowerIcon));
+       // map.addMonuments(new MonumentWaypoint("WORLD TRADE CENTER 1", new GeoPosition(40.7118114, -74.0126466), tour1));
+       // map.addMonuments(new MonumentWaypoint("WORLD TRADE CENTER 2", new GeoPosition(40.7107653, -74.0130491), tour2));
+       // map.addMonuments(new MonumentWaypoint("Statue de la Liberté", new GeoPosition(40.6892, -74.0445), liberteIcon));
         /*map.addMonuments(new MonumentWaypoint("Pyramides de Gizeh", new GeoPosition(29.9792, 31.1342), new ImageIcon("path/to/pyramidsIcon.png")));
         map.addMonuments(new MonumentWaypoint("Taj Mahal", new GeoPosition(27.1751, 78.0421), new ImageIcon("path/to/tajMahalIcon.png")));
         map.addMonuments(new MonumentWaypoint("Muraille de Chine", new GeoPosition(40.4319, 116.5704), new ImageIcon("path/to/greatWallIcon.png")));
