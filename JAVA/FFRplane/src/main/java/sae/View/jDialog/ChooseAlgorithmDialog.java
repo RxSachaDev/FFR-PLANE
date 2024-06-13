@@ -4,7 +4,9 @@
  */
 package sae.View.jDialog;
 
+import java.awt.BorderLayout;
 import java.io.IOException;
+import org.graphstream.ui.view.Viewer;
 import sae.Models.algocoloration.AlgoColoration;
 import sae.Models.algocoloration.ResultatColoration;
 import sae.view.jFrame.MainFrame;
@@ -33,13 +35,13 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
     public ChooseAlgorithmDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setLocationRelativeTo(parent);
+        // Chargement du graphe avec le fichier temporel
         algoColoration.setFichier("src/main/java/data/test/graph-test0.txt");
         try {
             algoColoration.charger_graphe();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(algoColoration.getGraph().getNodeCount());
         initComponents();
     }
 
@@ -127,6 +129,35 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Met à jour la visualisation du graphe dans le viewer spécifié.
+     *
+     * <p>
+     * Cette méthode récupère le parent {@link MainFrame}, supprime tous les
+     * composants existants du conteneur de graphe, puis ajoute un nouveau
+     * {@link org.graphstream.ui.swingViewer.ViewPanel} pour afficher le graphe
+     * mis à jour. Le conteneur de graphe est ensuite revalidé, repeint et rendu
+     * visible.
+     *
+     * @param viewer l'instance de {@link Viewer} qui contient le graphe à
+     * visualiser
+     */
+    private void updateGraphVisualization(Viewer viewer) {
+        MainFrame mainFrame = (MainFrame) this.getParent();
+        org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
+
+        // Reintialisation du conteneur
+        mainFrame.getGraphstreamContener().removeAll();
+
+        // Ajout du vie panel au panel
+        mainFrame.getGraphstreamContener().add(viewPanel, BorderLayout.CENTER);
+
+        // Mise à jour du panel
+        mainFrame.getGraphstreamContener().revalidate();
+        mainFrame.getGraphstreamContener().repaint();
+        mainFrame.getGraphstreamContener().setVisible(true);
+    }
+
+    /**
      * Gère l'événement lorsque l'utilisateur clique sur le bouton "Le
      * Meilleur". Ferme la fenêtre de dialogue. Exécute l'algorithme de
      * coloration "Le Meilleur" sur le graphe chargé. Met à jour le JTextArea
@@ -139,12 +170,19 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         ResultatColoration resultatColoration = algoColoration.minConflict();
         int conflict = resultatColoration.getConflict();
         StringBuilder generalInformation = new StringBuilder();
+        // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
                 .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
                 .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
+
+        Viewer viewer = new Viewer(resultatColoration.getGraph(), Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        viewer.enableAutoLayout();
+
+        // Mise à jour de la graphe visualisation
+        updateGraphVisualization(viewer);
     }//GEN-LAST:event_bestalgoButtonActionPerformed
 
     /**
@@ -159,12 +197,19 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         this.dispose();
         int conflict = algoColoration.welshPowell();
         StringBuilder generalInformation = new StringBuilder();
+        // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
                 .append(" Nombre d'arrêtes : ").append(algoColoration.getGraph().getEdgeCount()).append("\n")
                 .append(" Nombre de sommets : ").append(algoColoration.getGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
+
+        Viewer viewer = new Viewer(algoColoration.getGraph(), Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        viewer.enableAutoLayout();
+
+        // Mise à jour de la graphe visualisation
+        updateGraphVisualization(viewer);
     }//GEN-LAST:event_wpButtonActionPerformed
 
     /**
@@ -179,12 +224,19 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         this.dispose();
         int conflict = algoColoration.dsatur(algoColoration.getGraph());
         StringBuilder generalInformation = new StringBuilder();
+        // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
                 .append(" Nombre d'arrêtes : ").append(algoColoration.getGraph().getEdgeCount()).append("\n")
                 .append(" Nombre de sommets : ").append(algoColoration.getGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
+
+        Viewer viewer = new Viewer(algoColoration.getGraph(), Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        viewer.enableAutoLayout();
+
+        // Mise à jour de la graphe visualisation
+        updateGraphVisualization(viewer);
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
     /**

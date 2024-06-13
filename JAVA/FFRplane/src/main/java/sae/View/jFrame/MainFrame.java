@@ -4,6 +4,7 @@
  */
 package sae.view.jFrame;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -98,15 +99,19 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             }
         });
         
+        graphstreamContener.setVisible(false);
+        
     }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         ScreenPanel = new javax.swing.JPanel();
         mapCustom1 = new sae.view.airport.MapCustom();
         ComboMapType = new javax.swing.JComboBox<>();
+        labelLogo = new javax.swing.JLabel();
         panelRightBar = new javax.swing.JPanel();
         panelContainerRightBar = new javax.swing.JPanel();
         labelInfosGene = new javax.swing.JLabel();
@@ -116,10 +121,10 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         labelInfosSelect2 = new javax.swing.JLabel();
         panelInfosSelect = new javax.swing.JPanel();
         textAreaInfosSelect = new javax.swing.JTextArea();
-        labelLogo = new javax.swing.JLabel();
         panelButton = new javax.swing.JPanel();
         buttonColoration = new javax.swing.JButton();
         buttonFunctions = new javax.swing.JButton();
+        graphstreamContener = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
@@ -143,21 +148,30 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             }
         });
 
+        labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
+
         javax.swing.GroupLayout mapCustom1Layout = new javax.swing.GroupLayout(mapCustom1);
         mapCustom1.setLayout(mapCustom1Layout);
         mapCustom1Layout.setHorizontalGroup(
             mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustom1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(466, Short.MAX_VALUE))
+                .addGroup(mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mapCustom1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mapCustom1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(372, Short.MAX_VALUE))
         );
         mapCustom1Layout.setVerticalGroup(
             mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustom1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(713, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 539, Short.MAX_VALUE)
+                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58))
         );
 
         ScreenPanel.add(mapCustom1);
@@ -171,10 +185,19 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelRightBar.setLayout(new java.awt.GridBagLayout());
 
         panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
+        panelContainerRightBar.setLayout(new java.awt.GridBagLayout());
 
         labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosGene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosGene.setText("INFOS GÉNÉRALES");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 151;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        panelContainerRightBar.add(labelInfosGene, gridBagConstraints);
 
         panelInfosGene.setBackground(new java.awt.Color(204, 204, 204));
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
@@ -201,14 +224,37 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
                 .addContainerGap())
         );
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
+        panelContainerRightBar.add(panelInfosGene, gridBagConstraints);
+
         labelInfosSelect1.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect1.setText(" INFOS SUR L’OBJET ");
         labelInfosSelect1.setPreferredSize(new java.awt.Dimension(200, 16));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 142;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
+        panelContainerRightBar.add(labelInfosSelect1, gridBagConstraints);
 
         labelInfosSelect2.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect2.setText("SÉLECTIONNÉ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 176;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        panelContainerRightBar.add(labelInfosSelect2, gridBagConstraints);
 
         panelInfosSelect.setBackground(new java.awt.Color(204, 204, 204));
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
@@ -235,7 +281,13 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
                 .addGap(14, 14, 14))
         );
 
-        labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
+        panelContainerRightBar.add(panelInfosSelect, gridBagConstraints);
 
         buttonColoration.setBackground(new java.awt.Color(235, 173, 59));
         buttonColoration.setForeground(new java.awt.Color(0, 0, 0));
@@ -261,64 +313,38 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelButtonLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonFunctions, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelButtonLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(buttonFunctions, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonColoration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout panelContainerRightBarLayout = new javax.swing.GroupLayout(panelContainerRightBar);
-        panelContainerRightBar.setLayout(panelContainerRightBarLayout);
-        panelContainerRightBarLayout.setHorizontalGroup(
-            panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelInfosGene, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(labelInfosSelect1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(labelInfosSelect2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContainerRightBarLayout.createSequentialGroup()
-                .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelContainerRightBarLayout.createSequentialGroup()
-                        .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(panelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
-        );
-        panelContainerRightBarLayout.setVerticalGroup(
-            panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelInfosGene)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(labelInfosSelect1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(labelInfosSelect2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 116;
+        gridBagConstraints.ipady = 23;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 25, 5, 0);
+        panelContainerRightBar.add(panelButton, gridBagConstraints);
+
+        graphstreamContener.setLayout(new java.awt.BorderLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 161;
+        gridBagConstraints.ipady = 149;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 42, 0, 0);
+        panelContainerRightBar.add(graphstreamContener, gridBagConstraints);
 
         panelRightBar.add(panelContainerRightBar, new java.awt.GridBagConstraints());
 
@@ -503,6 +529,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             }
         }
     }
+    
 
     
     /**
@@ -521,6 +548,12 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         String actualString = text;
         textAreaInfosGene.setText(actualString);
     }
+
+    public JPanel getGraphstreamContener() {
+        return graphstreamContener;
+    }
+    
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -529,6 +562,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private javax.swing.JPanel ScreenPanel;
     private javax.swing.JButton buttonColoration;
     private javax.swing.JButton buttonFunctions;
+    private javax.swing.JPanel graphstreamContener;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
@@ -557,3 +591,4 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         return textAreaInfosGene;
     }
 }
+
