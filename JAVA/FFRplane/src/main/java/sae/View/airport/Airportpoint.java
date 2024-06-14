@@ -21,6 +21,7 @@ import sae.models.airports.Airport;
  * nom de l'aéroport est affiché dans un JTextArea parent, dans MainFrame.
  *
  * @author fillo
+ * 
  */
 public class Airportpoint extends DefaultWaypoint {
 

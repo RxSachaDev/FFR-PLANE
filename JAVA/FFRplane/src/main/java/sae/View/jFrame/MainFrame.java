@@ -4,6 +4,7 @@
  */
 package sae.view.jFrame;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -11,10 +12,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 import sae.Logiciel;
 import sae.view.jDialog.LoadAirspaceDialog;
@@ -28,13 +31,14 @@ import sae.view.jDialog.FonctionsDialog;
  * javax.swing.JFrame et implémente l'interface Logiciel.
  *
  * @author fillo
+ * @author mathe
  */
 public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private boolean isMenuVisible = true;
-    private JButton buttonMenu = new JButton("Menu");
-    //private Rectangle boundsBar;
-    private Timer slideTimer;
-    private final int stepSize = 10;
+    private JButton buttonMenu = new JButton();
+    private ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
+    private ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
+    private Rectangle boundsMenuBar;
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -47,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private static final double longitude = 2.7105474;
     private static final int standardZoom = 14;
 
+    
     /**
      * Crée une nouvelle instance de la classe MainFrame. Initialise les
      * composants de la fenêtre, configure la carte personnalisée avec les
@@ -54,29 +59,28 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      * configure l'affichage des champs de texte, configure les icônes et
      * configure l'état de la fenêtre pour être maximisé. (constructeur)
      */
-    
-    
-    
     public MainFrame() {
         initComponents();
         
+        buttonMenu.setContentAreaFilled(false);
+
         mapCustom1.add(buttonMenu);
         mapCustom1.init(latitude, longitude, standardZoom);
         mapCustom1.initAirports();
-        mapCustom1.initIntersection();
+        mapCustom1.initFlightLines();
         
         
-        jTextArea2OnOverallInfos.setEditable(false);
-        jTextArea2OnOverallInfos.setWrapStyleWord(false);
-        jTextAreaOnObject.setEditable(true);
-        jTextAreaOnObject.setWrapStyleWord(true);
-        jTextArea2OnOverallInfos.setLineWrap(true);
-        jTextAreaOnObject.setLineWrap(true);
-        jTextAreaOnObject.setEditable(false);
+        textAreaInfosGene.setEditable(false);
+        textAreaInfosGene.setWrapStyleWord(false);
+        textAreaInfosSelect.setEditable(true);
+        textAreaInfosSelect.setWrapStyleWord(true);
+        textAreaInfosGene.setLineWrap(true);
+        textAreaInfosSelect.setLineWrap(true);
+        textAreaInfosSelect.setEditable(false);
         
         iconU.setIcon(this);
         
-        setMinimumSize(new Dimension(850,900));
+        setMinimumSize(new Dimension(1300,900));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -84,81 +88,46 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
                 setButtonPosition();
             }
         });
-        /*
-        boundsBar = leftBarPanel.getBounds();
+        
+        boundsMenuBar = panelRightBar.getBounds();
         buttonMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                //isMenuVisible = !isMenuVisible;
-                //leftBarPanel.setVisible(isMenuVisible);
-                //setButtonPosition();
-                toggleMenu();
+                isMenuVisible = !isMenuVisible;
+                panelRightBar.setVisible(isMenuVisible);
+                setButtonPosition();
             }
-        });*/
+        });
+        
+        graphstreamContener.setVisible(false);
         
     }
     
-    
-    private void toggleMenu() {
-        if (slideTimer != null && slideTimer.isRunning()) {
-            return; // Empêche le déclenchement de plusieurs animations simultanées
-        }
-        isMenuVisible = !isMenuVisible;
-        slideTimer = new Timer(5, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int currentX = leftBarPanel.getX();
-                int targetX = isMenuVisible ? getWidth() - leftBarPanel.getWidth() : getWidth();
-                int buttonTargetX = isMenuVisible ? getWidth() - leftBarPanel.getWidth() - 50 : getWidth() - 50;
-                int buttonY = (getHeight() - buttonMenu.getHeight()) / 2;
-
-                if (isMenuVisible && currentX > targetX) {
-                    leftBarPanel.setLocation(currentX - stepSize, 0);
-                    ScreenPanel.setBounds(ScreenPanel.getX(), ScreenPanel.getY(), ScreenPanel.getWidth() - stepSize, ScreenPanel.getHeight());
-                    mapCustom1.setBounds(mapCustom1.getX(), mapCustom1.getY(), mapCustom1.getWidth() - stepSize, mapCustom1.getHeight());
-                    buttonMenu.setLocation(currentX - stepSize - 50, buttonY);
-                } else if (!isMenuVisible && currentX < targetX) {
-                    leftBarPanel.setLocation(currentX + stepSize, 0);
-                    ScreenPanel.setBounds(ScreenPanel.getX(), ScreenPanel.getY(), ScreenPanel.getWidth() + stepSize, ScreenPanel.getHeight());
-                    mapCustom1.setBounds(mapCustom1.getX(), mapCustom1.getY(), mapCustom1.getWidth() + stepSize, mapCustom1.getHeight());
-                    buttonMenu.setLocation(currentX + stepSize - 50, buttonY);
-                } else {
-                    slideTimer.stop();
-                    leftBarPanel.setLocation(targetX, 0);
-                    buttonMenu.setLocation(buttonTargetX, buttonY);
-                }
-                repaint();
-            }
-        });
-        slideTimer.start();
-    }
-    
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         ScreenPanel = new javax.swing.JPanel();
         mapCustom1 = new sae.view.airport.MapCustom();
         ComboMapType = new javax.swing.JComboBox<>();
-        leftBarPanel = new javax.swing.JPanel();
-        TopPanel = new javax.swing.JPanel();
-        infosLabel = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2OnOverallInfos = new javax.swing.JTextArea();
-        MiddlePanel = new javax.swing.JPanel();
-        titleLabel = new javax.swing.JLabel();
-        titleLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaOnObject = new javax.swing.JTextArea();
-        BottomPanel = new javax.swing.JPanel();
-        ColorationsButton = new javax.swing.JButton();
-        FunctionsButton = new javax.swing.JButton();
-        jLabelLogo = new javax.swing.JLabel();
+        labelLogo = new javax.swing.JLabel();
+        panelRightBar = new javax.swing.JPanel();
+        panelContainerRightBar = new javax.swing.JPanel();
+        labelInfosGene = new javax.swing.JLabel();
+        panelInfosGene = new javax.swing.JPanel();
+        textAreaInfosGene = new javax.swing.JTextArea();
+        labelInfosSelect1 = new javax.swing.JLabel();
+        labelInfosSelect2 = new javax.swing.JLabel();
+        panelInfosSelect = new javax.swing.JPanel();
+        textAreaInfosSelect = new javax.swing.JTextArea();
+        panelButton = new javax.swing.JPanel();
+        buttonColoration = new javax.swing.JButton();
+        buttonFunctions = new javax.swing.JButton();
+        graphstreamContener = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
-        jMenuItemSaveAsG = new javax.swing.JMenuItem();
         jMenuItemreturnWelcomeFrame = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         DarkModeCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
@@ -179,165 +148,209 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             }
         });
 
+        labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
+
         javax.swing.GroupLayout mapCustom1Layout = new javax.swing.GroupLayout(mapCustom1);
         mapCustom1.setLayout(mapCustom1Layout);
         mapCustom1Layout.setHorizontalGroup(
             mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustom1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(516, Short.MAX_VALUE))
+                .addGroup(mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mapCustom1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mapCustom1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(372, Short.MAX_VALUE))
         );
         mapCustom1Layout.setVerticalGroup(
             mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustom1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(587, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 539, Short.MAX_VALUE)
+                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58))
         );
 
         ScreenPanel.add(mapCustom1);
 
         getContentPane().add(ScreenPanel);
 
-        leftBarPanel.setBackground(new java.awt.Color(255, 255, 255));
-        leftBarPanel.setMaximumSize(new java.awt.Dimension(200, 32767));
-        leftBarPanel.setMinimumSize(new java.awt.Dimension(200, 0));
-        leftBarPanel.setPreferredSize(new java.awt.Dimension(200, 526));
-        leftBarPanel.setLayout(new java.awt.GridLayout(3, 1));
+        panelRightBar.setBackground(new java.awt.Color(255, 255, 255));
+        panelRightBar.setMaximumSize(new java.awt.Dimension(200, 32767));
+        panelRightBar.setMinimumSize(new java.awt.Dimension(200, 0));
+        panelRightBar.setPreferredSize(new java.awt.Dimension(250, 526));
+        panelRightBar.setLayout(new java.awt.GridBagLayout());
 
-        TopPanel.setBackground(new java.awt.Color(255, 255, 255));
-        TopPanel.setForeground(new java.awt.Color(0, 0, 0));
+        panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
+        panelContainerRightBar.setLayout(new java.awt.GridBagLayout());
 
-        infosLabel.setForeground(new java.awt.Color(0, 0, 0));
-        infosLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        infosLabel.setText("INFOS GENERALES");
+        labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
+        labelInfosGene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelInfosGene.setText("INFOS GÉNÉRALES");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 151;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        panelContainerRightBar.add(labelInfosGene, gridBagConstraints);
 
-        jTextArea2OnOverallInfos.setBackground(new java.awt.Color(204, 204, 204));
-        jTextArea2OnOverallInfos.setColumns(20);
-        jTextArea2OnOverallInfos.setRows(5);
-        jTextArea2OnOverallInfos.setBorder(null);
-        jScrollPane2.setViewportView(jTextArea2OnOverallInfos);
+        panelInfosGene.setBackground(new java.awt.Color(204, 204, 204));
+        panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
-        javax.swing.GroupLayout TopPanelLayout = new javax.swing.GroupLayout(TopPanel);
-        TopPanel.setLayout(TopPanelLayout);
-        TopPanelLayout.setHorizontalGroup(
-            TopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(infosLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-            .addGroup(TopPanelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        textAreaInfosGene.setColumns(20);
+        textAreaInfosGene.setRows(5);
+        textAreaInfosGene.setText("  Pour avoir plus d'informations \n      veuillez colorier le graphe\n");
+        textAreaInfosGene.setBorder(null);
+
+        javax.swing.GroupLayout panelInfosGeneLayout = new javax.swing.GroupLayout(panelInfosGene);
+        panelInfosGene.setLayout(panelInfosGeneLayout);
+        panelInfosGeneLayout.setHorizontalGroup(
+            panelInfosGeneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInfosGeneLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(textAreaInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
-        TopPanelLayout.setVerticalGroup(
-            TopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TopPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(infosLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        leftBarPanel.add(TopPanel);
-
-        MiddlePanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        titleLabel.setForeground(new java.awt.Color(0, 0, 0));
-        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText(" INFO SUR L’OBJET ");
-
-        titleLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        titleLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel2.setText("SELECTIONNÉ");
-
-        jTextAreaOnObject.setBackground(new java.awt.Color(204, 204, 204));
-        jTextAreaOnObject.setColumns(20);
-        jTextAreaOnObject.setForeground(new java.awt.Color(0, 0, 0));
-        jTextAreaOnObject.setRows(5);
-        jTextAreaOnObject.setBorder(null);
-        jScrollPane1.setViewportView(jTextAreaOnObject);
-
-        javax.swing.GroupLayout MiddlePanelLayout = new javax.swing.GroupLayout(MiddlePanel);
-        MiddlePanel.setLayout(MiddlePanelLayout);
-        MiddlePanelLayout.setHorizontalGroup(
-            MiddlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-            .addComponent(titleLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MiddlePanelLayout.createSequentialGroup()
+        panelInfosGeneLayout.setVerticalGroup(
+            panelInfosGeneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfosGeneLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-        );
-        MiddlePanelLayout.setVerticalGroup(
-            MiddlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MiddlePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(titleLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                .addComponent(textAreaInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        leftBarPanel.add(MiddlePanel);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
+        panelContainerRightBar.add(panelInfosGene, gridBagConstraints);
 
-        BottomPanel.setBackground(new java.awt.Color(255, 255, 255));
+        labelInfosSelect1.setForeground(new java.awt.Color(0, 0, 0));
+        labelInfosSelect1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelInfosSelect1.setText(" INFOS SUR L’OBJET ");
+        labelInfosSelect1.setPreferredSize(new java.awt.Dimension(200, 16));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 142;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
+        panelContainerRightBar.add(labelInfosSelect1, gridBagConstraints);
 
-        ColorationsButton.setBackground(new java.awt.Color(235, 173, 59));
-        ColorationsButton.setForeground(new java.awt.Color(0, 0, 0));
-        ColorationsButton.setText("Editables");
-        ColorationsButton.setFocusPainted(false);
-        ColorationsButton.addActionListener(new java.awt.event.ActionListener() {
+        labelInfosSelect2.setForeground(new java.awt.Color(0, 0, 0));
+        labelInfosSelect2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelInfosSelect2.setText("SÉLECTIONNÉ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 176;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        panelContainerRightBar.add(labelInfosSelect2, gridBagConstraints);
+
+        panelInfosSelect.setBackground(new java.awt.Color(204, 204, 204));
+        panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
+
+        textAreaInfosSelect.setColumns(20);
+        textAreaInfosSelect.setForeground(new java.awt.Color(0, 0, 0));
+        textAreaInfosSelect.setRows(5);
+        textAreaInfosSelect.setBorder(null);
+
+        javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
+        panelInfosSelect.setLayout(panelInfosSelectLayout);
+        panelInfosSelectLayout.setHorizontalGroup(
+            panelInfosSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInfosSelectLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+        panelInfosSelectLayout.setVerticalGroup(
+            panelInfosSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfosSelectLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
+        panelContainerRightBar.add(panelInfosSelect, gridBagConstraints);
+
+        buttonColoration.setBackground(new java.awt.Color(235, 173, 59));
+        buttonColoration.setForeground(new java.awt.Color(0, 0, 0));
+        buttonColoration.setText("Éditables");
+        buttonColoration.setFocusPainted(false);
+        buttonColoration.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ColorationsButtonActionPerformed(evt);
+                buttonColorationActionPerformed(evt);
             }
         });
 
-        FunctionsButton.setBackground(new java.awt.Color(235, 173, 59));
-        FunctionsButton.setForeground(new java.awt.Color(0, 0, 0));
-        FunctionsButton.setText("Fonctions");
-        FunctionsButton.setFocusPainted(false);
-        FunctionsButton.addActionListener(new java.awt.event.ActionListener() {
+        buttonFunctions.setBackground(new java.awt.Color(235, 173, 59));
+        buttonFunctions.setForeground(new java.awt.Color(0, 0, 0));
+        buttonFunctions.setText("Fonctions");
+        buttonFunctions.setFocusPainted(false);
+        buttonFunctions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FunctionsButtonActionPerformed(evt);
+                buttonFunctionsActionPerformed(evt);
             }
         });
 
-        jLabelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
-
-        javax.swing.GroupLayout BottomPanelLayout = new javax.swing.GroupLayout(BottomPanel);
-        BottomPanel.setLayout(BottomPanelLayout);
-        BottomPanelLayout.setHorizontalGroup(
-            BottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BottomPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelButtonLayout = new javax.swing.GroupLayout(panelButton);
+        panelButton.setLayout(panelButtonLayout);
+        panelButtonLayout.setHorizontalGroup(
+            panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+        );
+        panelButtonLayout.setVerticalGroup(
+            panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelButtonLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(BottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ColorationsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                    .addComponent(FunctionsButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomPanelLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
-        );
-        BottomPanelLayout.setVerticalGroup(
-            BottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BottomPanelLayout.createSequentialGroup()
-                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(FunctionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonFunctions, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ColorationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(buttonColoration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        leftBarPanel.add(BottomPanel);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 116;
+        gridBagConstraints.ipady = 23;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 25, 5, 0);
+        panelContainerRightBar.add(panelButton, gridBagConstraints);
 
-        getContentPane().add(leftBarPanel);
+        graphstreamContener.setLayout(new java.awt.BorderLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 161;
+        gridBagConstraints.ipady = 149;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 42, 0, 0);
+        panelContainerRightBar.add(graphstreamContener, gridBagConstraints);
 
-        jMenuFile.setText("fichier");
+        panelRightBar.add(panelContainerRightBar, new java.awt.GridBagConstraints());
+
+        getContentPane().add(panelRightBar);
+
+        jMenuFile.setText("Fichier");
 
         jMenuItemOpenG.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemOpenG.setText("ouvrir un graphe");
@@ -348,16 +361,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         });
         jMenuFile.add(jMenuItemOpenG);
 
-        jMenuItemSaveAsG.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItemSaveAsG.setText("sauvergarder sous le graphe");
-        jMenuItemSaveAsG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemSaveAsGActionPerformed(evt);
-            }
-        });
-        jMenuFile.add(jMenuItemSaveAsG);
-
-        jMenuItemreturnWelcomeFrame.setText("revenir au menu principal");
+        jMenuItemreturnWelcomeFrame.setText("Revenir au menu principal");
         jMenuItemreturnWelcomeFrame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemreturnWelcomeFrameActionPerformed(evt);
@@ -367,7 +371,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
 
         jMenuBar1.add(jMenuFile);
 
-        jMenuEdit.setText("affichage");
+        jMenuEdit.setText("Affichage");
 
         DarkModeCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         DarkModeCheckBoxMenuItem.setText("put in dark");
@@ -386,13 +390,12 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     }// </editor-fold>//GEN-END:initComponents
 
    
-    
-    
     private void setButtonPosition(){
         int buttonHeight = 50;
         int buttonWidth = 50;
         int buttonY = getHeight()/2 - buttonHeight;
-        buttonMenu.setBounds(getWidth() - (isMenuVisible ? leftBarPanel.getWidth() + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsMenuBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        buttonMenu.setIcon(isMenuVisible ? iconButtonMenuOpen : iconButtonMenuClose);
     }
     
     
@@ -403,11 +406,11 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
-    private void FunctionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FunctionsButtonActionPerformed
+    private void buttonFunctionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFunctionsActionPerformed
         FonctionsDialog dialogF = new FonctionsDialog(this, true);
         dialogF.setLocationRelativeTo(this);
         dialogF.setVisible(true);
-    }//GEN-LAST:event_FunctionsButtonActionPerformed
+    }//GEN-LAST:event_buttonFunctionsActionPerformed
 
     
     /**
@@ -437,11 +440,11 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
-    private void ColorationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColorationsButtonActionPerformed
+    private void buttonColorationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonColorationActionPerformed
         ColorationsDialog cdialog = new ColorationsDialog(this, true);
         cdialog.setLocationRelativeTo(this);
         cdialog.setVisible(true);
-    }//GEN-LAST:event_ColorationsButtonActionPerformed
+    }//GEN-LAST:event_buttonColorationActionPerformed
 
     
     /**
@@ -457,17 +460,6 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         loadDialog.setVisible(true);
 
     }//GEN-LAST:event_jMenuItemOpenGActionPerformed
-
-    
-    /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
-     * menu pour enregistrer un graphe.
-     *
-     * @param evt L'événement d'action associé à l'appel de cette méthode.
-     */
-    private void jMenuItemSaveAsGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsGActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemSaveAsGActionPerformed
 
     
     /**
@@ -537,6 +529,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             }
         }
     }
+    
 
     
     /**
@@ -547,45 +540,55 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     @Override
     public void setJTextAreaText1(String text) {
         String actualString = text;
-        jTextAreaOnObject.setText(actualString);
+        textAreaInfosSelect.setText(actualString);
     }
     
     @Override
     public void setJTextAreaText2(String text) {
         String actualString = text;
-        jTextArea2OnOverallInfos.setText(actualString);
+        textAreaInfosGene.setText(actualString);
     }
+
+    public JPanel getGraphstreamContener() {
+        return graphstreamContener;
+    }
+    
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel BottomPanel;
-    private javax.swing.JButton ColorationsButton;
     private javax.swing.JComboBox<String> ComboMapType;
     private javax.swing.JCheckBoxMenuItem DarkModeCheckBoxMenuItem;
-    private javax.swing.JButton FunctionsButton;
-    private javax.swing.JPanel MiddlePanel;
     private javax.swing.JPanel ScreenPanel;
-    private javax.swing.JPanel TopPanel;
-    private javax.swing.JLabel infosLabel;
-    private javax.swing.JLabel jLabelLogo;
+    private javax.swing.JButton buttonColoration;
+    private javax.swing.JButton buttonFunctions;
+    private javax.swing.JPanel graphstreamContener;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemOpenG;
-    private javax.swing.JMenuItem jMenuItemSaveAsG;
     private javax.swing.JMenuItem jMenuItemreturnWelcomeFrame;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea2OnOverallInfos;
-    private javax.swing.JTextArea jTextAreaOnObject;
-    private javax.swing.JPanel leftBarPanel;
+    private javax.swing.JLabel labelInfosGene;
+    private javax.swing.JLabel labelInfosSelect1;
+    private javax.swing.JLabel labelInfosSelect2;
+    private javax.swing.JLabel labelLogo;
     private sae.view.airport.MapCustom mapCustom1;
-    private javax.swing.JLabel titleLabel;
-    private javax.swing.JLabel titleLabel2;
+    private javax.swing.JPanel panelButton;
+    private javax.swing.JPanel panelContainerRightBar;
+    private javax.swing.JPanel panelInfosGene;
+    private javax.swing.JPanel panelInfosSelect;
+    private javax.swing.JPanel panelRightBar;
+    private javax.swing.JTextArea textAreaInfosGene;
+    private javax.swing.JTextArea textAreaInfosSelect;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void setJTextAreaText(String text) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public JTextArea getTextAreaInfosGene() {
+        return textAreaInfosGene;
+    }
 }
+

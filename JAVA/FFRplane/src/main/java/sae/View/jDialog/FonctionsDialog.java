@@ -4,7 +4,12 @@
  */
 package sae.view.jDialog;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import sae.View.jDialog.ChooseAlgorithmDialog;
 import sae.utils.IconUtil;
+import sae.view.jFrame.MainFrame;
 
 /**
  * Cette classe représente une boîte de dialogue pour les fonctions de
@@ -13,6 +18,13 @@ import sae.utils.IconUtil;
  * @author fillo
  */
 public class FonctionsDialog extends javax.swing.JDialog {
+    private final DefaultComboBoxModel modelComboBox = new DefaultComboBoxModel<>(new String[]{
+        "Afficher les vols dans un intervalle donné", 
+        "Afficher les vols partant / arrivant d'un aéroport donné", 
+        "Afficher les vols à une hauteur donnée", 
+        "Colorier le graphe avec un algorithme de coloration",
+        "NOT CONFIGURED"
+    });
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -20,6 +32,7 @@ public class FonctionsDialog extends javax.swing.JDialog {
      */
     private static final IconUtil iconU = new IconUtil();
 
+    
     /**
      * Constructeur de la classe FonctionsDialog.
      *
@@ -27,12 +40,13 @@ public class FonctionsDialog extends javax.swing.JDialog {
      * @param modal Un booléen indiquant si la boîte de dialogue est modale ou
      * non.
      */
-    public FonctionsDialog(java.awt.Frame parent, boolean modal) {
+    public FonctionsDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         iconU.setIcon(this);
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,11 +62,12 @@ public class FonctionsDialog extends javax.swing.JDialog {
         jTopPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBoxFonctions = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("FFRplane - Fonctions ");
-
-        jBottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 25));
+        setResizable(false);
+        setSize(new java.awt.Dimension(500, 230));
 
         jCancelButton.setBackground(new java.awt.Color(235, 173, 59));
         jCancelButton.setForeground(new java.awt.Color(0, 0, 0));
@@ -80,11 +95,10 @@ public class FonctionsDialog extends javax.swing.JDialog {
         });
         jBottomPanel.add(jOkayButton);
 
-        getContentPane().add(jBottomPanel, java.awt.BorderLayout.CENTER);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Choisissez une fonction d'affinage");
 
-        jLabel1.setText("Tableau de bord des fonctions :");
-
-        jComboBoxFonctions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Afficher tous les vols en cours à une heure donnée", "Sélectionner un aéroport et visualiser les niveaux de chaque vol", "Sélectionner un niveau et afficher tous les vols pour ce niveau", "Colorier en fonction de ...(DSATUR, WP...)" }));
+        jComboBoxFonctions.setModel(modelComboBox);
         jComboBoxFonctions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxFonctionsActionPerformed(evt);
@@ -95,40 +109,74 @@ public class FonctionsDialog extends javax.swing.JDialog {
         jTopPanel.setLayout(jTopPanelLayout);
         jTopPanelLayout.setHorizontalGroup(
             jTopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jTopPanelLayout.createSequentialGroup()
-                .addContainerGap(98, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(83, 83, 83))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
             .addGroup(jTopPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jComboBoxFonctions, 0, 0, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addComponent(jComboBoxFonctions, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jTopPanelLayout.setVerticalGroup(
             jTopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jTopPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBoxFonctions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addComponent(jComboBoxFonctions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        getContentPane().add(jTopPanel, java.awt.BorderLayout.PAGE_START);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 456, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 81, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTopPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTopPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void jComboBoxFonctionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFonctionsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxFonctionsActionPerformed
 
+    
     private void jCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_jCancelButtonActionPerformed
 
+    
     private void jOkayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOkayButtonActionPerformed
-        // TODO add your handling code here:
+        if (modelComboBox.getSelectedItem().equals("Colorier le graphe avec un algorithme de coloration")){
+            this.dispose();
+            ChooseAlgorithmDialog chooseAlgorithm = new ChooseAlgorithmDialog((JFrame) this.getParent(), true);
+            chooseAlgorithm.setVisible(true);
+        }
     }//GEN-LAST:event_jOkayButtonActionPerformed
 
     
@@ -138,6 +186,7 @@ public class FonctionsDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> jComboBoxFonctions;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jOkayButton;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jTopPanel;
     // End of variables declaration//GEN-END:variables
 }

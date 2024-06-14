@@ -24,11 +24,6 @@ public class Main {
     private static final WelcomeFrame wframe = new WelcomeFrame();
 
     /**
-     * Object IconUtil pour configurer les icônes des composants graphiques.
-     */
-    private static final IconUtil iconU = new IconUtil();
-
-    /**
      * La méthode principale de l'application. Elle initialise la jFrame
      * d'accueil et configure les icônes, puis affiche le cadre.
      *
@@ -48,7 +43,7 @@ public class Main {
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        iconU.setIcon(wframe);
+        
         wframe.setVisible(true);
     }
 

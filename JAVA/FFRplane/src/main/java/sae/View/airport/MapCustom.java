@@ -6,10 +6,8 @@ package sae.view.airport;
 
 import sae.Logiciel;
 import java.awt.Color;
-import java.util.Iterator;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import sae.view.easterGame.EasterPoint;
@@ -25,10 +23,12 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.models.Settings;
+import sae.utils.Settings;
 import sae.models.airports.Airport;
 import sae.models.airports.AirportCatalog;
-import sae.models.toolbox.FileTreatment;
+import sae.models.flights.Flight;
+import sae.models.flights.FlightCatalog;
+import sae.models.toolbox.ToolBox;
 import sae.view.easterGame.MonumentWaypoint;
 
 /**
@@ -41,15 +41,18 @@ import sae.view.easterGame.MonumentWaypoint;
  * OpenStreetMap ou Virtual Earth.
  *
  * @author fillo
+ * @author mathe
  */
 public class MapCustom extends JXMapViewer {
 
     private Logiciel logiciel;
     private static int compteur = 0;
     private final Set<Airportpoint> airportPointSet = new HashSet<>();
-    private final Set<IntersectionLine> lineSet = new HashSet<>();
+    private final Set<FlightLine> flightLineSet = new HashSet<>();
     private final Set<Airportpoint> monumentPointSet;
-    private IntersectionLine lastSelectedLine = null;
+    private FlightLine lastSelectedLine = null;
+    private final AirportCatalog airportsCatalog = new AirportCatalog();
+    private final FlightCatalog flightsCatalog = new FlightCatalog();
 
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
@@ -62,45 +65,56 @@ public class MapCustom extends JXMapViewer {
             public void mouseClicked(MouseEvent e) {
                 handleMapClick(e);
             }
+            
         });
     }
-
+    
     private void handleMapClick(MouseEvent e) {
         GeoPosition geo = convertPointToGeoPosition(e.getPoint());
+        
+        System.out.println(geo);
         if (geo != null) {
-            String coords = geo.getLatitude() + " " + geo.getLongitude();
-            System.out.println(coords);
-            //checkLineInterception(e.getPoint());
-        }
-    }
-
-    /**
-     * Partie qui color les lignes de vols
-     * @param clickPoint 
-     */
-    private void checkLineInterception(Point clickPoint) {
-        GeoPosition clickGeo = getTileFactory().pixelToGeo(clickPoint, getZoom());
-
-        for (IntersectionLine line : lineSet) {
-            GeoPosition pt1 = line.getPoint1();
-            GeoPosition pt2 = line.getPoint2();
-
-            double threshold = 150;
-            double distance = line.pointLineDistance(clickGeo, pt1, pt2);
-            if (distance <= threshold) {
-                if (lastSelectedLine != null && lastSelectedLine == line) {
-                    lastSelectedLine.setColor(Color.BLACK);
-                    lastSelectedLine = null;
-                } else {
-                    line.setColor(Color.ORANGE);
-                    lastSelectedLine = line;
-                    System.out.println("Ligne intersectée : " + line.toString());
+            FlightLine closestFlightLine = null;
+            double closestDistance = Double.MAX_VALUE;
+            for (FlightLine flightLine : flightLineSet) {
+                
+                double distance = distToFlightLine(flightLine,geo);
+                System.out.println(distance);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestFlightLine = flightLine;
                 }
+                
             }
+            if (closestFlightLine != null && closestDistance <= 0.1) {  
+                closestFlightLine.setColor(Color.ORANGE);
+                if (lastSelectedLine != null && lastSelectedLine != closestFlightLine) {
+                    lastSelectedLine.setColor(Color.BLACK);
+                }
+                lastSelectedLine = closestFlightLine;
+            }
+            repaint();
         }
-        repaint();
     }
+   
+    private static double distToFlightLine(FlightLine flightLine,GeoPosition point) {
+        GeoPosition point1 = flightLine.getPoint1();
+        GeoPosition point2 = flightLine.getPoint2();
+        
+        double x = point.getLatitude();
+        double y = point.getLongitude();
+        
 
+        double a = (point2.getLongitude()- point1.getLongitude()) / (point2.getLatitude()- point1.getLatitude());
+        double b = point2.getLongitude()- a * point2.getLatitude();
+
+        double distance = Math.abs(a*x - y+b)/Math.sqrt(Math.pow(a, 2)+1);
+        return distance;
+    }
+    
+    
+
+    
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
      *
@@ -124,23 +138,60 @@ public class MapCustom extends JXMapViewer {
         // rendre la map zoomable
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
     }
+    
+    //TEMPORAIRE <
+    public static double distanceBetween(GeoPosition p1, GeoPosition p2) {
+        double deltaX = p2.getLatitude()- p1.getLatitude();
+        double deltaY = p2.getLongitude()- p1.getLongitude();
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+    
+    public static GeoPosition orthogonalProjection(GeoPosition p1, GeoPosition p2, GeoPosition p3) {
+        // Convertir les points en coordonnées cartésiennes (latitude, longitude)
+        double x1 = p1.getLongitude(), y1 = p1.getLatitude();
+        double x2 = p2.getLongitude(), y2 = p2.getLatitude();
+        double x3 = p3.getLongitude(), y3 = p3.getLatitude();
 
+        // Vecteur directeur de la droite P2P3
+        double dx = x3 - x2;
+        double dy = y3 - y2;
+
+        // Vecteur de P2 à P1
+        double px = x1 - x2;
+        double py = y1 - y2;
+
+        // Calculer la projection scalaire de P2P1 sur P2P3
+        double scalarProjection = (px * dx + py * dy) / (dx * dx + dy * dy);
+
+        // Calculer les coordonnées du projeté orthogonal
+        double xProj = x2 + scalarProjection * dx;
+        double yProj = y2 + scalarProjection * dy;
+
+        return new GeoPosition(yProj, xProj);
+    }
+    // >
+    
     /**
      * Initialise les marqueurs des aéroports sur la carte.
      */
     public void initAirports() {
-        AirportCatalog airportCatalog = new AirportCatalog();
         try {
-            FileTreatment.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
+            ToolBox.fillAirportList(Settings.getAirportsFilePath(),airportsCatalog);
         } catch (Exception e) {
         }
-        for (Airport airport : airportCatalog.getAirports()) {
+        for (Airport airport : airportsCatalog.getAirports()) {
             airportPointSet.add(new Airportpoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
-        //easterEgg();
-        //afficherSet();
-
+        
+        //TEMPORAIRE <
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
+        airportPointSet.add(new Airportpoint(new GeoPosition(45.20858185060021,1.9104409217834473)));
+        airportPointSet.add(new Airportpoint(orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(45.72638888888889,5.090833333333333), new GeoPosition(44.82833333333333,-0.7155555555555555))));
+        airportPointSet.add(new Airportpoint(orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(43.43555555555555,5.213611111111112), new GeoPosition(48.44777777777777,-4.418333333333334))));
+        System.out.println(distanceBetween(new GeoPosition(45.20858185060021,1.9104409217834473), orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(45.72638888888889,5.090833333333333), new GeoPosition(44.82833333333333,-0.7155555555555555))));
+        System.out.println(distanceBetween(new GeoPosition(45.20858185060021,1.9104409217834473), orthogonalProjection(new GeoPosition(45.20858185060021,1.9104409217834473), new GeoPosition(43.43555555555555,5.213611111111112), new GeoPosition(48.44777777777777,-4.418333333333334))));
+        // >
+        
         ap.setWaypoints(airportPointSet);
         setOverlayPainter(ap);
         for (Airportpoint d : airportPointSet) {
@@ -149,10 +200,10 @@ public class MapCustom extends JXMapViewer {
                 add(d.getButton());
                 compteur++;
             } else {
+                add(d.getButton());
                 System.err.println("Airport associated with AirportWaypoint is null.");
             }
         }
-        // System.out.print(compteur);
     }
 
     /**
@@ -166,30 +217,17 @@ public class MapCustom extends JXMapViewer {
         initAirports();
     }
 
-    private void setupMouseListeners() {
-        MouseInputListener ml = new PanMouseInputListener(this);
-        addMouseListener(ml);
-        addMouseMotionListener(ml);
-        addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
-    }
-
-    public void initIntersection() {
-        Iterator<Airportpoint> iterator = airportPointSet.iterator();
-        if (airportPointSet.size() >= 2) {
-            Airportpoint airport1 = iterator.next();
-            Airportpoint airport2 = iterator.next();
-
-            GeoPosition airport1Coords = airport1.getAirport().getGeoPosition();
-            System.out.println(airport1Coords);
-            GeoPosition airport2Coords = airport2.getAirport().getGeoPosition();
-            System.out.println(airport2Coords);
-
-            Color randomColor = Color.BLACK;
-
-            IntersectionLine newLine = new IntersectionLine(airport1Coords, airport2Coords, Color.BLACK, this, logiciel);
-            lineSet.add(newLine);
+    public void initFlightLines() {
+        try {
+            ToolBox.fillFlightList(Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
+        } catch (Exception e) {
+        }
+        for (Flight flight : flightsCatalog.getFlights()) {
+            System.out.println(flight);
+            flightLineSet.add(new FlightLine(flight,Color.BLACK,this,logiciel)); // Utilisation du constructeur avec Airport comme argument
         }
         repaint();
+        ToolBox.createGraphTextFile(flightsCatalog);
     }
 
     /**
@@ -296,16 +334,10 @@ public class MapCustom extends JXMapViewer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
-        //System.out.println(lineSet.size());
         // Dessiner les lignes
-        for (IntersectionLine line : lineSet) {
-            //System.out.println("add" + line.toString());
+        for (FlightLine line : flightLineSet) {
             line.paint(g2, this, getWidth(), getHeight());
-            /*line.addMouseMotionListener( new MouseListener(){
-
-                });*/
         }
     }
 }

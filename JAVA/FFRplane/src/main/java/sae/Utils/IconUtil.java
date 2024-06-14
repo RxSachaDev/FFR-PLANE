@@ -21,6 +21,7 @@ public class IconUtil {
      */
     private final String ICON_PATH = "\\src\\main\\java\\sae\\Assets\\logo.png";
 
+    
     /**
      * Définit l'icône pour la fenêtre spécifiée.
      * Charge l'icône à partir du chemin d'accès spécifié et la définit comme icône de la fenêtre.
