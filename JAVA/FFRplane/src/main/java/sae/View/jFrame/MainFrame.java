@@ -4,7 +4,6 @@
  */
 package sae.view.jFrame;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -18,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
 import sae.Logiciel;
 import sae.view.jDialog.LoadAirspaceDialog;
 import sae.utils.IconUtil;
@@ -178,15 +176,17 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
 
         getContentPane().add(ScreenPanel);
 
-        panelRightBar.setBackground(new java.awt.Color(255, 255, 255));
+        panelRightBar.setBackground(new java.awt.Color(221, 221, 221));
         panelRightBar.setMaximumSize(new java.awt.Dimension(200, 32767));
         panelRightBar.setMinimumSize(new java.awt.Dimension(200, 0));
         panelRightBar.setPreferredSize(new java.awt.Dimension(250, 526));
         panelRightBar.setLayout(new java.awt.GridBagLayout());
 
+        panelContainerRightBar.setBackground(new java.awt.Color(221, 221, 221));
         panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
         panelContainerRightBar.setLayout(new java.awt.GridBagLayout());
 
+        labelInfosGene.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosGene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosGene.setText("INFOS GÉNÉRALES");
@@ -263,6 +263,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         textAreaInfosSelect.setForeground(new java.awt.Color(0, 0, 0));
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
+        textAreaInfosSelect.setMinimumSize(new java.awt.Dimension(169, 48));
 
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);
@@ -277,8 +278,8 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             panelInfosSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfosSelectLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -288,6 +289,8 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
         panelContainerRightBar.add(panelInfosSelect, gridBagConstraints);
+
+        panelButton.setBackground(new java.awt.Color(221, 221, 221));
 
         buttonColoration.setBackground(new java.awt.Color(235, 173, 59));
         buttonColoration.setForeground(new java.awt.Color(0, 0, 0));
@@ -353,7 +356,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         jMenuFile.setText("Fichier");
 
         jMenuItemOpenG.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItemOpenG.setText("ouvrir un graphe");
+        jMenuItemOpenG.setText("Ouvrir un graphe");
         jMenuItemOpenG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemOpenGActionPerformed(evt);
@@ -374,7 +377,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         jMenuEdit.setText("Affichage");
 
         DarkModeCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        DarkModeCheckBoxMenuItem.setText("put in dark");
+        DarkModeCheckBoxMenuItem.setText("Dark mode");
         DarkModeCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DarkModeCheckBoxMenuItemActionPerformed(evt);
@@ -423,12 +426,30 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private void DarkModeCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DarkModeCheckBoxMenuItemActionPerformed
         if (DarkModeCheckBoxMenuItem.isSelected()) {
             // le darkmode est activé
-            setPanelBackground(this.getContentPane(), Color.BLACK);
-            setLabelForeground(this.getContentPane(), Color.WHITE);
+            setPanelBackground(this.getContentPane(), new Color(50,50,50));
+            panelInfosGene.setBackground(new Color(74, 74, 74));
+            panelInfosSelect.setBackground(new Color(74, 74, 74));
+            textAreaInfosGene.setBackground(new Color(174, 174, 174));
+            textAreaInfosSelect.setBackground(new Color(174, 174, 174));
+            ComboMapType.setSelectedIndex(3);
+            mapCustom1.changeStyle(3);
+            labelInfosGene.setForeground(new Color(174, 174, 174));
+            labelInfosSelect1.setForeground(new Color(174, 174, 174));
+            labelInfosSelect2.setForeground(new Color(174, 174, 174));
+            
         } else {
             //le darkmode est désactivé
-            setPanelBackground(this.getContentPane(), Color.WHITE);
-            setLabelForeground(this.getContentPane(), Color.BLACK);
+            setPanelBackground(this.getContentPane(), Color.WHITE);    
+            textAreaInfosSelect.setBackground(Color.white);
+            textAreaInfosGene.setBackground(Color.white);
+            setPanelBackground(this.getContentPane(), new Color(221,221,221));
+            panelInfosSelect.setBackground(new Color(204, 204, 204));
+            panelInfosGene.setBackground(new Color(204, 204, 204));
+            ComboMapType.setSelectedIndex(0);
+            mapCustom1.changeStyle(0);
+            labelInfosGene.setForeground(Color.BLACK);
+            labelInfosSelect1.setForeground(Color.BLACK);
+            labelInfosSelect2.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_DarkModeCheckBoxMenuItemActionPerformed
     
