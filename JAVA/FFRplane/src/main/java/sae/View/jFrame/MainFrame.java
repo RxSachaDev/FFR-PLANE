@@ -55,12 +55,9 @@ public class MainFrame extends JFrame implements Logiciel {
         mapCustom.add(buttonMenu);
         
         textAreaInfosGene.setEditable(false);
-        textAreaInfosGene.setWrapStyleWord(false);
-        textAreaInfosSelect.setEditable(true);
-        textAreaInfosSelect.setWrapStyleWord(true);
-        textAreaInfosGene.setLineWrap(true);
-        textAreaInfosSelect.setLineWrap(true);
         textAreaInfosSelect.setEditable(false);
+        
+        
         
         iconU.setIcon(this);
         
@@ -167,6 +164,7 @@ public class MainFrame extends JFrame implements Logiciel {
 
         textAreaInfosGene.setBackground(null);
         textAreaInfosGene.setColumns(20);
+        textAreaInfosGene.setForeground(null);
         textAreaInfosGene.setRows(5);
         textAreaInfosGene.setBorder(null);
 
@@ -201,9 +199,13 @@ public class MainFrame extends JFrame implements Logiciel {
 
         textAreaInfosSelect.setBackground(null);
         textAreaInfosSelect.setColumns(20);
-        textAreaInfosSelect.setForeground(new java.awt.Color(0, 0, 0));
+        textAreaInfosSelect.setForeground(null);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
+        textAreaInfosSelect.setCaretColor(null);
+        textAreaInfosSelect.setDisabledTextColor(null);
+        textAreaInfosSelect.setSelectedTextColor(null);
+        textAreaInfosSelect.setSelectionColor(null);
 
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);

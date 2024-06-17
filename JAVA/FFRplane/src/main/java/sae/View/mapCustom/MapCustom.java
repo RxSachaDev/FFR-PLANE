@@ -48,10 +48,9 @@ public class MapCustom extends JXMapViewer {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //handleMapClick(e);
+                mapController.handleMapClick(e);
             } 
         });
-        
     }
     
     
@@ -79,54 +78,6 @@ public class MapCustom extends JXMapViewer {
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
     }
     
-
-    // <! A REVOIR
-    private void handleMapClick(MouseEvent e) {
-        /*GeoPosition geo = convertPointToGeoPosition(e.getPoint());
-        
-        System.out.println(geo);
-        if (geo != null) {
-            FlightLine closestFlightLine = null;
-            double closestDistance = Double.MAX_VALUE;
-            for (FlightLine flightLine : flightLineSet) {
-                
-                double distance = distToFlightLine(flightLine,geo);
-                System.out.println(distance);
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closestFlightLine = flightLine;
-                }
-                
-            }
-            if (closestFlightLine != null && closestDistance <= 0.1) {  
-                closestFlightLine.setColor(Color.ORANGE);
-                if (lastSelectedLine != null && lastSelectedLine != closestFlightLine) {
-                    lastSelectedLine.setColor(Color.BLACK);
-                }
-                lastSelectedLine = closestFlightLine;
-            }
-            repaint();
-        }*/
-    }
-   
-    
-    private static double distToFlightLine(MapLine flightLine,GeoPosition point) {
-        /*GeoPosition point1 = flightLine.getPoint1();
-        GeoPosition point2 = flightLine.getPoint2();
-        
-        double x = point.getLatitude();
-        double y = point.getLongitude();
-        
-
-        double a = (point2.getLongitude()- point1.getLongitude()) / (point2.getLatitude()- point1.getLatitude());
-        double b = point2.getLongitude()- a * point2.getLatitude();
-
-        double distance = Math.abs(a*x - y+b)/Math.sqrt(Math.pow(a, 2)+1);
-        return distance;*/
-        return 0;
-    }
-    // !>
-
     
     /**
      * Change le style de la carte en fonction de l'index spécifié.

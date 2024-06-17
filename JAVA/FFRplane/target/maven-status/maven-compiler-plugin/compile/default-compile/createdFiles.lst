@@ -12,6 +12,7 @@ sae\view\jDialog\LoadGraphDialog.class
 sae\view\jFrame\WelcomeFrame$1.class
 sae\view\easterGame\TypeOfplaneDialog$4.class
 sae\models\FontEnum.class
+sae\utils\ImageUtil.class
 sae\view\jFrame\MainFrame$4.class
 sae\view\jDialog\LoadGraphDialog$2.class
 sae\view\jFrame\MainFrame$7.class
@@ -28,6 +29,7 @@ sae\view\jDialog\ColorationsDialog.class
 sae\view\jDialog\ColorationsDialog$2.class
 sae\view\jFrame\MainFrame$1.class
 sae\models\flights\FlightCatalog.class
+sae\controller\Logiciel.class
 sae\view\easterGame\EasterGame$2.class
 sae\view\airport\AirportpointRender.class
 sae\view\jDialog\LoadAirspaceDialog$3.class
@@ -48,7 +50,6 @@ sae\controller\Interfaces\ModelPoint.class
 sae\models\toolbox\ToolBox.class
 sae\view\easterGame\EasterGame$3.class
 sae\view\jFrame\MainFrame$5.class
-sae\Logiciel.class
 sae\view\jDialog\FonctionsDialog$2.class
 sae\utils\Settings.class
 sae\view\jDialog\LoadAirspaceDialog$2.class
@@ -77,5 +78,4 @@ sae\view\jDialog\LoadAirspaceDialog$1.class
 sae\controller\Interfaces\ModelLine.class
 sae\view\easterGame\ActionDialog$1.class
 sae\view\jFrame\MainFrame$3.class
-sae\controller\LogicielController.class
 sae\view\mapCustom\MapCustom.class

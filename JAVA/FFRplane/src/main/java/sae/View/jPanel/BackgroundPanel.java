@@ -5,6 +5,7 @@
 package sae.view.jPanel;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +34,8 @@ public class BackgroundPanel extends JPanel {
 
         // Dessiner l'image d'arrière-plan redimensionnée et centrée
         if (backgroundImage != null) {
-            int imageWidth = backgroundImage.getWidth();
-            int imageHeight = backgroundImage.getHeight();
+            int imageWidth = backgroundImage.getWidth(this);
+            int imageHeight = backgroundImage.getHeight(this);
 
             int panelWidth = this.getWidth();
             int panelHeight = this.getHeight();
