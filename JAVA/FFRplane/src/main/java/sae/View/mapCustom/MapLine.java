@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.view.airport;
+package sae.view.mapCustom;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,26 +16,25 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import sae.Logiciel;
+import sae.controller.Logiciel;
+import sae.controller.Interfaces.ModelLine;
 import sae.models.flights.Flight;
 
-public class FlightLine implements Painter<JXMapViewer>, MouseListener {
+public class MapLine implements Painter<JXMapViewer>, MouseListener {
 
     private Color couleur;
     private GeoPosition point1;
     private GeoPosition point2;
     private Logiciel logiciel;
     private MapCustom map;
-    private Flight flight;
+    private ModelLine modelLine;
 
-    public FlightLine(Flight flight, Color couleur, MapCustom map, Logiciel logiciel) {
-        this.point1 = flight.getDepartureAirport().getGeoPosition();
-        this.point2 = flight.getArrivalAirport().getGeoPosition();
+    public MapLine(ModelLine modelLine, Color couleur, MapCustom map) {
+        this.point1 = modelLine.getPoint1();
+        this.point2 = modelLine.getPoint2();
         this.couleur = couleur;
         this.map = map;
-        this.logiciel = logiciel;
-        this.flight = flight;
-
+        this.modelLine = modelLine;
     }
 
     public void setColor(Color couleur) {
@@ -119,7 +118,7 @@ public class FlightLine implements Painter<JXMapViewer>, MouseListener {
     public void mouseClicked(MouseEvent e) {
     }
     
-    public Flight getFlight(){
-        return flight;
+    public ModelLine getModelLine(){
+        return modelLine;
     }
 }

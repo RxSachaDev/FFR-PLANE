@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package sae;
+package sae.controller;
 
 
 /**
@@ -20,7 +20,6 @@ public interface Logiciel {
      * @param text Le texte à afficher dans le composant JTextArea.
      */
     void setJTextAreaText(String text);
-    
     void setJTextAreaText1(String text);
     void setJTextAreaText2(String text);
     

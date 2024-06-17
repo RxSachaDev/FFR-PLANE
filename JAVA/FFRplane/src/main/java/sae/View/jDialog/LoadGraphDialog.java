@@ -9,12 +9,13 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
+
 import sae.View.jFrame.GraphstreamFrame;
-import sae.models.errors.FileFormatError;
+import sae.exceptions.FileFormatException;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
 import sae.view.jFileChooser.OpenFileChooser;
+
 
 /**
  * Cette classe représente une boîte de dialogue de chargement de graphique.
@@ -192,7 +193,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
             graphstreamFrame.setVisible(true);
         } catch(FileNotFoundException e){
             labelError.setText("Le chemin d'accès est introuvable !");
-        } catch(FileFormatError e) {
+        } catch(FileFormatException e) {
             
         }
 

@@ -5,8 +5,8 @@
 package sae.view.jDialog;
 
 import javax.swing.SpinnerNumberModel;
-import sae.utils.IconUtil;
-import sae.utils.Settings;
+
+import sae.utils.*;
 
 /**
  * Cette classe correspond à la dialog comportant tout les éléments liés aux

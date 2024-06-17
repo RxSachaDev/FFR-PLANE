@@ -8,9 +8,9 @@ import java.awt.Dimension;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import net.miginfocom.layout.PlatformDefaults;
-import sae.view.jDialog.LoadAirspaceDialog;
-import sae.view.jDialog.LoadGraphDialog;
+
+import sae.view.jDialog.*;
+
 
 /**
  *

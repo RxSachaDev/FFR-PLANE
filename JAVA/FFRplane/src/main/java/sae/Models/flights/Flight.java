@@ -1,5 +1,8 @@
 package sae.models.flights;
 
+import sae.controller.Interfaces.ModelLine;
+import org.jxmapviewer.viewer.GeoPosition;
+import sae.controller.*;
 import sae.models.airports.*;
 import sae.models.toolbox.*;
 
@@ -9,7 +12,7 @@ import sae.models.toolbox.*;
  * 
  * @author mathe
  */
-public class Flight {
+public class Flight implements ModelLine{
     private static int i = 0; // Compteur pour attribuer un numéro de vol à chaque vol
     private int flightNumber;
     
@@ -225,5 +228,15 @@ public class Flight {
      */
     public int getArrivalTime() {
         return getDepartureTime() + duration;
+    }
+    
+    @Override 
+    public GeoPosition getPoint1(){
+        return departureAirport.getGeoPosition();
+    }
+    
+    @Override 
+    public GeoPosition getPoint2() {
+        return arrivalAirport.getGeoPosition();
     }
 }

@@ -17,11 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import sae.Logiciel;
 import sae.view.jDialog.LoadAirspaceDialog;
+
+import sae.controller.Logiciel;
+import sae.view.jDialog.*;
 import sae.utils.IconUtil;
-import sae.view.jDialog.ColorationsDialog;
-import sae.view.jDialog.FonctionsDialog;
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
@@ -31,23 +31,19 @@ import sae.view.jDialog.FonctionsDialog;
  * @author fillo
  * @author mathe
  */
-public class MainFrame extends javax.swing.JFrame implements Logiciel {
+public class MainFrame extends JFrame implements Logiciel {
     private boolean isMenuVisible = true;
-    private JButton buttonMenu = new JButton();
-    private ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
-    private ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
-    private Rectangle boundsMenuBar;
+    private final JButton buttonMenu = new JButton();
+    private final ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
+    private final ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
+    private final Rectangle boundsMenuBar;
+    
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
      * composants graphiques.
      */
     private static final IconUtil iconU = new IconUtil();
-
-    // exemple1 latitude
-    private static final double latitude = 46.6396031;
-    private static final double longitude = 2.7105474;
-    private static final int standardZoom = 14;
 
     
     /**
@@ -61,20 +57,13 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         initComponents();
         
         buttonMenu.setContentAreaFilled(false);
-
-        mapCustom1.add(buttonMenu);
-        mapCustom1.init(latitude, longitude, standardZoom);
-        mapCustom1.initAirports();
-        mapCustom1.initFlightLines();
         
+        mapCustom.add(buttonMenu);
         
         textAreaInfosGene.setEditable(false);
-        textAreaInfosGene.setWrapStyleWord(false);
-        textAreaInfosSelect.setEditable(true);
-        textAreaInfosSelect.setWrapStyleWord(true);
-        textAreaInfosGene.setLineWrap(true);
-        textAreaInfosSelect.setLineWrap(true);
         textAreaInfosSelect.setEditable(false);
+        
+        
         
         iconU.setIcon(this);
         
@@ -107,7 +96,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         ScreenPanel = new javax.swing.JPanel();
-        mapCustom1 = new sae.view.airport.MapCustom();
+        mapCustom = new sae.view.mapCustom.MapCustom();
         ComboMapType = new javax.swing.JComboBox<>();
         labelLogo = new javax.swing.JLabel();
         panelRightBar = new javax.swing.JPanel();
@@ -148,23 +137,23 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
 
         labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
 
-        javax.swing.GroupLayout mapCustom1Layout = new javax.swing.GroupLayout(mapCustom1);
-        mapCustom1.setLayout(mapCustom1Layout);
-        mapCustom1Layout.setHorizontalGroup(
-            mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mapCustom1Layout.createSequentialGroup()
-                .addGroup(mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mapCustom1Layout.createSequentialGroup()
+        javax.swing.GroupLayout mapCustomLayout = new javax.swing.GroupLayout(mapCustom);
+        mapCustom.setLayout(mapCustomLayout);
+        mapCustomLayout.setHorizontalGroup(
+            mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mapCustomLayout.createSequentialGroup()
+                .addGroup(mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mapCustomLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mapCustom1Layout.createSequentialGroup()
+                    .addGroup(mapCustomLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(372, Short.MAX_VALUE))
-        );
-        mapCustom1Layout.setVerticalGroup(
-            mapCustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mapCustom1Layout.createSequentialGroup()
+                .addContainerGap(372, Short.MAX_VALUE)));
+
+        mapCustomLayout.setVerticalGroup(
+            mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mapCustomLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 539, Short.MAX_VALUE)
@@ -172,7 +161,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
                 .addGap(58, 58, 58))
         );
 
-        ScreenPanel.add(mapCustom1);
+        ScreenPanel.add(mapCustom);
 
         getContentPane().add(ScreenPanel);
 
@@ -203,6 +192,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosGene.setColumns(20);
+        textAreaInfosGene.setForeground(null);
         textAreaInfosGene.setRows(5);
         textAreaInfosGene.setText("  Pour avoir plus d'informations \n      veuillez colorier le graphe\n");
         textAreaInfosGene.setBorder(null);
@@ -260,10 +250,15 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosSelect.setColumns(20);
-        textAreaInfosSelect.setForeground(new java.awt.Color(0, 0, 0));
+        textAreaInfosSelect.setForeground(null);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
         textAreaInfosSelect.setMinimumSize(new java.awt.Dimension(169, 48));
+
+        textAreaInfosSelect.setCaretColor(null);
+        textAreaInfosSelect.setDisabledTextColor(null);
+        textAreaInfosSelect.setSelectedTextColor(null);
+        textAreaInfosSelect.setSelectionColor(null);
 
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);
@@ -432,7 +427,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             textAreaInfosGene.setBackground(new Color(174, 174, 174));
             textAreaInfosSelect.setBackground(new Color(174, 174, 174));
             ComboMapType.setSelectedIndex(3);
-            mapCustom1.changeStyle(3);
+            mapCustom.changeStyle(3);
             labelInfosGene.setForeground(new Color(174, 174, 174));
             labelInfosSelect1.setForeground(new Color(174, 174, 174));
             labelInfosSelect2.setForeground(new Color(174, 174, 174));
@@ -446,7 +441,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
             panelInfosSelect.setBackground(new Color(204, 204, 204));
             panelInfosGene.setBackground(new Color(204, 204, 204));
             ComboMapType.setSelectedIndex(0);
-            mapCustom1.changeStyle(0);
+            mapCustom.changeStyle(0);
             labelInfosGene.setForeground(Color.BLACK);
             labelInfosSelect1.setForeground(Color.BLACK);
             labelInfosSelect2.setForeground(Color.BLACK);
@@ -507,7 +502,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
      */
     private void ComboMapTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboMapTypeActionPerformed
         int index = ComboMapType.getSelectedIndex();
-        mapCustom1.changeStyle(index);
+        mapCustom.changeStyle(index);
     }//GEN-LAST:event_ComboMapTypeActionPerformed
 
     
@@ -593,7 +588,7 @@ public class MainFrame extends javax.swing.JFrame implements Logiciel {
     private javax.swing.JLabel labelInfosSelect1;
     private javax.swing.JLabel labelInfosSelect2;
     private javax.swing.JLabel labelLogo;
-    private sae.view.airport.MapCustom mapCustom1;
+    private sae.view.mapCustom.MapCustom mapCustom;
     private javax.swing.JPanel panelButton;
     private javax.swing.JPanel panelContainerRightBar;
     private javax.swing.JPanel panelInfosGene;

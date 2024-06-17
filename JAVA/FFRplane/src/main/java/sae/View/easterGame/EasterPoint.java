@@ -13,21 +13,22 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.jxmapviewer.viewer.GeoPosition;
+
 import sae.models.airports.Airport;
-import sae.view.airport.Airportpoint;
-import sae.view.airport.CustomAeroportPoint;
+import sae.view.mapCustom.*;
+import sae.view.jButton.*;
 
 /**
  *
  * @author fillo
  */
-public class EasterPoint extends Airportpoint {
+public class EasterPoint extends MapPoint {
 
     private JButton button;
     private EasterGame easterGame;
 
     private void initButton() {
-    button = new CustomAeroportPoint();
+    button = new CustomButtonMapPoint();
     button.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -50,7 +51,7 @@ public class EasterPoint extends Airportpoint {
     public EasterPoint(GeoPosition coord) {
         // Appelle le constructeur de la classe parent avec la position géographique spécifiée
         super(coord); 
-        super.setAirport(new Airport("IUT c'est bizarre", coord));
+        super.setPoint(new Airport("IUT c'est bizarre", coord));
         initButton();
     }
 

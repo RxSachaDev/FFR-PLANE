@@ -14,7 +14,7 @@ import java.util.Scanner;
 import java.util.Set;
 import sae.models.airports.Airport;
 import sae.models.airports.AirportCatalog;
-import sae.models.errors.FileFormatError;
+import sae.exceptions.FileFormatException;
 import sae.models.flights.Flight;
 import sae.models.flights.FlightCatalog;
 import sae.models.intersection.FlightCollisionTools;
@@ -73,9 +73,9 @@ public class ToolBox {
      * @param airportsCatalog le catalogue des aéroports
      * @return true si l'opération est réussie, false sinon
      * @throws FileNotFoundException si le fichier est introuvable
-     * @throws FileFormatError s'il y a une erreur de format dans le fichier
+     * @throws FileFormatException s'il y a une erreur de format dans le fichier
      */
-    public static boolean fillAirportList(String filePath, AirportCatalog airportsCatalog) throws FileNotFoundException, FileFormatError {
+    public static boolean fillAirportList(String filePath, AirportCatalog airportsCatalog) throws FileNotFoundException, FileFormatException {
         int lineCount = 1;
         try {
             FileReader file = new FileReader(filePath);
@@ -92,7 +92,7 @@ public class ToolBox {
         } catch (FileNotFoundException error) {
             throw new FileNotFoundException();
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException error) {
-            throw new FileFormatError(lineCount, filePath);
+            throw new FileFormatException(lineCount, filePath);
         }
         return true;
     }

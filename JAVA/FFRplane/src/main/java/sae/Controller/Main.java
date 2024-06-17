@@ -6,8 +6,7 @@ package sae.controller;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import sae.utils.IconUtil;
-import sae.view.jFrame.WelcomeFrame;
+import sae.view.jFrame.*;
 
 /**
  * La classe Main est la classe principale de l'application. Elle initialise et
@@ -17,12 +16,6 @@ import sae.view.jFrame.WelcomeFrame;
  * @author fillo
  */
 public class Main {
-
-    /**
-     * La jFrame d'accueil de l'application qui propose les différentes actions.
-     */
-    private static final WelcomeFrame wframe = new WelcomeFrame();
-
     /**
      * La méthode principale de l'application. Elle initialise la jFrame
      * d'accueil et configure les icônes, puis affiche le cadre.
@@ -31,7 +24,12 @@ public class Main {
      * cette application).
      */
     public static void main(String[] args) {
-
+        setPoliceNimbus();
+        WelcomeFrame wframe = new WelcomeFrame();
+        wframe.setVisible(true);
+    }
+    
+    public static void setPoliceNimbus(){
         try {
             // Mettre en place le Look and Feel Nimbus
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -43,8 +41,5 @@ public class Main {
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        
-        wframe.setVisible(true);
     }
-
 }

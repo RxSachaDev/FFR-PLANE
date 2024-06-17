@@ -5,7 +5,8 @@
 package sae.view.easterGame;
 
 import java.awt.Color;
-import sae.view.airport.MapCustom;
+
+import sae.view.mapCustom.*;
 
 /**
  *
