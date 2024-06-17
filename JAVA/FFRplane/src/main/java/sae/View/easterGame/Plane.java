@@ -1,4 +1,4 @@
-package sae.View.easterGame;
+package sae.view.easterGame;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -21,8 +21,7 @@ public class Plane extends JLabel {
     public ImageIcon planeDownRightIcon;
 
     private GeoPosition position;
-    private double litresEssence;
-    private double vitesse = 0.001;
+    private double vitesse = 0.002;
     private String typePlane;
 
     public Plane(String type, GeoPosition position,
@@ -73,12 +72,7 @@ public class Plane extends JLabel {
         return this.vitesse;
     }
 
-    public double getLitresEssence() {
-        return this.litresEssence;
-    }
-
     public void setVitesse(double vitesse) {
-        System.out.println(vitesse);
         this.vitesse = vitesse;
     }
 
@@ -99,6 +93,7 @@ public class Plane extends JLabel {
         this.planeDownLeftIcon = resizeIcon(planeDownLeftIcon, 80, 60);
         this.planeDownRightIcon = resizeIcon(planeDownRightIcon, 80, 60);
         this.setPlaneIcon(this.planeUpIcon, 80, 60);
+        this.typePlane = "Rafale";
     }
 
     public void setPlaneIcon(ImageIcon planeUpIcon, ImageIcon planeDownIcon,
@@ -114,6 +109,6 @@ public class Plane extends JLabel {
         this.planeDownLeftIcon = resizeIcon(planeDownLeftIcon, 80, 60);
         this.planeDownRightIcon = resizeIcon(planeDownRightIcon, 80, 60);
         this.setPlaneIcon(this.planeUpIcon, 80, 60);
+        this.typePlane = "Avion de ligne";
     }
-
 }

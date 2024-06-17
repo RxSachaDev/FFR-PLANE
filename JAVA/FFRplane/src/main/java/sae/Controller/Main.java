@@ -2,12 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package sae.Controller;
+package sae.controller;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import sae.Utils.IconUtil;
-import sae.View.jFrame.WelcomeFrame;
+import sae.view.jFrame.*;
 
 /**
  * La classe Main est la classe principale de l'application. Elle initialise et
@@ -17,21 +16,6 @@ import sae.View.jFrame.WelcomeFrame;
  * @author fillo
  */
 public class Main {
-
-    /**
-     * La jFrame d'accueil de l'application qui propose les différentes actions.
-     */
-    private static final WelcomeFrame wframe = new WelcomeFrame();
-
-    /**
-     * Object IconUtil pour configurer les icônes des composants graphiques.
-     */
-    private static final IconUtil iconU = new IconUtil();
-
-    public static final String FICHIER_AEROPORTS = "./data/aeroports.txt";
-    public static final String FICHIER_VOLS = "./data/vol-test4.csv";
-    private static int k_max = 2;
-
     /**
      * La méthode principale de l'application. Elle initialise la jFrame
      * d'accueil et configure les icônes, puis affiche le cadre.
@@ -40,7 +24,12 @@ public class Main {
      * cette application).
      */
     public static void main(String[] args) {
-
+        setPoliceNimbus();
+        WelcomeFrame wframe = new WelcomeFrame();
+        wframe.setVisible(true);
+    }
+    
+    public static void setPoliceNimbus(){
         try {
             // Mettre en place le Look and Feel Nimbus
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -52,8 +41,5 @@ public class Main {
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        iconU.setIcon(wframe);
-        wframe.setVisible(true);
     }
-
 }

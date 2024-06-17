@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sae.Utils;
+package sae.utils;
 
 import java.awt.Window;
 import javax.swing.ImageIcon;
@@ -21,6 +21,7 @@ public class IconUtil {
      */
     private final String ICON_PATH = "\\src\\main\\java\\sae\\Assets\\logo.png";
 
+    
     /**
      * Définit l'icône pour la fenêtre spécifiée.
      * Charge l'icône à partir du chemin d'accès spécifié et la définit comme icône de la fenêtre.

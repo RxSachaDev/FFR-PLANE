@@ -1,14 +1,19 @@
-package sae.Models.flights;
+package sae.models.flights;
 
-import sae.Models.airports.*;
-import sae.Models.toolbox.*;
+import sae.controller.Interfaces.ModelLine;
+import org.jxmapviewer.viewer.GeoPosition;
+import sae.controller.*;
+import sae.models.airports.*;
+import sae.models.toolbox.*;
 
 /**
- * The Flight class represents a flight with its details including name, departure and arrival airports, 
- * departure time, duration, and calculated distance.
+ * La classe Flight représente un vol avec ses détails incluant le nom, les aéroports de départ et d'arrivée, 
+ * l'heure de départ, la durée et la distance calculée.
+ * 
+ * @author mathe
  */
-public class Flight {
-    private static int i = 0; // Counter to assign a flight number to each flight
+public class Flight implements ModelLine{
+    private static int i = 0; // Compteur pour attribuer un numéro de vol à chaque vol
     private int flightNumber;
     
     private String name;
@@ -18,17 +23,17 @@ public class Flight {
     private int departureMinute;
     private int duration;
 
-    private double flightDistance; // Calculated once to avoid recalculating for each comparison between flights
+    private double flightDistance; // Calculé une fois pour éviter de recalculer pour chaque comparaison entre vols
 
     /**
-     * Constructor to instantiate a Flight with detailed information.
+     * Constructeur pour instancier un vol avec des informations détaillées.
      *
-     * @param name the name of the flight
-     * @param departureAirport the departure airport
-     * @param arrivalAirport the arrival airport
-     * @param departureHour the departure hour
-     * @param departureMinute the departure minute
-     * @param duration the duration of the flight in minutes
+     * @param name le nom du vol
+     * @param departureAirport l'aéroport de départ
+     * @param arrivalAirport l'aéroport d'arrivée
+     * @param departureHour l'heure de départ
+     * @param departureMinute la minute de départ
+     * @param duration la durée du vol en minutes
      */
     public Flight(String name, Airport departureAirport, Airport arrivalAirport, int departureHour, int departureMinute, int duration) {
         this.name = name;
@@ -44,9 +49,9 @@ public class Flight {
 
 
     /**
-     * Returns a string representation of the Flight object.
+     * Retourne une représentation en chaîne de caractères de l'objet Flight.
      *
-     * @return a string representation of the Flight object
+     * @return une représentation en chaîne de caractères de l'objet Flight
      */
     @Override
     public String toString() {
@@ -57,9 +62,9 @@ public class Flight {
 
 
     /**
-     * Gets the name of the flight.
+     * Obtient le nom du vol.
      *
-     * @return the name of the flight
+     * @return le nom du vol
      */
     public String getName() {
         return name;
@@ -67,9 +72,9 @@ public class Flight {
 
 
     /**
-     * Gets the departure airport.
+     * Obtient l'aéroport de départ.
      *
-     * @return the departure airport
+     * @return l'aéroport de départ
      */
     public Airport getDepartureAirport() {
         return departureAirport;
@@ -77,9 +82,9 @@ public class Flight {
 
 
     /**
-     * Gets the arrival airport.
+     * Obtient l'aéroport d'arrivée.
      *
-     * @return the arrival airport
+     * @return l'aéroport d'arrivée
      */
     public Airport getArrivalAirport() {
         return arrivalAirport;
@@ -87,9 +92,9 @@ public class Flight {
 
 
     /**
-     * Gets the departure hour.
+     * Obtient l'heure de départ.
      *
-     * @return the departure hour
+     * @return l'heure de départ
      */
     public int getDepartureHour() {
         return departureHour;
@@ -97,9 +102,9 @@ public class Flight {
 
 
     /**
-     * Gets the departure minute.
+     * Obtient la minute de départ.
      *
-     * @return the departure minute
+     * @return la minute de départ
      */
     public int getDepartureMinute() {
         return departureMinute;
@@ -107,9 +112,9 @@ public class Flight {
 
 
     /**
-     * Gets the duration of the flight in minutes.
+     * Obtient la durée du vol en minutes.
      *
-     * @return the duration of the flight in minutes
+     * @return la durée du vol en minutes
      */
     public int getDuration() {
         return duration;
@@ -117,9 +122,9 @@ public class Flight {
 
 
     /**
-     * Gets the distance of the flight.
+     * Obtient la distance du vol.
      *
-     * @return the distance of the flight
+     * @return la distance du vol
      */
     public double getFlightDistance() {
         return flightDistance;
@@ -127,9 +132,9 @@ public class Flight {
 
 
     /**
-     * Sets the name of the flight.
+     * Définit le nom du vol.
      *
-     * @param name the new name of the flight
+     * @param name le nouveau nom du vol
      */
     public void setName(String name) {
         this.name = name;
@@ -137,9 +142,9 @@ public class Flight {
 
     
     /**
-     * Sets the departure airport.
+     * Définit l'aéroport de départ.
      *
-     * @param departureAirport the new departure airport
+     * @param departureAirport le nouvel aéroport de départ
      */
     public void setDepartureAirport(Airport departureAirport) {
         this.departureAirport = departureAirport;
@@ -147,9 +152,9 @@ public class Flight {
 
 
     /**
-     * Sets the arrival airport.
+     * Définit l'aéroport d'arrivée.
      *
-     * @param arrivalAirport the new arrival airport
+     * @param arrivalAirport le nouvel aéroport d'arrivée
      */
     public void setArrivalAirport(Airport arrivalAirport) {
         this.arrivalAirport = arrivalAirport;
@@ -157,9 +162,9 @@ public class Flight {
 
 
     /**
-     * Sets the departure hour.
+     * Définit l'heure de départ.
      *
-     * @param departureHour the new departure hour
+     * @param departureHour la nouvelle heure de départ
      */
     public void setDepartureHour(int departureHour) {
         this.departureHour = departureHour;
@@ -167,9 +172,9 @@ public class Flight {
 
 
     /**
-     * Sets the departure minute.
+     * Définit la minute de départ.
      *
-     * @param departureMinute the new departure minute
+     * @param departureMinute la nouvelle minute de départ
      */
     public void setDepartureMinute(int departureMinute) {
         this.departureMinute = departureMinute;
@@ -177,9 +182,9 @@ public class Flight {
 
 
     /**
-     * Sets the duration of the flight in minutes.
+     * Définit la durée du vol en minutes.
      *
-     * @param duration the new duration of the flight in minutes
+     * @param duration la nouvelle durée du vol en minutes
      */
     public void setDuration(int duration) {
         this.duration = duration;
@@ -187,9 +192,9 @@ public class Flight {
 
 
     /**
-     * Sets the distance of the flight.
+     * Définit la distance du vol.
      *
-     * @param flightDistance the new distance of the flight
+     * @param flightDistance la nouvelle distance du vol
      */
     public void setFlightDistance(double flightDistance) {
         this.flightDistance = flightDistance;
@@ -197,9 +202,9 @@ public class Flight {
 
 
     /**
-     * Gets the flight number.
+     * Obtient le numéro de vol.
      *
-     * @return the flight number
+     * @return le numéro de vol
      */
     public int getFlightNumber() {
         return flightNumber;
@@ -207,9 +212,9 @@ public class Flight {
 
 
     /**
-     * Gets the departure time in minutes since midnight.
+     * Obtient l'heure de départ en minutes depuis minuit.
      *
-     * @return the departure time in minutes since midnight
+     * @return l'heure de départ en minutes depuis minuit
      */
     public int getDepartureTime() {
         return departureHour * 60 + departureMinute;
@@ -217,12 +222,21 @@ public class Flight {
 
 
     /**
-     * Gets the arrival time in minutes since midnight.
+     * Obtient l'heure d'arrivée en minutes depuis minuit.
      *
-     * @return the arrival time in minutes since midnight
+     * @return l'heure d'arrivée en minutes depuis minuit
      */
     public int getArrivalTime() {
         return getDepartureTime() + duration;
     }
+    
+    @Override 
+    public GeoPosition getPoint1(){
+        return departureAirport.getGeoPosition();
+    }
+    
+    @Override 
+    public GeoPosition getPoint2() {
+        return arrivalAirport.getGeoPosition();
+    }
 }
-

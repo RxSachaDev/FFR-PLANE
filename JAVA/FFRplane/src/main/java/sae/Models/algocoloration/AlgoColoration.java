@@ -4,7 +4,9 @@
  */
 package sae.Models.algocoloration;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -31,8 +33,8 @@ public class AlgoColoration {
     /**
      * Constructeur par défaut qui initialise un nouveau MultiGraph.
      */
-    AlgoColoration() {
-        graph = new MultiGraph(fichier);
+    public AlgoColoration() {
+        graph = new MultiGraph("test");
     }
 
     /**
@@ -40,8 +42,8 @@ public class AlgoColoration {
      *
      * @param graph le graphe à utiliser
      */
-    AlgoColoration(Graph graph) {
-        this.graph = graph = new MultiGraph(fichier);
+    public AlgoColoration(Graph graph) {
+        this.graph = graph = new MultiGraph("test");
     }
 
     /**
@@ -62,6 +64,10 @@ public class AlgoColoration {
         this.graph = g;
     }
 
+    public void setKmax(int kmax) {
+        this.kmax = kmax;
+    }
+
     /**
      * Renvoie le fichier source du graphe.
      *
@@ -80,8 +86,18 @@ public class AlgoColoration {
         return graph;
     }
 
+    public int getKmax() {
+        return kmax;
+    }
+
+    public int getNbSommet() {
+        return nbSommet;
+    }
+
     /**
      * Affiche le graphe en utilisant l'interface utilisateur GraphStream.
+     *
+     * @param graph le graphe à afficher
      */
     public void afficherGraphe(Graph graph) {
         System.setProperty("org.graphstream.ui", "org.graphstream.ui.swing");
@@ -105,29 +121,31 @@ public class AlgoColoration {
                 String[] elements = line.split("\\s+");
 
                 // La première ligne contient kmax
-                if (cpt == 0) {
-                    kmax = Integer.parseInt(elements[0]);
-                    graph.addAttribute("kmax", kmax);
-                } // La deuxième ligne contient le nombre de sommets
-                else if (cpt == 1) {
-                    nbSommet = Integer.parseInt(elements[0]);
-                    graph.addAttribute("nbSommet", nbSommet);
-                } // Les lignes suivantes contiennent les arêtes
-                else {
-                    Node node1 = graph.getNode(elements[0]);
-                    Node node2 = graph.getNode(elements[1]);
-
-                    // Ajouter les sommets s'ils n'existent pas déjà
-                    if (node1 == null) {
-                        node1 = graph.addNode(elements[0]);
-                    }
-                    if (node2 == null) {
-                        node2 = graph.addNode(elements[1]);
-                    }
-
-                    // Ajouter une arête entre les sommets
-                    String edgeId = elements[0] + "_" + elements[1];
-                    graph.addEdge(edgeId, node1, node2);
+                switch (cpt) {
+                    // La deuxième ligne contient le nombre de sommets
+                    case 0:
+                        kmax = Integer.parseInt(elements[0]);
+                        graph.addAttribute("kmax", kmax);
+                        break;
+                    // Les lignes suivantes contiennent les arêtes
+                    case 1:
+                        nbSommet = Integer.parseInt(elements[0]);
+                        graph.addAttribute("nbSommet", nbSommet);
+                        break;
+                    default:
+                        Node node1 = graph.getNode(elements[0]);
+                        Node node2 = graph.getNode(elements[1]);
+                        // Ajouter les sommets s'ils n'existent pas déjà
+                        if (node1 == null) {
+                            node1 = graph.addNode(elements[0]);
+                        }
+                        if (node2 == null) {
+                            node2 = graph.addNode(elements[1]);
+                        }
+                        // Ajouter une arête entre les sommets
+                        String edgeId = elements[0] + "_" + elements[1];
+                        graph.addEdge(edgeId, node1, node2);
+                        break;
                 }
                 cpt++;
             }
@@ -180,6 +198,16 @@ public class AlgoColoration {
         return conflictCount;
     }
 
+    public int countChromaticcNumber(Graph g) {
+        int chromaticNumber = 0;
+        for (Node node : g) {
+            if ((int) node.getAttribute("color") > chromaticNumber) {
+                chromaticNumber = (int) node.getAttribute("color");
+            }
+        }
+        return chromaticNumber;
+    }
+
     /**
      * Applique l'algorithme de Welsh-Powell pour colorier le graphe. Réduit les
      * conflits en ajustant les couleurs.
@@ -192,7 +220,6 @@ public class AlgoColoration {
         wp.compute();
 
         int chromaticNumber = wp.getChromaticNumber();
-        System.out.println("Chromatic Number: " + chromaticNumber);
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
         if (chromaticNumber > kmax) {
@@ -220,13 +247,12 @@ public class AlgoColoration {
             }
 
         }
-        chromaticNumber = 0;
-        for (Node node : graph) {
-            if ((int) node.getAttribute("color") > chromaticNumber) {
-                chromaticNumber = (int) node.getAttribute("color");
-            }
+        for (Node node : graph.getEachNode()) {
+            node.setAttribute("color", (int) node.getAttribute("color") + 1);
         }
-        System.out.println(chromaticNumber + 1);
+
+        colorGraph(graph);
+
         return countConflicts(graph);
     }
 
@@ -367,7 +393,7 @@ public class AlgoColoration {
         }
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
-        if (chromaticNumber > kmax) {
+        if (chromaticNumber > kmax && kmax != -1) {
             for (int i = 0; i < 20; i++) {
                 for (Node aloneNode : g.getEachNode()) {
                     int minConflicts = Integer.MAX_VALUE;
@@ -397,11 +423,12 @@ public class AlgoColoration {
                 chromaticNumber = (int) node.getAttribute("color");
             }
         }
+        colorGraph(g);
         System.out.println(chromaticNumber);
         return countConflicts(g);
     }
 
-    private Graph copyGraphWithAttributes(Graph original) {
+    public Graph copyGraphWithAttributes(Graph original) {
         Graph copy = new MultiGraph("copy");
         for (Node node : original.getEachNode()) {
             Node copyNode = copy.addNode(node.getId());
@@ -419,23 +446,45 @@ public class AlgoColoration {
      *
      * @return le nombre de conflits après la coloration
      */
-    public int minConflict() {
+    public ResultatColoration minConflict() {
         int conflict = dsatur(graph);
         System.out.println(conflict);
         Graph saveGraph = copyGraphWithAttributes(graph);
-        graph = new MultiGraph(fichier);
-        try {
-            charger_graphe();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (conflict != 0) {
+            graph = new MultiGraph(fichier);
+            try {
+                charger_graphe();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int wp = welshPowell();
+            if (conflict > wp) {
+
+                conflict = wp;
+                saveGraph = copyGraphWithAttributes(graph);
+            }
         }
-        int wp = welshPowell();
-        if (conflict > wp) {
-            System.out.println("WP");
-            conflict = wp;
-            saveGraph = copyGraphWithAttributes(graph);
-        }
-        for (Node node : saveGraph) {
+
+        colorGraph(saveGraph);
+        //afficherGraphe(saveGraph);
+        return new ResultatColoration(conflict, saveGraph);
+    }
+
+    /**
+     * Colore les nœuds d'un graphe avec des couleurs prédéfinies.
+     *
+     * <p>
+     * Cette méthode parcourt chaque nœud du graphe et attribue une couleur de
+     * remplissage en fonction de l'attribut "color" du nœud. Les couleurs sont
+     * prédéfinies dans un tableau. Si la valeur de l'attribut "color" est
+     * inférieure à la longueur du tableau de couleurs, la couleur
+     * correspondante est appliquée au nœud.
+     *
+     * @param g le {@link Graph} contenant les nœuds à colorer
+     */
+    public void colorGraph(Graph g) {
+        for (Node node : g) {
+            // Tableau de couleurs
             String[] colors = {
                 "red", "green", "blue", "yellow", "cyan", "magenta", "orange", "pink", "purple", "brown",
                 "maroon", "navy", "teal", "olive", "lime", "aqua", "fuchsia", "silver", "gray", "black",
@@ -451,25 +500,125 @@ public class AlgoColoration {
                 "steelblue", "lightsteelblue", "powderblue", "lightblue", "skyblue", "lightskyblue", "deepskyblue", "dodgerblue",
                 "cornflowerblue", "royalblue", "blue", "mediumblue", "darkblue", "navy", "midnightblue", "cornsilk", "blanchedalmond",
                 "bisque", "navajowhite", "wheat", "burlywood", "tan", "rosybrown", "sandybrown", "goldenrod", "darkgoldenrod",
-                "peru", "chocolate", "saddlebrown", "sienna", "brown", "darkred","azure", "aliceblue", "mintcream", "honeydew", "lightcoral", "cornflowerblue", "skyblue", "thistle", "seashell", "lavender",
-    "blanchedalmond", "bisque", "antiquewhite", "floralwhite", "ghostwhite", "oldlace", "linen", "mistyrose", "peachpuff", "navajowhite",
-    "palegoldenrod", "lightgoldenrodyellow", "lemonchiffon", "lightyellow", "papayawhip", "moccasin", "khaki", "darkkhaki", "ivory",
-    "beige", "lightgrey", "lightsteelblue", "lightslategray", "slategray", "dimgrey", "darkslategray", "grey", "darkgrey", "lightslategrey",
-    "midnightblue", "navy", "darkblue", "mediumblue", "blue", "darkgreen", "darkolivegreen", "olive", "olivedrab", "yellowgreen",
-    "greenyellow", "darkseagreen", "forestgreen", "limegreen", "lightgreen", "palegreen", "springgreen", "mediumspringgreen", "lawngreen",
-    "chartreuse", "aquamarine", "mediumaquamarine", "paleturquoise", "lightseagreen", "darkturquoise", "cadetblue", "darkcyan", "teal",
-    "lightcyan", "powderblue", "lightblue", "deepskyblue", "dodgerblue", "cornflowerblue", "steelblue", "royalblue", "mediumslateblue",
-    "slateblue", "darkslateblue", "mediumorchid", "blueviolet", "darkviolet", "darkorchid", "darkmagenta", "purple", "indigo", "mediumpurple",
-    "thistle", "plum", "violet", "orchid", "fuchsia", "magenta", "mediumorchid", "mediumpurple", "rebeccapurple"
+                "peru", "chocolate", "saddlebrown", "sienna", "brown", "darkred", "azure", "aliceblue", "mintcream", "honeydew", "lightcoral", "cornflowerblue", "skyblue", "thistle", "seashell", "lavender",
+                "blanchedalmond", "bisque", "antiquewhite", "floralwhite", "ghostwhite", "oldlace", "linen", "mistyrose", "peachpuff", "navajowhite",
+                "palegoldenrod", "lightgoldenrodyellow", "lemonchiffon", "lightyellow", "papayawhip", "moccasin", "khaki", "darkkhaki", "ivory",
+                "beige", "lightgrey", "lightsteelblue", "lightslategray", "slategray", "dimgrey", "darkslategray", "grey", "darkgrey", "lightslategrey",
+                "midnightblue", "navy", "darkblue", "mediumblue", "blue", "darkgreen", "darkolivegreen", "olive", "olivedrab", "yellowgreen",
+                "greenyellow", "darkseagreen", "forestgreen", "limegreen", "lightgreen", "palegreen", "springgreen", "mediumspringgreen", "lawngreen",
+                "chartreuse", "aquamarine", "mediumaquamarine", "paleturquoise", "lightseagreen", "darkturquoise", "cadetblue", "darkcyan", "teal",
+                "lightcyan", "powderblue", "lightblue", "deepskyblue", "dodgerblue", "cornflowerblue", "steelblue", "royalblue", "mediumslateblue",
+                "slateblue", "darkslateblue", "mediumorchid", "blueviolet", "darkviolet", "darkorchid", "darkmagenta", "purple", "indigo", "mediumpurple",
+                "thistle", "plum", "violet", "orchid", "fuchsia", "magenta", "mediumorchid", "mediumpurple", "rebeccapurple"
             };
+            // Modification de l'attribut ui style de chaque sommet du graphe
             if ((int) node.getAttribute("color") < colors.length) {
                 String color = colors[(int) node.getAttribute("color")];
                 node.setAttribute("ui.style", "fill-color: " + color + ";");
             }
-
         }
-        afficherGraphe(saveGraph);
-        return conflict;
+    }
+
+    /**
+     * Génère les fichiers de résultats de coloration pour les graphes dans un
+     * répertoire donné. Les fichiers générés comprennent un fichier CSV
+     * répertoriant les noms des fichiers et le nombre de conflits de
+     * coloration, ainsi que des fichiers texte contenant les colorations des
+     * graphes.
+     *
+     * @param directoryPath le chemin du répertoire contenant les fichiers de
+     * graphes
+     */
+    private void genererFichiers(String directoryPath) {
+        ArrayList<String> fichierListe = new ArrayList<>();
+
+        File directory = new File(directoryPath);
+        // Création de la liste de fichiers
+        File[] files = directory.listFiles((dir, name) -> name.endsWith(".txt"));
+
+        // Incrémentation de la liste de fichiers
+        if (files != null) {
+            for (File file : files) {
+                fichierListe.add(file.getName());
+            }
+        }
+
+        // Création du fichier .csv
+        try (FileWriter csvWriter = new FileWriter("src/main/java/data/test/coloration-groupeX.Y.csv")) {
+            csvWriter.append("nomFichier.txt;nbre conflits\n"); // 1ere ligne qui montre le format d'écriture
+
+            // Boucle permettant la conception des fichiers colo-eval
+            for (int i = 0; i < fichierListe.size(); i++) {
+                String nomFichier = fichierListe.get(i);
+                setFichier(directoryPath + "/" + nomFichier);
+                try {
+                    charger_graphe();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ResultatColoration res = minConflict();
+                int nbConflits = res.getConflict();
+
+                csvWriter.append(nomFichier + ";" + nbConflits + "\n"); // Ajout de la nouvelle ligne avec le même format d'écriture dans le fichier.csv
+
+                String nomFichierColo = "colo-eval" + i + ".txt";
+
+                //Création du fichier .txt
+                try (FileWriter coloWriter = new FileWriter(nomFichierColo)) {
+                    for (Node node : res.getGraph()) {
+                        coloWriter.write(node.getId() + " ; " + node.getAttribute("color") + "\n"); // Ajout de la nouvelle ligne avec le format sommet; couleur
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                graph = new MultiGraph(fichier);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajouter les fichiers à une archive (zip) pour le groupe
+        try {
+            // Crée un flux de sortie pour le fichier ZIP à générer
+            java.util.zip.ZipOutputStream zipOut = new java.util.zip.ZipOutputStream(new java.io.FileOutputStream("src/main/java/data/test/coloration-eval.zip"));
+
+            // Parcourt la liste des fichiers à ajouter à l'archive ZIP
+            for (int i = 0; i < fichierListe.size(); i++) {
+                // Détermine le nom du fichier à zipper
+                String nomFichier = "colo-eval" + i + ".txt";
+
+                // Crée un objet File pour le fichier à zipper
+                java.io.File fileToZip = new java.io.File(nomFichier);
+
+                // Crée un flux d'entrée pour lire le contenu du fichier à zipper
+                java.io.FileInputStream fis = new java.io.FileInputStream(fileToZip);
+
+                // Crée une nouvelle entrée ZIP pour le fichier à zipper
+                java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry(fileToZip.getName());
+
+                // Ajoute l'entrée ZIP au flux de sortie ZIP
+                zipOut.putNextEntry(zipEntry);
+
+                // Tampon pour lire les données du fichier
+                byte[] bytes = new byte[1024];
+                int length;
+
+                // Lit les données du fichier et les écrit dans l'archive ZIP
+                while ((length = fis.read(bytes)) >= 0) {
+                    zipOut.write(bytes, 0, length);
+                }
+
+                // Ferme le flux d'entrée du fichier
+                fis.close();
+            }
+
+            // Ferme le flux de sortie ZIP
+            zipOut.close();
+        } catch (IOException e) {
+            // Gère les exceptions d'entrée/sortie en imprimant la trace de la pile
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -481,15 +630,16 @@ public class AlgoColoration {
      * @param args les arguments de la ligne de commande (non utilisés)
      */
     public static void main(String[] args) {
-        Graph graph = new MultiGraph(null);
+        Graph graph = new MultiGraph("test");
         AlgoColoration test = new AlgoColoration(graph);
-        test.setFichier("src/main/java/data/test/graph-test10.txt");
+        /*test.setFichier("src/main/java/data/test/graph-test17.txt");
         try {
             test.charger_graphe();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(test.minConflict());
-    }
+        System.out.println(test.minConflict().getConflict());*/
 
+        //test.genererFichiers("src/main/java/data/test");
+    }
 }

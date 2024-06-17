@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package sae.View.jDialog;
+package sae.view.jDialog;
 
-import sae.Utils.IconUtil;
+import javax.swing.SpinnerNumberModel;
+
+import sae.utils.*;
 
 /**
  * Cette classe correspond à la dialog comportant tout les éléments liés aux
@@ -42,55 +44,52 @@ public class ColorationsDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         EditableItemsPanel = new javax.swing.JPanel();
         KmaxLabel = new javax.swing.JLabel();
-        KmaxSpinner = new javax.swing.JSpinner();
+        KmaxSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         MinLabel = new javax.swing.JLabel();
-        MinjSpinner = new javax.swing.JSpinner();
-        actualHourjLabel = new javax.swing.JLabel();
-        actualHourjSpinner1 = new javax.swing.JSpinner();
-        TitlePanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        MinjSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         ChoicesPanel = new javax.swing.JPanel();
         CancelButton = new javax.swing.JButton();
         OkButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("FFRplane - coloration settings");
+        setPreferredSize(null);
         setResizable(false);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setSize(new java.awt.Dimension(400, 230));
 
-        KmaxLabel.setText("kmax (niveau de vols) :");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Modifiez ces paramètres");
 
-        MinLabel.setText("marge de sécurité (en min) : ");
+        KmaxLabel.setText("K-Max (niveau de vols) :");
 
-        MinjSpinner.setValue(15);
+        KmaxSpinner.setValue(Settings.getKmax());
 
-        actualHourjLabel.setText("éditer heure actuelle (HH.MM) : ");
+        MinLabel.setText("Marge de sécurité (en min) : ");
 
-        actualHourjSpinner1.setValue(15);
+        MinjSpinner.setValue(Settings.getSafetyMargin());
 
         javax.swing.GroupLayout EditableItemsPanelLayout = new javax.swing.GroupLayout(EditableItemsPanel);
         EditableItemsPanel.setLayout(EditableItemsPanelLayout);
         EditableItemsPanelLayout.setHorizontalGroup(
             EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(EditableItemsPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(KmaxLabel)
-                    .addComponent(MinLabel)
-                    .addComponent(actualHourjLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                    .addComponent(MinLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(MinjSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(KmaxSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(actualHourjSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52))
+                    .addComponent(KmaxSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
         EditableItemsPanelLayout.setVerticalGroup(
             EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(EditableItemsPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(KmaxLabel)
                     .addComponent(KmaxSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -98,22 +97,8 @@ public class ColorationsDialog extends javax.swing.JDialog {
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(MinLabel)
                     .addComponent(MinjSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(actualHourjLabel)
-                    .addComponent(actualHourjSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
-
-        getContentPane().add(EditableItemsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 360, -1));
-
-        TitlePanel.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Ici vous pouvez modifier les paramètres de colorations");
-        TitlePanel.add(jLabel1);
-
-        getContentPane().add(TitlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, -1));
 
         ChoicesPanel.setMaximumSize(new java.awt.Dimension(360, 80));
         ChoicesPanel.setMinimumSize(new java.awt.Dimension(360, 80));
@@ -147,7 +132,27 @@ public class ColorationsDialog extends javax.swing.JDialog {
         });
         ChoicesPanel.add(OkButton);
 
-        getContentPane().add(ChoicesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 360, 60));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(EditableItemsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(25, 25, 25)
+                .addComponent(EditableItemsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -169,9 +174,6 @@ public class ColorationsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel MinLabel;
     private javax.swing.JSpinner MinjSpinner;
     private javax.swing.JButton OkButton;
-    private javax.swing.JPanel TitlePanel;
-    private javax.swing.JLabel actualHourjLabel;
-    private javax.swing.JSpinner actualHourjSpinner1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,15 +1,19 @@
-package sae.Tests;
+package sae.tests;
 
+import sae.exceptions.FileFormatException;
 import java.io.*;
 import java.util.List;
-import sae.models.Settings;
-import sae.models.Settings;
+import sae.utils.Settings;
 
 import sae.models.airports.*;
-import sae.models.errors.*;
 import sae.models.flights.*;
 import sae.models.intersection.*;
 import sae.models.toolbox.*;
+
+/**
+ * 
+ * @author mathe
+ */
 
 public class Test {
     
@@ -17,7 +21,7 @@ public class Test {
         AirportCatalog airportCatalog = new AirportCatalog();
         FlightCatalog flightCatalog = new FlightCatalog();
         try {
-            FileTreatment.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
+            ToolBox.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
             
             Airport A1 = airportCatalog.getAirport("MRS");
             System.out.println(A1.getCoordinates()[0]+","+A1.getCoordinates()[1]);
@@ -31,25 +35,22 @@ public class Test {
             System.out.println(FlightCollisionTools.hasCollision(V1,V2));
             flightsTestFilesResult(flightCatalog,airportCatalog);
             //airportCatalog.displayAirports();
-            
-
         } catch (FileNotFoundException erreur) {
             System.err.println("    > ERREUR : Impossible de traiter ce fichier !");
-        } catch (FileFormatError erreur) {
+        } catch (FileFormatException erreur) {
             System.err.println("    > ERREUR : "+erreur);
         }
     }
 
+    
     public static void flightsTestFilesResult(FlightCatalog flightCatalog,AirportCatalog airportCatalog){
         for(int ii = 1 ; ii<10 ; ii++){
-            String temp = Settings.getFlightsFilePath()+ii+".csv";
+            String temp = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test"+ii+".csv";
             try {
-                FileTreatment.fillFlightList(temp,flightCatalog,airportCatalog);
-            } catch (FileNotFoundException e) {
-                // z
-            }
+                ToolBox.fillFlightList(temp,flightCatalog,airportCatalog);
+            } catch (FileNotFoundException e) {}
             int count = 0;
-            List<Flight> flightsList = flightCatalog.getFlightList();
+            List<Flight> flightsList = flightCatalog.getFlights();
             for(int i = 0 ; i<flightsList.size()-1 ; i++) {
                 for(int j = i+1 ; j<flightsList.size() ; j++){
                     if(FlightCollisionTools.hasCollision(flightsList.get(i), flightsList.get(j))) count++;

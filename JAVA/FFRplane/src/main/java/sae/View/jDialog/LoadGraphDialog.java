@@ -7,14 +7,22 @@ package sae.view.jDialog;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import sae.models.errors.FileFormatError;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+
+import sae.View.jFrame.GraphstreamFrame;
+import sae.exceptions.FileFormatException;
 import sae.utils.IconUtil;
+import sae.utils.Settings;
+import sae.view.jFileChooser.OpenFileChooser;
+
 
 /**
  * Cette classe représente une boîte de dialogue de chargement de graphique.
  * Elle étend la classe javax.swing.JDialog.
  *
  * @author fillo
+ * @author mathe
  */
 public class LoadGraphDialog extends javax.swing.JDialog {
 
@@ -38,7 +46,9 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         initComponents();
         iconU.setIcon(this);
         this.setResizable(false);
+        if(Settings.getAirportsFilePath()!=null) graphFileTextField.setText(Settings.getGraphTestPath());
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,7 +64,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         CancelButton = new javax.swing.JButton();
         OkButton = new javax.swing.JButton();
         firstFileLabel = new javax.swing.JLabel();
-        choiceFileButton1 = new javax.swing.JButton();
+        buttonChooseFile = new javax.swing.JButton();
         graphFileTextField = new javax.swing.JTextField();
         labelError = new javax.swing.JLabel();
 
@@ -99,18 +109,24 @@ public class LoadGraphDialog extends javax.swing.JDialog {
 
         firstFileLabel.setText("Choisissez votre fichier graph-test :");
 
-        choiceFileButton1.setBackground(new java.awt.Color(235, 173, 59));
-        choiceFileButton1.setForeground(new java.awt.Color(0, 0, 0));
-        choiceFileButton1.setText("Ouvrir");
-        choiceFileButton1.setFocusPainted(false);
-        choiceFileButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonChooseFile.setBackground(new java.awt.Color(235, 173, 59));
+        buttonChooseFile.setForeground(new java.awt.Color(0, 0, 0));
+        buttonChooseFile.setText("Ouvrir");
+        buttonChooseFile.setFocusPainted(false);
+        buttonChooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                choiceFileButton1ActionPerformed(evt);
+                buttonChooseFileActionPerformed(evt);
+            }
+        });
+
+        graphFileTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graphFileTextFieldActionPerformed(evt);
             }
         });
 
         labelError.setForeground(new java.awt.Color(255, 51, 51));
-        labelError.setText("Le chemin d'accès est introuvable !");
+        labelError.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,7 +146,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(graphFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(choiceFileButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(6, 6, 6))))
                         .addGap(42, 42, 42)))
                 .addContainerGap())
@@ -148,7 +164,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
                 .addComponent(firstFileLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(choiceFileButton1)
+                    .addComponent(buttonChooseFile)
                     .addComponent(graphFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(labelError)
@@ -165,29 +181,53 @@ public class LoadGraphDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-        System.out.println("ok");
+       System.out.println("ok");
         try {
             Scanner scan = new Scanner(new File(graphFileTextField.getText())); //Déclanche l'éxception si le chemin d'exces est foireux
-            labelError.setText(null);
+            Settings.setFlightsFilePath(graphFileTextField.getText());
+            //GERER L'EXCEPTION FileFormatError
+            dispose();
+            SwingUtilities.getWindowAncestor(this).dispose();
+            //OUVRIR LA FRAME GRAPHSTREAM
+            GraphstreamFrame graphstreamFrame = new GraphstreamFrame(graphFileTextField.getText());
+            graphstreamFrame.setVisible(true);
         } catch(FileNotFoundException e){
-            labelError.setText("L'un des chemin d'accès est introuvable !");
-        } catch(FileFormatError e) {
+            labelError.setText("Le chemin d'accès est introuvable !");
+        } catch(FileFormatException e) {
             
         }
-        
+
         
     }//GEN-LAST:event_OkButtonActionPerformed
 
+    
+    
     private void choiceFileButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceFileButton1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_choiceFileButton1ActionPerformed
 
+    private void buttonChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFileActionPerformed
+        JFileChooser fileChooser = new OpenFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\src\\main\\java\\data\\test\\"));
+        
+        int result = fileChooser.showOpenDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION) {
+            graphFileTextField.setText(fileChooser.getSelectedFile().getPath());
+        } else if(result == JFileChooser.CANCEL_OPTION) {}
+
+        
+    }//GEN-LAST:event_buttonChooseFileActionPerformed
+
+
+    private void graphFileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphFileTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_graphFileTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JPanel ChoicesPanel;
     private javax.swing.JButton OkButton;
-    private javax.swing.JButton choiceFileButton1;
+    private javax.swing.JButton buttonChooseFile;
     private javax.swing.JLabel firstFileLabel;
     private javax.swing.JTextField graphFileTextField;
     private javax.swing.JLabel labelError;
