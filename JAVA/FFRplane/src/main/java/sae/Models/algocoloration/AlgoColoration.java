@@ -17,6 +17,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
+
 /**
  * La classe AlgoColoration permet de charger un graphe à partir d'un fichier,
  * d'appliquer des algorithmes de coloration pour minimiser les conflits de

@@ -5,11 +5,16 @@
 package sae.view.jDialog;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
+
+
 import javax.swing.JFrame;
 import sae.View.jDialog.ChooseAlgorithmDialog;
 import sae.utils.IconUtil;
 import sae.view.jFrame.MainFrame;
+
+
+
+
 
 /**
  * Cette classe représente une boîte de dialogue pour les fonctions de

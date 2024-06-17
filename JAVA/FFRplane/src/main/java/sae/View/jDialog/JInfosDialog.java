@@ -4,7 +4,7 @@
  */
 package sae.view.jDialog;
 
-import sae.utils.IconUtil;
+import sae.utils.*;
 
 /**
  * Cette classe représente une boîte de dialogue de chargement de graphique.

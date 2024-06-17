@@ -1,11 +1,11 @@
 package sae.tests;
 
+import sae.exceptions.FileFormatException;
 import java.io.*;
 import java.util.List;
 import sae.utils.Settings;
 
 import sae.models.airports.*;
-import sae.models.errors.*;
 import sae.models.flights.*;
 import sae.models.intersection.*;
 import sae.models.toolbox.*;
@@ -37,7 +37,7 @@ public class Test {
             //airportCatalog.displayAirports();
         } catch (FileNotFoundException erreur) {
             System.err.println("    > ERREUR : Impossible de traiter ce fichier !");
-        } catch (FileFormatError erreur) {
+        } catch (FileFormatException erreur) {
             System.err.println("    > ERREUR : "+erreur);
         }
     }

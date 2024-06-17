@@ -5,14 +5,11 @@
 package sae.view.jFrame;
 
 import java.awt.Dimension;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import sae.utils.IconUtil;
-import sae.view.jPanel.BackgroundPanel;
-import sae.view.jDialog.JInfosDialog;
-import sae.view.jDialog.LoadAirspaceDialog;
-import sae.view.jDialog.LoadGraphDialog;
+import javax.swing.*;
+
+import sae.utils.*;
+import sae.view.jPanel.*;
+import sae.view.jDialog.*;
 
 /**
  * Fenêtre de bienvenue de l'application FFRplane. Permet à l'utilisateur de
