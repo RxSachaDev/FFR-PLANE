@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -33,27 +35,55 @@ import sae.controller.MapController;
  * @author mathe
  */
 public class MapCustom extends JXMapViewer {
+
+    /**
+     * Le contrôleur pour gérer les interactions avec la carte.
+     */
     MapController mapController = new MapController(this);
-    
+
+    /**
+     * Le niveau de zoom maximal autorisé pour la carte.
+     */
+    private int maxZoom = 17;
+
+    /**
+     * Le niveau de zoom minimal autorisé pour la carte.
+     */
+    private int minZoom = 2;
+
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
      */
     public MapCustom() {
-        init(46.6396031,2.7105474,14);
-        
+        init(46.6396031, 2.7105474, 14);
+
         mapController.initMapPoints(true);
         mapController.initMapLines();
-        
-        
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mapController.handleMapClick(e);
-            } 
+            }
+        });
+
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int wheelRotation = e.getWheelRotation();
+                int currentZoom = getZoom();
+
+                if (!(currentZoom < 15)) {
+                    setZoom(currentZoom - 1);
+                }
+
+                if (!(2 < currentZoom)) {
+                    setZoom(currentZoom + 1);
+                }
+            }
         });
     }
-    
-    
+
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
      *
@@ -77,8 +107,7 @@ public class MapCustom extends JXMapViewer {
         // rendre la map zoomable
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
     }
-    
-    
+
     /**
      * Change le style de la carte en fonction de l'index spécifié.
      *
@@ -122,31 +151,38 @@ public class MapCustom extends JXMapViewer {
         setMaxZoom(17);
     }
 
-    
     /**
      * Définit le niveau de zoom maximal de la carte.
      *
      * @param maxZ Le niveau de zoom maximal autorisé.
      */
     public void setMaxZoom(int maxZ) {
+        maxZoom = maxZ;
         if (getZoom() > maxZ) {
             setZoom(maxZ);
         }
     }
 
-    
     /**
      * Définit le niveau de zoom minimal de la carte.
      *
      * @param maxM Le niveau de zoom minimal autorisé.
      */
-    public void setMinZoom(int maxM) {
-        if (getZoom() < maxM) {
-            setZoom(maxM);
+    public void setMinZoom(int minZ) {
+        minZoom = minZ;
+        if (getZoom() < minZ) {
+            setZoom(minZ);
         }
     }
 
-    
+    public int getMaxZoom() {
+        return this.maxZoom;
+    }
+
+    public int getMinZoom() {
+        return this.minZoom;
+    }
+
     public void initGameMap(double latitude, double longitude) {
         TileFactoryInfo info = new OSMTileFactoryInfo();
         info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
@@ -157,7 +193,6 @@ public class MapCustom extends JXMapViewer {
         setZoom(5);
     }
 
-    
     public void moveMap(double stepX, double stepY) {
         double slowdownFactor = 0.1;
         GeoPosition currentPosition = getAddressLocation();
@@ -166,7 +201,7 @@ public class MapCustom extends JXMapViewer {
         setAddressLocation(new GeoPosition(latitude, longitude));
     }
 
-/*    
+    /*    
     public void addMonuments(MonumentWaypoint mWP) {
         monumentPointSet.add(mWP);
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
@@ -175,14 +210,12 @@ public class MapCustom extends JXMapViewer {
         add(mWP.getButton());
         validate();
     }
-*/
-    
+     */
     public void setCoords(int latitude, int longitude) {
         GeoPosition geo = new GeoPosition(latitude, longitude);
         setAddressLocation(geo);
     }
 
-    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -17,34 +17,17 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
-
 /**
- * La classe AlgoColoration permet de charger un graphe à partir d'un fichier,
- * d'appliquer des algorithmes de coloration pour minimiser les conflits de
- * coloration, et de générer des fichiers de sortie.
- *
- * @author Sacha
+ * La classe Coloration permet de lire un graphe à partir d'un fichier, de
+ * l'afficher, et d'appliquer des algorithmes de coloration pour minimiser les
+ * conflits de coloration.
  */
 public class AlgoColoration {
 
-    /**
-     * Le nombre maximum de couleurs utilisables pour colorer le graphe.
-     */
     private int kmax;
-
-    /**
-     * Le nombre de sommets dans le graphe.
-     */
     private int nbSommet;
-
-    /**
-     * Le nom du fichier contenant les données du graphe.
-     */
+    private ArrayList<Integer> sommet = new ArrayList<>();
     private String fichier;
-
-    /**
-     * L'objet Graph représentant le graphe à colorer.
-     */
     private Graph graph;
 
     /**
