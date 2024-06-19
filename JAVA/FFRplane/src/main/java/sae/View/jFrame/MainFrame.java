@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package sae.view.jFrame;
 
 import java.awt.Color;
@@ -20,6 +16,7 @@ import javax.swing.JTextArea;
 import sae.view.jDialog.LoadAirspaceDialog;
 
 import sae.controller.Logiciel;
+import sae.controller.Controller;
 import sae.view.jDialog.*;
 import sae.utils.IconUtil;
 
@@ -39,6 +36,8 @@ public class MainFrame extends JFrame implements Logiciel {
     private final Rectangle boundsMenuBar;
     
 
+    private Controller controller;
+    
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
      * composants graphiques.
@@ -55,28 +54,36 @@ public class MainFrame extends JFrame implements Logiciel {
      */
     public MainFrame() {
         initComponents();
+        listenerManager();
+        setMinimumSize(new Dimension(1300,900));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         buttonMenu.setContentAreaFilled(false);
+        
+        controller = new Controller(mapCustom);
+        controller.initMapPoints(true);
+        controller.initMapLines();
+        
         
         mapCustom.add(buttonMenu);
         
         textAreaInfosGene.setEditable(false);
         textAreaInfosSelect.setEditable(false);
         
-        
-        
         iconU.setIcon(this);
         
-        setMinimumSize(new Dimension(1300,900));
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        boundsMenuBar = panelRightBar.getBounds(); //Sert pour la MenuBar rétractable
         
+        graphstreamContener.setVisible(false);
+    }
+    
+    private void listenerManager(){
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 setButtonPosition();
             }
         });
         
-        boundsMenuBar = panelRightBar.getBounds();
         buttonMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -86,14 +93,19 @@ public class MainFrame extends JFrame implements Logiciel {
             }
         });
         
-        graphstreamContener.setVisible(false);
+        
+        
         
     }
+    
+    public Controller getController(){
+            return controller;
+    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         ScreenPanel = new javax.swing.JPanel();
         mapCustom = new sae.view.mapCustom.MapCustom();
@@ -108,6 +120,7 @@ public class MainFrame extends JFrame implements Logiciel {
         labelInfosSelect2 = new javax.swing.JLabel();
         panelInfosSelect = new javax.swing.JPanel();
         textAreaInfosSelect = new javax.swing.JTextArea();
+        jComboBox1 = new javax.swing.JComboBox<>();
         panelButton = new javax.swing.JPanel();
         buttonColoration = new javax.swing.JButton();
         buttonFunctions = new javax.swing.JButton();
@@ -149,8 +162,8 @@ public class MainFrame extends JFrame implements Logiciel {
                     .addGroup(mapCustomLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(372, Short.MAX_VALUE)));
-
+                .addContainerGap(372, Short.MAX_VALUE))
+        );
         mapCustomLayout.setVerticalGroup(
             mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustomLayout.createSequentialGroup()
@@ -171,26 +184,17 @@ public class MainFrame extends JFrame implements Logiciel {
         panelRightBar.setPreferredSize(new java.awt.Dimension(250, 526));
         panelRightBar.setLayout(new java.awt.GridBagLayout());
 
+        panelContainerRightBar.setBackground(null);
         panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
-        panelContainerRightBar.setLayout(new java.awt.GridBagLayout());
 
         labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosGene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosGene.setText("INFOS GÉNÉRALES");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 151;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-        panelContainerRightBar.add(labelInfosGene, gridBagConstraints);
 
         panelInfosGene.setBackground(new java.awt.Color(204, 204, 204));
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosGene.setColumns(20);
-        textAreaInfosGene.setForeground(null);
         textAreaInfosGene.setRows(5);
         textAreaInfosGene.setText("  Pour avoir plus d'informations \n      veuillez colorier le graphe\n");
         textAreaInfosGene.setBorder(null);
@@ -212,49 +216,27 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addContainerGap())
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
-        panelContainerRightBar.add(panelInfosGene, gridBagConstraints);
-
         labelInfosSelect1.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect1.setText(" INFOS SUR L’OBJET ");
         labelInfosSelect1.setPreferredSize(new java.awt.Dimension(200, 16));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 142;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
-        panelContainerRightBar.add(labelInfosSelect1, gridBagConstraints);
 
         labelInfosSelect2.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect2.setText("SÉLECTIONNÉ");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 176;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        panelContainerRightBar.add(labelInfosSelect2, gridBagConstraints);
 
         panelInfosSelect.setBackground(new java.awt.Color(204, 204, 204));
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosSelect.setColumns(20);
-        textAreaInfosSelect.setForeground(null);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
         textAreaInfosSelect.setCaretColor(null);
         textAreaInfosSelect.setDisabledTextColor(null);
         textAreaInfosSelect.setSelectedTextColor(null);
         textAreaInfosSelect.setSelectionColor(null);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);
@@ -264,22 +246,18 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addGap(15, 15, 15)
                 .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
+            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelInfosSelectLayout.setVerticalGroup(
             panelInfosSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfosSelectLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
                 .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addContainerGap())
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
-        panelContainerRightBar.add(panelInfosSelect, gridBagConstraints);
+        panelButton.setBackground(null);
 
         buttonColoration.setBackground(new java.awt.Color(235, 173, 59));
         buttonColoration.setForeground(new java.awt.Color(0, 0, 0));
@@ -305,8 +283,8 @@ public class MainFrame extends JFrame implements Logiciel {
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-            .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,28 +293,51 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addComponent(buttonFunctions, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonColoration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 116;
-        gridBagConstraints.ipady = 23;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 25, 5, 0);
-        panelContainerRightBar.add(panelButton, gridBagConstraints);
-
         graphstreamContener.setLayout(new java.awt.BorderLayout());
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.ipadx = 161;
-        gridBagConstraints.ipady = 149;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 42, 0, 0);
-        panelContainerRightBar.add(graphstreamContener, gridBagConstraints);
+
+        javax.swing.GroupLayout panelContainerRightBarLayout = new javax.swing.GroupLayout(panelContainerRightBar);
+        panelContainerRightBar.setLayout(panelContainerRightBarLayout);
+        panelContainerRightBarLayout.setHorizontalGroup(
+            panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(panelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelInfosSelect1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelInfosSelect2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelContainerRightBarLayout.setVerticalGroup(
+            panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                .addComponent(labelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(panelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(labelInfosSelect1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(labelInfosSelect2)
+                .addGap(6, 6, 6)
+                .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         panelRightBar.add(panelContainerRightBar, new java.awt.GridBagConstraints());
 
@@ -399,7 +400,7 @@ public class MainFrame extends JFrame implements Logiciel {
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
     private void buttonFunctionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFunctionsActionPerformed
-        FonctionsDialog dialogF = new FonctionsDialog(this, true);
+        FunctionChooserDialog dialogF = new FunctionChooserDialog(this, true);
         dialogF.setLocationRelativeTo(this);
         dialogF.setVisible(true);
     }//GEN-LAST:event_buttonFunctionsActionPerformed
@@ -535,19 +536,18 @@ public class MainFrame extends JFrame implements Logiciel {
         textAreaInfosSelect.setText(actualString);
     }
     
+    
     @Override
     public void setJTextAreaText2(String text) {
         String actualString = text;
         textAreaInfosGene.setText(actualString);
     }
 
+    
     public JPanel getGraphstreamContener() {
         return graphstreamContener;
     }
     
-    
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboMapType;
     private javax.swing.JCheckBoxMenuItem DarkModeCheckBoxMenuItem;
@@ -555,6 +555,7 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JButton buttonColoration;
     private javax.swing.JButton buttonFunctions;
     private javax.swing.JPanel graphstreamContener;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
@@ -574,11 +575,13 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JTextArea textAreaInfosSelect;
     // End of variables declaration//GEN-END:variables
 
+    
     @Override
     public void setJTextAreaText(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    
     public JTextArea getTextAreaInfosGene() {
         return textAreaInfosGene;
     }

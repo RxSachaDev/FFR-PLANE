@@ -7,7 +7,7 @@ package sae.exceptions;
  */
 public class FileFormatException extends NumberFormatException {
     private int line;
-    private String file;
+    private String fileName;
 
     /**
      * Construit un nouveau FileFormatError avec le numéro de ligne et le nom du fichier spécifiés.
@@ -15,9 +15,10 @@ public class FileFormatException extends NumberFormatException {
      * @param lineInFile le numéro de ligne où l'erreur s'est produite
      * @param fileName le nom du fichier où l'erreur s'est produite
      */
-    public FileFormatException(int lineInFile, String fileName) {
+    public FileFormatException(int lineInFile, String filePath) {
         this.line = lineInFile;
-        this.file = fileName;
+        String[] temp = filePath.split("\\\\");
+        fileName = temp[temp.length-1];
     }
 
 
@@ -27,7 +28,7 @@ public class FileFormatException extends NumberFormatException {
      * @return une représentation en chaîne de caractères de l'exception FileFormatError
      */
     @Override
-    public String toString() {
-        return String.format("Non-conformité à la ligne %d du fichier '%s' !", line, file);
+    public String getMessage() {
+        return String.format("Non-conformité à la ligne %d du fichier %s !", line, fileName);
     }
 }

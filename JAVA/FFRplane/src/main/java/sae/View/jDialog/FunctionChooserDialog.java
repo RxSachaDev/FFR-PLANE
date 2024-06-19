@@ -22,7 +22,7 @@ import sae.view.jFrame.MainFrame;
  *
  * @author fillo
  */
-public class FonctionsDialog extends javax.swing.JDialog {
+public class FunctionChooserDialog extends javax.swing.JDialog {
     private final DefaultComboBoxModel modelComboBox = new DefaultComboBoxModel<>(new String[]{
         "Afficher les vols dans un intervalle donné", 
         "Afficher les vols partant / arrivant d'un aéroport donné", 
@@ -45,7 +45,7 @@ public class FonctionsDialog extends javax.swing.JDialog {
      * @param modal Un booléen indiquant si la boîte de dialogue est modale ou
      * non.
      */
-    public FonctionsDialog(MainFrame parent, boolean modal) {
+    public FunctionChooserDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         iconU.setIcon(this);

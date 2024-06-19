@@ -1,7 +1,3 @@
-/*
-     * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-     * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sae.view.mapCustom;
 
 import java.awt.Graphics;
@@ -20,7 +16,8 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.GeoPosition;
 
-import sae.controller.MapController;
+import sae.controller.Controller;
+import sae.view.jFrame.MainFrame;
 
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des
@@ -35,12 +32,6 @@ import sae.controller.MapController;
  * @author mathe
  */
 public class MapCustom extends JXMapViewer {
-
-    /**
-     * Le contrôleur pour gérer les interactions avec la carte.
-     */
-    MapController mapController = new MapController(this);
-
     /**
      * Le niveau de zoom maximal autorisé pour la carte.
      */
@@ -51,19 +42,22 @@ public class MapCustom extends JXMapViewer {
      */
     private int minZoom = 2;
 
+    private Controller controller;
+    
+    
+    
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
      */
     public MapCustom() {
+        
         init(46.6396031, 2.7105474, 14);
-
-        mapController.initMapPoints(true);
-        mapController.initMapLines();
-
+        
+        
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mapController.handleMapClick(e);
+                controller.handleMapClick(e);
             }
         });
 
@@ -84,6 +78,7 @@ public class MapCustom extends JXMapViewer {
         });
     }
 
+    
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
      *
@@ -108,6 +103,12 @@ public class MapCustom extends JXMapViewer {
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
     }
 
+    
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    
+    
     /**
      * Change le style de la carte en fonction de l'index spécifié.
      *
@@ -151,6 +152,7 @@ public class MapCustom extends JXMapViewer {
         setMaxZoom(17);
     }
 
+    
     /**
      * Définit le niveau de zoom maximal de la carte.
      *
@@ -163,6 +165,7 @@ public class MapCustom extends JXMapViewer {
         }
     }
 
+    
     /**
      * Définit le niveau de zoom minimal de la carte.
      *
@@ -175,14 +178,17 @@ public class MapCustom extends JXMapViewer {
         }
     }
 
+    
     public int getMaxZoom() {
         return this.maxZoom;
     }
 
+    
     public int getMinZoom() {
         return this.minZoom;
     }
 
+    
     public void initGameMap(double latitude, double longitude) {
         TileFactoryInfo info = new OSMTileFactoryInfo();
         info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
@@ -193,6 +199,7 @@ public class MapCustom extends JXMapViewer {
         setZoom(5);
     }
 
+    
     public void moveMap(double stepX, double stepY) {
         double slowdownFactor = 0.1;
         GeoPosition currentPosition = getAddressLocation();
@@ -201,7 +208,8 @@ public class MapCustom extends JXMapViewer {
         setAddressLocation(new GeoPosition(latitude, longitude));
     }
 
-    /*    
+    
+    /*  
     public void addMonuments(MonumentWaypoint mWP) {
         monumentPointSet.add(mWP);
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
@@ -209,19 +217,20 @@ public class MapCustom extends JXMapViewer {
         setOverlayPainter(ap);
         add(mWP.getButton());
         validate();
-    }
-     */
+    }*/
+     
     public void setCoords(int latitude, int longitude) {
         GeoPosition geo = new GeoPosition(latitude, longitude);
         setAddressLocation(geo);
     }
 
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         //Dessiner les lignes
-        for (MapLine line : mapController.getMapLineSet()) {
+        for (MapLine line : controller.getMapLineSet()) {
             line.paint(g2, this, getWidth(), getHeight());
         }
     }

@@ -34,7 +34,7 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
      */
     public ChooseAlgorithmDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent.getParent());
         // Chargement du graphe avec le fichier temporel
         algoColoration.setFichier("src/main/java/data/test/graph-test0.txt");
         try {

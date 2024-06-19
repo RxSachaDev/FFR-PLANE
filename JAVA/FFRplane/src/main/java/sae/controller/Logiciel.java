@@ -4,23 +4,12 @@
  */
 package sae.controller;
 
-
 /**
- * Interface représentant un composant logiciel pouvant interagir avec un
- * JTextArea. Les classes implémentant cette interface doivent fournir une
- * fonctionnalité pour définir du texte dans un JTextArea.
  *
  * @author fillo
  */
 public interface Logiciel {
-
-    /**
-     * Définit le texte à afficher dans un composant JTextArea.
-     *
-     * @param text Le texte à afficher dans le composant JTextArea.
-     */
-    void setJTextAreaText(String text);
-    void setJTextAreaText1(String text);
-    void setJTextAreaText2(String text);
-    
+    public void setJTextAreaText(String text);
+    public void setJTextAreaText1(String text);
+    public void setJTextAreaText2(String text);
 }

@@ -22,7 +22,7 @@ import sae.view.easterGame.*;
  * 
  * @author mathe
  */
-public class MapController {
+public class Controller {
     private MapCustom mapCustom;
     
     private final AirportCatalog airportsCatalog = new AirportCatalog();
@@ -34,10 +34,16 @@ public class MapController {
     private MapLine lastSelectedLine = null;
     
     
-    public MapController(MapCustom mapCustom) {
+    public Controller(MapCustom mapCustom) {
         this.mapCustom = mapCustom;
+        this.mapCustom.setController(this);
     }
 
+    
+    public void refreshMap (){
+        
+    }
+    
     
     public void initMapPoints (Boolean isEasterEggActivated) {
         try {
@@ -64,14 +70,10 @@ public class MapController {
     }
     
     
-    public void refreshMap (){
-        
-    }
-    
     /**
      * Supprime les marqueurs des aéroports de la carte.
      */
-    public void removeAirports() {
+    public void removeMapPoints() {
         for (MapPoint d : mapPointSet) {
             mapCustom.remove(d.getButton());
         }
@@ -82,7 +84,7 @@ public class MapController {
     
     public void initMapLines() {
         try {
-            ToolBox.fillFlightList(Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
+            ToolBox.fillFlightList(Settings.getAirportsFilePath(),Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
         } catch (Exception e) {
         }
         for (Flight flight : flightsCatalog.getFlights()) {
@@ -102,6 +104,7 @@ public class MapController {
     public Set<MapLine> getMapLineSet(){
         return mapLineSet;
     }
+    
     
     /**
      * Gère les clics sur la carte. Cette méthode est appelée lorsqu'un utilisateur clique sur la carte.
@@ -149,38 +152,23 @@ public class MapController {
      * @return la distance entre le point et la ligne de carte
      */
     public static double distToMapLine(MapLine mapLine,GeoPosition point) {
-        GeoPosition point1 = mapLine.getPoint1();
-        GeoPosition point2 = mapLine.getPoint2();
+        //Point1
+        double x1 = mapLine.getPoint1().getLatitude();
+        double y1 = mapLine.getPoint1().getLongitude();
         
-        double x = point.getLatitude();
+        //Point2
+        double x2 = mapLine.getPoint2().getLatitude();
+        double y2 = mapLine.getPoint2().getLongitude();
+        
+        //Point cliqué
+        double x = point.getLatitude(); 
         double y = point.getLongitude();
         
-
-        double a = (point2.getLongitude()- point1.getLongitude()) / (point2.getLatitude()- point1.getLatitude());
-        double b = point2.getLongitude()- a * point2.getLatitude();
+        //Equation de la droite Point1,Point2
+        double a = (y2 - y1) / (x2 - x1);
+        double b = y2 - a * x2;
 
         double distance = Math.abs(-a*x + y - b)/Math.sqrt(Math.pow(a, 2)+1);
         return distance;
     }
-    
-    /*public double distToMapLine(MapLine mapLine,GeoPosition point) {
-        double[] point1 = calCartesianCoordinates(mapLine.getPoint1());
-        double[] point2 = calCartesianCoordinates(mapLine.getPoint2());
-        double[] p = calCartesianCoordinates(point);
-        
-
-        double a = (point2[1] - point1[1]) / (point2[0] - point1[0]);
-        double b = point2[1]- a * point2[0];
-
-        double distance = Math.abs(-a * p[0] + p[1] - b)/Math.sqrt(Math.pow(a, 2)+1);
-        return distance;
-    }
-
-    private double[] calCartesianCoordinates(GeoPosition geoPosition) { 
-        int R = 6371; // Rayon de la Terre (km) 
-        double[] result = new double[2];
-        result[0] = R * cos(toRadians(geoPosition.getLatitude())) * sin(toRadians(geoPosition.getLongitude()));
-        result[1] = R * cos(toRadians(geoPosition.getLatitude())) * cos(toRadians(geoPosition.getLongitude()));
-        return result;
-    }*/
 }
