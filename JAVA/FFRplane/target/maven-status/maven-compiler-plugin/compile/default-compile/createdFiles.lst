@@ -5,8 +5,10 @@ sae\View\easterGame\MonumentWaypoint$1.class
 sae\View\easterGame\EasterGame$5.class
 sae\Utils\ImageUtil.class
 sae\View\jFrame\MainFrame$6.class
+sae\View\jFrame\MainFrame$10.class
 sae\Models\toolbox\ToolBox.class
 sae\View\jDialog\ColorationsDialog$1.class
+sae\View\jFrame\MainFrame$9.class
 sae\exceptions\FileFormatException.class
 sae\View\mapCustom\MapCustom$1.class
 sae\View\jFrame\WelcomeFrame$2.class

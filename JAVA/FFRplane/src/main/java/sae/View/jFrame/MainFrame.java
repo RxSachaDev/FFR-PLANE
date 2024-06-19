@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import sae.View.jDialog.ChooseAlgorithmDialog;
 import sae.view.jDialog.LoadAirspaceDialog;
 
 import sae.controller.Logiciel;
@@ -32,12 +33,12 @@ import sae.utils.IconUtil;
  * @author mathe
  */
 public class MainFrame extends JFrame implements Logiciel {
+
     private boolean isMenuVisible = true;
     private final JButton buttonMenu = new JButton();
     private final ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
     private final ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
     private final Rectangle boundsMenuBar;
-    
 
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -45,7 +46,6 @@ public class MainFrame extends JFrame implements Logiciel {
      */
     private static final IconUtil iconU = new IconUtil();
 
-    
     /**
      * Crée une nouvelle instance de la classe MainFrame. Initialise les
      * composants de la fenêtre, configure la carte personnalisée avec les
@@ -55,41 +55,39 @@ public class MainFrame extends JFrame implements Logiciel {
      */
     public MainFrame() {
         initComponents();
-        
+
         buttonMenu.setContentAreaFilled(false);
-        
+
         mapCustom.add(buttonMenu);
-        
+
         textAreaInfosGene.setEditable(false);
         textAreaInfosSelect.setEditable(false);
-        
-        
-        
+
         iconU.setIcon(this);
-        
-        setMinimumSize(new Dimension(1300,900));
+
+        setMinimumSize(new Dimension(1300, 900));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 setButtonPosition();
             }
         });
-        
+
         boundsMenuBar = panelRightBar.getBounds();
         buttonMenu.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 isMenuVisible = !isMenuVisible;
                 panelRightBar.setVisible(isMenuVisible);
                 setButtonPosition();
             }
         });
-        
+
         graphstreamContener.setVisible(false);
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -113,8 +111,9 @@ public class MainFrame extends JFrame implements Logiciel {
         buttonFunctions = new javax.swing.JButton();
         graphstreamContener = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuFile = new javax.swing.JMenu();
+        colorGraphMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
+        colorGrapheMenuItem = new javax.swing.JMenuItem();
         jMenuItemreturnWelcomeFrame = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         DarkModeCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
@@ -149,8 +148,8 @@ public class MainFrame extends JFrame implements Logiciel {
                     .addGroup(mapCustomLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(372, Short.MAX_VALUE)));
-
+                .addContainerGap(1105, Short.MAX_VALUE))
+        );
         mapCustomLayout.setVerticalGroup(
             mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mapCustomLayout.createSequentialGroup()
@@ -192,7 +191,6 @@ public class MainFrame extends JFrame implements Logiciel {
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosGene.setColumns(20);
-        textAreaInfosGene.setForeground(null);
         textAreaInfosGene.setRows(5);
         textAreaInfosGene.setText("  Pour avoir plus d'informations \n      veuillez colorier le graphe\n");
         textAreaInfosGene.setBorder(null);
@@ -222,6 +220,7 @@ public class MainFrame extends JFrame implements Logiciel {
         gridBagConstraints.insets = new java.awt.Insets(6, 25, 0, 0);
         panelContainerRightBar.add(panelInfosGene, gridBagConstraints);
 
+        labelInfosSelect1.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosSelect1.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect1.setText(" INFOS SUR L’OBJET ");
@@ -235,6 +234,7 @@ public class MainFrame extends JFrame implements Logiciel {
         gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
         panelContainerRightBar.add(labelInfosSelect1, gridBagConstraints);
 
+        labelInfosSelect2.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosSelect2.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect2.setText("SÉLECTIONNÉ");
@@ -250,11 +250,8 @@ public class MainFrame extends JFrame implements Logiciel {
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosSelect.setColumns(20);
-        textAreaInfosSelect.setForeground(null);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
-        textAreaInfosSelect.setMinimumSize(new java.awt.Dimension(169, 48));
-
         textAreaInfosSelect.setCaretColor(null);
         textAreaInfosSelect.setDisabledTextColor(null);
         textAreaInfosSelect.setSelectedTextColor(null);
@@ -273,8 +270,8 @@ public class MainFrame extends JFrame implements Logiciel {
             panelInfosSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfosSelectLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -334,6 +331,7 @@ public class MainFrame extends JFrame implements Logiciel {
         gridBagConstraints.insets = new java.awt.Insets(6, 25, 5, 0);
         panelContainerRightBar.add(panelButton, gridBagConstraints);
 
+        graphstreamContener.setBackground(new java.awt.Color(221, 221, 221));
         graphstreamContener.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -348,7 +346,12 @@ public class MainFrame extends JFrame implements Logiciel {
 
         getContentPane().add(panelRightBar);
 
-        jMenuFile.setText("Fichier");
+        colorGraphMenuFile.setText("Fichier");
+        colorGraphMenuFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorGraphMenuFileActionPerformed(evt);
+            }
+        });
 
         jMenuItemOpenG.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemOpenG.setText("Ouvrir un graphe");
@@ -357,7 +360,15 @@ public class MainFrame extends JFrame implements Logiciel {
                 jMenuItemOpenGActionPerformed(evt);
             }
         });
-        jMenuFile.add(jMenuItemOpenG);
+        colorGraphMenuFile.add(jMenuItemOpenG);
+
+        colorGrapheMenuItem.setText("Colorier le graphe actuel");
+        colorGrapheMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorGrapheMenuItemActionPerformed(evt);
+            }
+        });
+        colorGraphMenuFile.add(colorGrapheMenuItem);
 
         jMenuItemreturnWelcomeFrame.setText("Revenir au menu principal");
         jMenuItemreturnWelcomeFrame.addActionListener(new java.awt.event.ActionListener() {
@@ -365,14 +376,14 @@ public class MainFrame extends JFrame implements Logiciel {
                 jMenuItemreturnWelcomeFrameActionPerformed(evt);
             }
         });
-        jMenuFile.add(jMenuItemreturnWelcomeFrame);
+        colorGraphMenuFile.add(jMenuItemreturnWelcomeFrame);
 
-        jMenuBar1.add(jMenuFile);
+        jMenuBar1.add(colorGraphMenuFile);
 
         jMenuEdit.setText("Affichage");
 
         DarkModeCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        DarkModeCheckBoxMenuItem.setText("Dark mode");
+        DarkModeCheckBoxMenuItem.setText("Put in dark");
         DarkModeCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DarkModeCheckBoxMenuItemActionPerformed(evt);
@@ -387,16 +398,14 @@ public class MainFrame extends JFrame implements Logiciel {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
-    private void setButtonPosition(){
+    private void setButtonPosition() {
         int buttonHeight = 50;
         int buttonWidth = 50;
-        int buttonY = getHeight()/2 - buttonHeight;
-        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsMenuBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        int buttonY = getHeight() / 2 - buttonHeight;
+        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsMenuBar.width + buttonWidth : buttonWidth), buttonY, buttonWidth, buttonHeight);
         buttonMenu.setIcon(isMenuVisible ? iconButtonMenuOpen : iconButtonMenuClose);
     }
-    
-    
+
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur le bouton des
      * fonctions. Elle ouvre une instance de la classe FonctionsDialog en tant
@@ -410,7 +419,6 @@ public class MainFrame extends JFrame implements Logiciel {
         dialogF.setVisible(true);
     }//GEN-LAST:event_buttonFunctionsActionPerformed
 
-    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu du mode sombre. Elle active ou désactive le mode sombre en fonction
@@ -421,7 +429,7 @@ public class MainFrame extends JFrame implements Logiciel {
     private void DarkModeCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DarkModeCheckBoxMenuItemActionPerformed
         if (DarkModeCheckBoxMenuItem.isSelected()) {
             // le darkmode est activé
-            setPanelBackground(this.getContentPane(), new Color(50,50,50));
+            setPanelBackground(this.getContentPane(), new Color(50, 50, 50));
             panelInfosGene.setBackground(new Color(74, 74, 74));
             panelInfosSelect.setBackground(new Color(74, 74, 74));
             textAreaInfosGene.setBackground(new Color(174, 174, 174));
@@ -431,13 +439,13 @@ public class MainFrame extends JFrame implements Logiciel {
             labelInfosGene.setForeground(new Color(174, 174, 174));
             labelInfosSelect1.setForeground(new Color(174, 174, 174));
             labelInfosSelect2.setForeground(new Color(174, 174, 174));
-            
+
         } else {
             //le darkmode est désactivé
-            setPanelBackground(this.getContentPane(), Color.WHITE);    
+            setPanelBackground(this.getContentPane(), Color.WHITE);
             textAreaInfosSelect.setBackground(Color.white);
             textAreaInfosGene.setBackground(Color.white);
-            setPanelBackground(this.getContentPane(), new Color(221,221,221));
+            setPanelBackground(this.getContentPane(), new Color(221, 221, 221));
             panelInfosSelect.setBackground(new Color(204, 204, 204));
             panelInfosGene.setBackground(new Color(204, 204, 204));
             ComboMapType.setSelectedIndex(0);
@@ -447,8 +455,7 @@ public class MainFrame extends JFrame implements Logiciel {
             labelInfosSelect2.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_DarkModeCheckBoxMenuItemActionPerformed
-    
-    
+
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur le bouton des
      * colorations. Elle ouvre une instance de la classe ColorationsDialog en
@@ -462,7 +469,6 @@ public class MainFrame extends JFrame implements Logiciel {
         cdialog.setVisible(true);
     }//GEN-LAST:event_buttonColorationActionPerformed
 
-    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu pour ouvrir un graphe. Elle ouvre une instance de la classe
@@ -477,7 +483,6 @@ public class MainFrame extends JFrame implements Logiciel {
 
     }//GEN-LAST:event_jMenuItemOpenGActionPerformed
 
-    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
      * menu pour revenir à la fenêtre d'accueil. Elle masque cette fenêtre et
@@ -492,7 +497,6 @@ public class MainFrame extends JFrame implements Logiciel {
         welcomef.setVisible(true);
     }//GEN-LAST:event_jMenuItemreturnWelcomeFrameActionPerformed
 
-    
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur le sélecteur
      * de type de carte. Elle change le style de la carte en fonction de l'index
@@ -505,7 +509,15 @@ public class MainFrame extends JFrame implements Logiciel {
         mapCustom.changeStyle(index);
     }//GEN-LAST:event_ComboMapTypeActionPerformed
 
-    
+    private void colorGrapheMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorGrapheMenuItemActionPerformed
+        ChooseAlgorithmDialog chooseAlgorithm = new ChooseAlgorithmDialog((JFrame) this, true);
+        chooseAlgorithm.setVisible(true);
+    }//GEN-LAST:event_colorGrapheMenuItemActionPerformed
+
+    private void colorGraphMenuFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorGraphMenuFileActionPerformed
+        
+    }//GEN-LAST:event_colorGraphMenuFileActionPerformed
+
     /**
      * Définit la couleur de fond de tous les composants JPanel dans le
      * conteneur spécifié ainsi que dans ses sous-conteneurs de manière
@@ -525,7 +537,6 @@ public class MainFrame extends JFrame implements Logiciel {
         }
     }
 
-    
     /**
      * Définit la couleur du texte de tous les composants JLabel dans le
      * conteneur spécifié ainsi que dans ses sous-conteneurs de manière
@@ -545,9 +556,7 @@ public class MainFrame extends JFrame implements Logiciel {
             }
         }
     }
-    
 
-    
     /**
      * Définit le texte du composant JTextArea sur le texte spécifié.
      *
@@ -558,7 +567,7 @@ public class MainFrame extends JFrame implements Logiciel {
         String actualString = text;
         textAreaInfosSelect.setText(actualString);
     }
-    
+
     @Override
     public void setJTextAreaText2(String text) {
         String actualString = text;
@@ -568,9 +577,7 @@ public class MainFrame extends JFrame implements Logiciel {
     public JPanel getGraphstreamContener() {
         return graphstreamContener;
     }
-    
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboMapType;
@@ -578,10 +585,11 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JPanel ScreenPanel;
     private javax.swing.JButton buttonColoration;
     private javax.swing.JButton buttonFunctions;
+    private javax.swing.JMenu colorGraphMenuFile;
+    private javax.swing.JMenuItem colorGrapheMenuItem;
     private javax.swing.JPanel graphstreamContener;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
-    private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemOpenG;
     private javax.swing.JMenuItem jMenuItemreturnWelcomeFrame;
     private javax.swing.JLabel labelInfosGene;
@@ -607,4 +615,3 @@ public class MainFrame extends JFrame implements Logiciel {
         return textAreaInfosGene;
     }
 }
-

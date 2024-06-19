@@ -97,7 +97,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
         nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbSommet());
         nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getGraph().getEdgeCount());
-        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticcNumber(graph));
+        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticNumber(graph));
         conflictLabel.setText("Nombre de conflits : " + resultatColoration.getConflict());
 
         }

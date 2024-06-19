@@ -215,7 +215,7 @@ public class AlgoColoration {
         return conflictCount;
     }
 
-    public int countChromaticcNumber(Graph g) {
+    public int countChromaticNumber(Graph g) {
         int chromaticNumber = 0;
         for (Node node : g) {
             if ((int) node.getAttribute("color") > chromaticNumber) {
@@ -322,7 +322,7 @@ public class AlgoColoration {
         int maxDegree = -1;
         for (Node node : nodes) {
             if (node.getAttribute("color") == null) {
-                int degree = node.getAttribute("nbColor");
+                int degree = (int) node.getAttribute("nbColor");
                 if (degree > maxDegree) {
                     maxDegree = degree;
                     val = node;
@@ -402,13 +402,8 @@ public class AlgoColoration {
             setNbColorOpposite(n);
         }
 
-        int chromaticNumber = 0;
-        for (Node node : g) {
-            if ((int) node.getAttribute("color") > chromaticNumber) {
-                chromaticNumber = (int) node.getAttribute("color");
-            }
-        }
-
+        int chromaticNumber = countChromaticNumber(g);
+        
         // Ajuster la coloration si le nombre chromatique dépasse kmax
         if (chromaticNumber > kmax && kmax != -1) {
             for (int i = 0; i < 20; i++) {
@@ -435,11 +430,7 @@ public class AlgoColoration {
             }
         }
         chromaticNumber = 0;
-        for (Node node : g) {
-            if ((int) node.getAttribute("color") > chromaticNumber) {
-                chromaticNumber = (int) node.getAttribute("color");
-            }
-        }
+        chromaticNumber = countChromaticNumber(g);
         colorGraph(g);
         System.out.println(chromaticNumber);
         return countConflicts(g);
