@@ -5,6 +5,7 @@
 package sae.View.jFrame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
@@ -69,7 +70,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         protected Void doInBackground() {
             algoColoration.setFichier(chemin);
             try {
-                algoColoration.charger_graphe();
+                algoColoration.fillGraph();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -86,6 +87,8 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             // Création de la vision de graphstream
             Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
             viewer.enableAutoLayout();
+            
+            //viewer.getDefaultView().setBackground(Color.red);
 
             org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
             jPanel1.add(viewPanel, BorderLayout.CENTER);
@@ -95,8 +98,8 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             jPanel1.repaint();
             // Modifier les labels avec les bonnes valeurs
             kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
-        nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbSommet());
-        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getGraph().getEdgeCount());
+        nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbNode());
+        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getFileGraph().getEdgeCount());
         chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticNumber(graph));
         conflictLabel.setText("Nombre de conflits : " + resultatColoration.getConflict());
 

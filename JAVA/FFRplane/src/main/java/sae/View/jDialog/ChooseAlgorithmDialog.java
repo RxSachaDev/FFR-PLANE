@@ -6,6 +6,7 @@ package sae.View.jDialog;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
+import org.graphstream.graph.Graph;
 import org.graphstream.ui.view.Viewer;
 import sae.Models.algocoloration.AlgoColoration;
 import sae.Models.algocoloration.ResultatColoration;
@@ -38,7 +39,7 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         // Chargement du graphe avec le fichier temporel
         algoColoration.setFichier("src/main/java/data/test/graph-test0.txt");
         try {
-            algoColoration.charger_graphe();
+            algoColoration.fillGraph();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,12 +179,13 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
-
-        Viewer viewer = new Viewer(resultatColoration.getGraph(), Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-        viewer.enableAutoLayout();
-
-        // Mise à jour de la graphe visualisation
-        updateGraphVisualization(viewer);
+        mainFrame.setColoringGraph(resultatColoration.getGraph());
+        
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()){
+            setViewer(resultatColoration.getGraph(), true);
+        } else {
+            setViewer(resultatColoration.getGraph(), false);
+        }
     }//GEN-LAST:event_bestalgoButtonActionPerformed
 
     /**
@@ -200,17 +202,18 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                .append(" Nombre d'arrêtes : ").append(algoColoration.getGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(algoColoration.getGraph().getNodeCount()).append("\n")
+                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
-
-        Viewer viewer = new Viewer(algoColoration.getGraph(), Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-        viewer.enableAutoLayout();
-
-        // Mise à jour de la graphe visualisation
-        updateGraphVisualization(viewer);
+        mainFrame.setColoringGraph(algoColoration.getFileGraph());
+        
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()){
+            setViewer(algoColoration.getFileGraph(), true);
+        } else {
+            setViewer(algoColoration.getFileGraph(), false);
+        }
     }//GEN-LAST:event_wpButtonActionPerformed
 
     /**
@@ -223,23 +226,42 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
      */
     private void dsaturButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsaturButtonActionPerformed
         this.dispose();
-        int conflict = algoColoration.dsatur(algoColoration.getGraph());
+        int conflict = algoColoration.dsatur(algoColoration.getFileGraph());
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                .append(" Nombre d'arrêtes : ").append(algoColoration.getGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(algoColoration.getGraph().getNodeCount()).append("\n")
+                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
-
-        Viewer viewer = new Viewer(algoColoration.getGraph(), Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-        viewer.enableAutoLayout();
-
-        // Mise à jour de la graphe visualisation
-        updateGraphVisualization(viewer);
+        mainFrame.setColoringGraph(algoColoration.getFileGraph());
+        
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()){
+            setViewer(algoColoration.getFileGraph(), true);
+        } else {
+            setViewer(algoColoration.getFileGraph(), false);
+        }
+        
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
+    public void setViewer(Graph graph, boolean darkMode){
+        MainFrame mainFrame = (MainFrame) this.getParent();
+        if (darkMode){
+            String css = "graph { fill-color: #aeaeae; }";
+            graph.setAttribute("ui.stylesheet", css);
+        }
+        else {
+            String css = "graph { fill-color: #ffffff; }";
+            graph.setAttribute("ui.stylesheet", css);
+        }
+        
+        Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        viewer.enableAutoLayout();
+        
+        updateGraphVisualization(viewer);
+    }
+    
     /**
      * @param args the command line arguments
      */
