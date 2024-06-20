@@ -190,6 +190,7 @@ public class FunctionChooserDialog extends javax.swing.JDialog {
         } else {
             Settings.setRefiningColor(1);
             ((MainFrame)getParent()).getController().refreshMainFrame();
+            dispose();
         }
     }//GEN-LAST:event_jOkayButtonActionPerformed
 

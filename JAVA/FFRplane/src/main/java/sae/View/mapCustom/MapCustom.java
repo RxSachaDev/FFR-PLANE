@@ -45,21 +45,14 @@ public class MapCustom extends JXMapViewer {
     
     
     
+    
+    
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
      */
     public MapCustom() {
-        
         init(46.6396031, 2.7105474, 14);
         
-        
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                controller.handleMapClick(e);
-            }
-        });
-
         addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -223,14 +216,16 @@ public class MapCustom extends JXMapViewer {
         setAddressLocation(geo);
     }
 
-/*    
+    
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-        //Dessiner les lignes
-        for (MapLine line : controller.getMapLineSet()) {
-            line.paint(g2, this, getWidth(), getHeight());
+        if(controller!=null){
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            //Dessiner les lignes
+            for (MapLine line : controller.getMapLineSet()) {
+                line.paint(g2, this, getWidth(), getHeight());
+            }
         }
-    }*/
+    }
 }

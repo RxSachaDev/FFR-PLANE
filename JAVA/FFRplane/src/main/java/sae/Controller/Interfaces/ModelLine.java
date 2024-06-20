@@ -26,4 +26,6 @@ public interface ModelLine {
      * @return la deuxième position géographique (GeoPosition).
      */
     GeoPosition getPoint2();
+    
+    String getPointNames();
 }

@@ -56,23 +56,36 @@ public class Flight implements ModelLine{
      */
     @Override
     public String toString() {
-        return String.format("| %d | %s | %s | %s | %d | %d | %d | %d |", 
-                             flightNumber, name, departureAirport.getCode(), arrivalAirport.getCode(), 
-                             departureHour, departureMinute, duration, flightHeighLevel);
+        if(flightHeighLevel == 0){
+            return ("• VOL \n"+
+                    "   • Code : "+name+"\n"+ 
+                    "   • Depart : "+departureAirport.getLocation()+"\n"+
+                    "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
+                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
+                    "   • Durée : "+duration+" min\n"+
+                    "   • Hauteur : Non Parametrée");
+        } else {
+            return ("• VOL \n"+
+                    "   • Code : "+name+"\n"+ 
+                    "   • Depart : "+departureAirport.getLocation()+"\n"+
+                    "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
+                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
+                    "   • Durée : "+duration+"\n"+
+                    "   • Hauteur : "+flightHeighLevel);
+        }
     }
 
+    
     public int getFlightHeighLevel() {
         return flightHeighLevel;
     }
+
 
     public void setFlightHeighLevel(int flightHeighLevel) {
         this.flightHeighLevel = flightHeighLevel;
     }
 
 
-    
-    
-    
     /**
      * Obtient le nom du vol.
      *
@@ -250,5 +263,10 @@ public class Flight implements ModelLine{
     @Override 
     public GeoPosition getPoint2() {
         return arrivalAirport.getGeoPosition();
+    }
+    
+    @Override
+    public String getPointNames(){
+        return (departureAirport.getLocation()+" - "+arrivalAirport.getLocation());
     }
 }

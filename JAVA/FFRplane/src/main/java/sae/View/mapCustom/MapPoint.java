@@ -16,7 +16,6 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 import sae.controller.Logiciel;
 import sae.view.jButton.*;
-import sae.controller.*;
 
 /**
  * Classe représentant un point d'aéroport sur la carte. Un point d'aéroport est

@@ -7,9 +7,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +27,9 @@ import sae.controller.Controller;
 import sae.view.jDialog.*;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
+import sae.view.mapCustom.MapCustom;
+import sae.view.mapCustom.MapLine;
+
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
@@ -67,7 +73,9 @@ public class MainFrame extends JFrame implements Logiciel {
         
         buttonMenu.setContentAreaFilled(false);
         
-        controller = new Controller(mapCustom);
+
+        controller = new Controller(this);
+
         controller.initMapCustom();
         
         
@@ -82,8 +90,19 @@ public class MainFrame extends JFrame implements Logiciel {
         
         graphstreamPanel.setVisible(false);
     }
+
+    public JComboBox<MapLine> getMapLineComboBox() {
+        return mapLineComboBox;
+    }
     
     private void listenerManager(){
+        mapLineComboBox.addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if((MapLine)mapLineComboBox.getSelectedItem()!=null) textAreaInfosSelect.setText(((MapLine)mapLineComboBox.getSelectedItem()).toStringModelLine());
+            }
+        });
+        
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 setButtonPosition();
@@ -98,10 +117,6 @@ public class MainFrame extends JFrame implements Logiciel {
                 setButtonPosition();
             }
         });
-        
-        
-        
-        
     }
     
     public Controller getController(){
@@ -126,7 +141,7 @@ public class MainFrame extends JFrame implements Logiciel {
         labelInfosSelect2 = new javax.swing.JLabel();
         panelInfosSelect = new javax.swing.JPanel();
         textAreaInfosSelect = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        mapLineComboBox = new javax.swing.JComboBox<>();
         panelButton = new javax.swing.JPanel();
         buttonColoration = new javax.swing.JButton();
         buttonFunctions = new javax.swing.JButton();
@@ -205,9 +220,10 @@ public class MainFrame extends JFrame implements Logiciel {
         panelInfosGene.setBackground(new java.awt.Color(255, 255, 255));
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
+        textAreaInfosGene.setBackground(null);
         textAreaInfosGene.setColumns(20);
         textAreaInfosGene.setRows(5);
-        textAreaInfosGene.setText("  Pour avoir plus d'informations \n      veuillez colorier le graphe\n");
+        textAreaInfosGene.setText("  \n\n\nPour avoir plus d'informations \n      veuillez colorier le graphe\n");
         textAreaInfosGene.setBorder(null);
 
         javax.swing.GroupLayout panelInfosGeneLayout = new javax.swing.GroupLayout(panelInfosGene);
@@ -241,21 +257,13 @@ public class MainFrame extends JFrame implements Logiciel {
         panelInfosSelect.setBackground(new java.awt.Color(255, 255, 255));
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
+        textAreaInfosSelect.setBackground(null);
         textAreaInfosSelect.setColumns(20);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
         textAreaInfosSelect.setCaretColor(null);
         textAreaInfosSelect.setDisabledTextColor(null);
-        textAreaInfosSelect.setSelectedTextColor(null);
-        textAreaInfosSelect.setSelectionColor(null);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
+        mapLineComboBox.setModel(new DefaultComboBoxModel<MapLine>());
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);
         panelInfosSelectLayout.setHorizontalGroup(
@@ -264,14 +272,14 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addGap(15, 15, 15)
                 .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
-            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mapLineComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelInfosSelectLayout.setVerticalGroup(
             panelInfosSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfosSelectLayout.createSequentialGroup()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mapLineComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(textAreaInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -470,6 +478,12 @@ public class MainFrame extends JFrame implements Logiciel {
         dialogF.setVisible(true);
     }//GEN-LAST:event_buttonFunctionsActionPerformed
 
+    public MapCustom getMapCustom() {
+        return mapCustom;
+    }
+
+    
+    
     
     /**
      * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
@@ -680,6 +694,7 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JLabel labelInfosSelect2;
     private javax.swing.JLabel labelLogo;
     private sae.view.mapCustom.MapCustom mapCustom;
+    private javax.swing.JComboBox<MapLine> mapLineComboBox;
     private javax.swing.JPanel panelButton;
     private javax.swing.JPanel panelContainerRightBar;
     private javax.swing.JPanel panelInfosGene;

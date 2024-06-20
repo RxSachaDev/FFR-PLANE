@@ -85,11 +85,11 @@ public class Airport implements ModelPoint{
      */
     @Override
     public String toString() {
-        return ("> AÉROPORT : \n"+
-                "  - Code : "+code+"\n"+ 
-                "  - Location : "+location+"\n"+
-                "  - Latitude : "+Math.round(geoPosition.getLatitude()*1000)/1000.0+"\n"+
-                "  - Longitude : "+Math.round(geoPosition.getLongitude()*1000)/1000.0);
+        return ("• AÉROPORT \n"+
+                "   • Code : "+code+"\n"+ 
+                "   • Ville : "+location+"\n"+
+                "   • Latitude : "+Math.round(geoPosition.getLatitude()*1000)/1000.0+"\n"+
+                "   • Longitude : "+Math.round(geoPosition.getLongitude()*1000)/1000.0);
 
     }
 
