@@ -89,6 +89,7 @@ sae\view\jFrame\MainFrame$6.class
 sae\view\jDialog\GivenHourDialog.class
 sae\controller\Controller.class
 sae\view\jDialog\LoadGraphDialog$1.class
+sae\view\jFrame\MainFrame$11.class
 sae\view\jDialog\FunctionChooserDialog$2.class
 sae\models\intersection\FlightCollisionTools.class
 sae\view\mapCustom\MapPoint$1.class
