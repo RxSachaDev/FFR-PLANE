@@ -13,7 +13,9 @@ import org.graphstream.graph.Graph;
 import org.graphstream.ui.view.Viewer;
 import sae.Models.algocoloration.AlgoColoration;
 import sae.Models.algocoloration.ResultatColoration;
+import sae.utils.IconUtil;
 import sae.view.jDialog.LoadGraphDialog;
+import sae.view.jFrame.MainFrame;
 
 /**
  * La classe GraphstreamFrame représente une interface graphique (GUI) pour
@@ -30,13 +32,20 @@ public class GraphstreamFrame extends javax.swing.JFrame {
      * déclaration.
      */
     private AlgoColoration algoColoration = new AlgoColoration();
+    private final IconUtil iconU = new IconUtil();
+    
+    private String algo;
 
     /**
      * Construit une nouvelle instance de GraphstreamFrame.
      *
+     * @param parent parent de cette JDialog
      * @param chemin Le chemin vers le fichier du graphe.
+     * @param algo L'algorithme utilisé
      */
-    public GraphstreamFrame(String chemin) {
+    public GraphstreamFrame(JFrame parent, String chemin, String algo) {
+        iconU.setIcon(this);
+        this.algo = algo;
         initComponents();
         labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
         jPanel1.setLayout(new BorderLayout());
@@ -44,6 +53,9 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         // Mettre la frame en plein écran immédiatement
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
+        if (parent instanceof MainFrame ){
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
 
         // Charger le graph en arrière-plan
         new GraphLoader(chemin).execute();
@@ -79,10 +91,24 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
         @Override
         protected void done() {
+            Graph graph;
+            int conflict;
             // Récupère le graph 
+            if (algo.equals(""
+                    + "BestAlgo")){
+                ResultatColoration resultatColoration = algoColoration.minConflict();
+                conflict = resultatColoration.getConflict();
+                graph = resultatColoration.getGraph();
+            }
+            else if (algo.equals("Dsatur")){
+                conflict = algoColoration.dsatur(algoColoration.getFileGraph());
+                graph = algoColoration.getFileGraph();
+            }
+            else {
+                conflict = algoColoration.welshPowell();
+                graph = algoColoration.getFileGraph();
+            }
             
-            ResultatColoration resultatColoration = algoColoration.minConflict();
-            Graph graph = resultatColoration.getGraph();
 
             // Création de la vision de graphstream
             Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
@@ -97,11 +123,16 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             jPanel1.revalidate();
             jPanel1.repaint();
             // Modifier les labels avec les bonnes valeurs
-            kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
+            if (algoColoration.getKmax() != -1){
+                kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
+            } else {
+                kmaxLabel.setText("Kmax : Aucun");
+            }
+            
         nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbNode());
         nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getFileGraph().getEdgeCount());
         chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticNumber(graph));
-        conflictLabel.setText("Nombre de conflits : " + resultatColoration.getConflict());
+        conflictLabel.setText("Nombre de conflits : " + conflict);
 
         }
     }
@@ -128,6 +159,8 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         labelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FFR Plane - Graphstream Frame");
+        setMinimumSize(new java.awt.Dimension(1000, 800));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

@@ -9,7 +9,9 @@ import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.JFrame;
 import sae.View.jDialog.ChooseAlgorithmDialog;
+import sae.View.jDialog.GivenHourDialog;
 import sae.utils.IconUtil;
+import sae.utils.Settings;
 import sae.view.jFrame.MainFrame;
 
 
@@ -24,7 +26,7 @@ import sae.view.jFrame.MainFrame;
  */
 public class FunctionChooserDialog extends javax.swing.JDialog {
     private final DefaultComboBoxModel modelComboBox = new DefaultComboBoxModel<>(new String[]{
-        "Afficher les vols dans un intervalle donné", 
+        "Afficher les vols dans un intervalle horaire donné", 
         "Afficher les vols partant / arrivant d'un aéroport donné", 
         "Afficher les vols à une hauteur donnée", 
         "Colorier le graphe avec un algorithme de coloration",
@@ -178,9 +180,16 @@ public class FunctionChooserDialog extends javax.swing.JDialog {
     
     private void jOkayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOkayButtonActionPerformed
         if (modelComboBox.getSelectedItem().equals("Colorier le graphe avec un algorithme de coloration")){
-            this.dispose();
+            dispose();
             ChooseAlgorithmDialog chooseAlgorithm = new ChooseAlgorithmDialog((JFrame) this.getParent(), true);
             chooseAlgorithm.setVisible(true);
+        } else if (modelComboBox.getSelectedItem().equals("Afficher les vols dans un intervalle horaire donné")) {
+            dispose();
+            GivenHourDialog givenHourDialog = new GivenHourDialog((JFrame) this.getParent(), true);
+            givenHourDialog.setVisible(true);    
+        } else {
+            Settings.setRefiningColor(1);
+            ((MainFrame)getParent()).getController().refreshMainFrame();
         }
     }//GEN-LAST:event_jOkayButtonActionPerformed
 

@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sae.View.jFrame.GraphstreamFrame;
@@ -15,6 +16,7 @@ import sae.exceptions.FileFormatException;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
 import sae.view.jFileChooser.OpenFileChooser;
+import sae.view.jFrame.WelcomeFrame;
 
 
 /**
@@ -69,7 +71,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         labelError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("load a graph");
+        setTitle("FFR Plane - Load a graph");
         setResizable(false);
 
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -191,7 +193,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
             Settings.setFlightsFilePath(graphFileTextField.getText());
             dispose();
             SwingUtilities.getWindowAncestor(this).dispose();
-            GraphstreamFrame graphstreamFrame = new GraphstreamFrame(graphFileTextField.getText());
+            GraphstreamFrame graphstreamFrame = new GraphstreamFrame((JFrame) this.getParent(), graphFileTextField.getText(), "BestAlgo");
             graphstreamFrame.setVisible(true);
             
         } catch(FileNotFoundException e){
