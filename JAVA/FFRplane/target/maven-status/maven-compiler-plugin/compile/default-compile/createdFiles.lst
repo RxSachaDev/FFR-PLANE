@@ -25,6 +25,7 @@ sae\view\jFrame\viewer.class
 sae\models\algocoloration\ResultatColoration.class
 sae\controller\Interfaces\ModelPoint.class
 sae\view\jDialog\LoadAirspaceDialog$2.class
+sae\view\jFrame\MainFrame$9.class
 sae\view\jDialog\LoadAirspaceDialog.class
 sae\view\jFrame\GraphstreamFrame.class
 sae\view\jFrame\MainFrame$2.class
@@ -70,6 +71,7 @@ sae\models\Settings.class
 sae\view\easterGame\EasterPoint.class
 sae\view\jDialog\LoadGraphDialog$3.class
 sae\view\jFrame\MainFrame$8.class
+sae\view\jFrame\MainFrame$10.class
 sae\view\easterGame\EasterPoint$1.class
 sae\view\jFrame\MainFrame.class
 sae\view\jFrame\WelcomeFrame$2.class

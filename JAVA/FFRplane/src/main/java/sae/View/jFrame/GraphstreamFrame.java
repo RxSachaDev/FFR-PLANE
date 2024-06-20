@@ -5,6 +5,7 @@
 package sae.View.jFrame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
@@ -37,7 +38,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
      */
     public GraphstreamFrame(String chemin) {
         initComponents();
-
+        labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
         jPanel1.setLayout(new BorderLayout());
 
         // Mettre la frame en plein écran immédiatement
@@ -69,7 +70,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         protected Void doInBackground() {
             algoColoration.setFichier(chemin);
             try {
-                algoColoration.charger_graphe();
+                algoColoration.fillGraph();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -86,6 +87,8 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             // Création de la vision de graphstream
             Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
             viewer.enableAutoLayout();
+            
+            //viewer.getDefaultView().setBackground(Color.red);
 
             org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
             jPanel1.add(viewPanel, BorderLayout.CENTER);
@@ -95,9 +98,9 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             jPanel1.repaint();
             // Modifier les labels avec les bonnes valeurs
             kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
-        nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbSommet());
-        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getGraph().getEdgeCount());
-        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticcNumber(graph));
+        nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbNode());
+        nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getFileGraph().getEdgeCount());
+        chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticNumber(graph));
         conflictLabel.setText("Nombre de conflits : " + resultatColoration.getConflict());
 
         }
@@ -122,6 +125,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         chromaticNumberLabel = new javax.swing.JLabel();
         conflictLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        labelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -189,6 +193,8 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             }
         });
 
+        labelLogo.setText("jLabel2");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -199,6 +205,10 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,7 +217,9 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel3);
@@ -236,6 +248,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel kmaxLabel;
+    private javax.swing.JLabel labelLogo;
     private javax.swing.JLabel nbEdgeLabel;
     private javax.swing.JLabel nbNodeLabel;
     // End of variables declaration//GEN-END:variables

@@ -9,10 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import org.graphstream.graph.Graph;
+import sae.View.jDialog.ChooseAlgorithmDialog;
 import sae.view.jDialog.LoadAirspaceDialog;
 
 import sae.controller.Logiciel;
@@ -35,6 +38,7 @@ public class MainFrame extends JFrame implements Logiciel {
     private final ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
     private final ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
     private final Rectangle boundsMenuBar;
+    private Graph coloringGraph;
     
 
     private Controller controller;
@@ -128,6 +132,7 @@ public class MainFrame extends JFrame implements Logiciel {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
+        colorGrapheMenuItem = new javax.swing.JMenuItem();
         jMenuItemreturnWelcomeFrame = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         DarkModeCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
@@ -178,20 +183,22 @@ public class MainFrame extends JFrame implements Logiciel {
 
         getContentPane().add(ScreenPanel);
 
-        panelRightBar.setBackground(new java.awt.Color(255, 255, 255));
+        panelRightBar.setBackground(new java.awt.Color(221, 221, 221));
         panelRightBar.setMaximumSize(new java.awt.Dimension(200, 32767));
         panelRightBar.setMinimumSize(new java.awt.Dimension(200, 0));
         panelRightBar.setPreferredSize(new java.awt.Dimension(250, 526));
         panelRightBar.setLayout(new java.awt.GridBagLayout());
 
         panelContainerRightBar.setBackground(null);
+        panelContainerRightBar.setToolTipText("");
         panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
 
+        labelInfosGene.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosGene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosGene.setText("INFOS GÉNÉRALES");
 
-        panelInfosGene.setBackground(new java.awt.Color(204, 204, 204));
+        panelInfosGene.setBackground(new java.awt.Color(255, 255, 255));
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosGene.setColumns(20);
@@ -216,16 +223,18 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addContainerGap())
         );
 
+        labelInfosSelect1.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosSelect1.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect1.setText(" INFOS SUR L’OBJET ");
         labelInfosSelect1.setPreferredSize(new java.awt.Dimension(200, 16));
 
+        labelInfosSelect2.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosSelect2.setForeground(new java.awt.Color(0, 0, 0));
         labelInfosSelect2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInfosSelect2.setText("SÉLECTIONNÉ");
 
-        panelInfosSelect.setBackground(new java.awt.Color(204, 204, 204));
+        panelInfosSelect.setBackground(new java.awt.Color(255, 255, 255));
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
         textAreaInfosSelect.setColumns(20);
@@ -296,6 +305,7 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        graphstreamContener.setBackground(new java.awt.Color(221, 221, 221));
         graphstreamContener.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout panelContainerRightBarLayout = new javax.swing.GroupLayout(panelContainerRightBar);
@@ -344,15 +354,28 @@ public class MainFrame extends JFrame implements Logiciel {
         getContentPane().add(panelRightBar);
 
         jMenuFile.setText("Fichier");
+        jMenuFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuFileActionPerformed(evt);
+            }
+        });
 
         jMenuItemOpenG.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItemOpenG.setText("ouvrir un graphe");
+        jMenuItemOpenG.setText("Ouvrir un graphe");
         jMenuItemOpenG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemOpenGActionPerformed(evt);
             }
         });
         jMenuFile.add(jMenuItemOpenG);
+
+        colorGrapheMenuItem.setText("Colorier le graphe actuel");
+        colorGrapheMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorGrapheMenuItemActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(colorGrapheMenuItem);
 
         jMenuItemreturnWelcomeFrame.setText("Revenir au menu principal");
         jMenuItemreturnWelcomeFrame.addActionListener(new java.awt.event.ActionListener() {
@@ -367,7 +390,7 @@ public class MainFrame extends JFrame implements Logiciel {
         jMenuEdit.setText("Affichage");
 
         DarkModeCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        DarkModeCheckBoxMenuItem.setText("put in dark");
+        DarkModeCheckBoxMenuItem.setText("Put in dark");
         DarkModeCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DarkModeCheckBoxMenuItemActionPerformed(evt);
@@ -413,17 +436,38 @@ public class MainFrame extends JFrame implements Logiciel {
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
-    private void DarkModeCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DarkModeCheckBoxMenuItemActionPerformed
+    private void DarkModeCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        ChooseAlgorithmDialog chooseAlgorithmDialog = new ChooseAlgorithmDialog(this, true);
         if (DarkModeCheckBoxMenuItem.isSelected()) {
             // le darkmode est activé
-            setPanelBackground(this.getContentPane(), Color.BLACK);
-            setLabelForeground(this.getContentPane(), Color.WHITE);
+            panelRightBar.setBackground(new Color(50, 50, 50));
+            panelInfosGene.setBackground(new Color(174, 174, 174));
+            panelInfosSelect.setBackground(new Color(174, 174, 174));
+            textAreaInfosGene.setBackground(new Color(174, 174, 174));
+            textAreaInfosSelect.setBackground(new Color(174, 174, 174));
+            ComboMapType.setSelectedIndex(3);
+            mapCustom.changeStyle(3);
+            labelInfosGene.setForeground(new Color(174, 174, 174));
+            labelInfosSelect1.setForeground(new Color(174, 174, 174));
+            labelInfosSelect2.setForeground(new Color(174, 174, 174));
+            chooseAlgorithmDialog.setViewer(coloringGraph, true);
+
         } else {
             //le darkmode est désactivé
-            setPanelBackground(this.getContentPane(), Color.WHITE);
-            setLabelForeground(this.getContentPane(), Color.BLACK);
+            textAreaInfosSelect.setBackground(Color.white);
+            textAreaInfosGene.setBackground(Color.white);
+            panelRightBar.setBackground(new Color(221, 221, 221));
+            panelInfosSelect.setBackground(Color.white);
+            panelInfosGene.setBackground(Color.white);
+            ComboMapType.setSelectedIndex(0);
+            mapCustom.changeStyle(0);
+            labelInfosGene.setForeground(Color.BLACK);
+            labelInfosSelect1.setForeground(Color.BLACK);
+            labelInfosSelect2.setForeground(Color.BLACK);
+            chooseAlgorithmDialog.setViewer(coloringGraph, false);
         }
-    }//GEN-LAST:event_DarkModeCheckBoxMenuItemActionPerformed
+    }
+
     
     
     /**
@@ -482,25 +526,14 @@ public class MainFrame extends JFrame implements Logiciel {
         mapCustom.changeStyle(index);
     }//GEN-LAST:event_ComboMapTypeActionPerformed
 
-    
-    /**
-     * Définit la couleur de fond de tous les composants JPanel dans le
-     * conteneur spécifié ainsi que dans ses sous-conteneurs de manière
-     * récursive.
-     *
-     * @param container le conteneur dans lequel rechercher les composants
-     * JPanel
-     * @param color la couleur à définir comme couleur de fond
-     */
-    private void setPanelBackground(Container container, Color color) {
-        for (Component component : container.getComponents()) {
-            if (component instanceof JPanel jPanel) {
-                jPanel.setBackground(color);
-                // Récursivement, parcourir les sous-panneaux
-                setPanelBackground(jPanel, color);
-            }
-        }
-    }
+    private void jMenuFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuFileActionPerformed
+
+    private void colorGrapheMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorGrapheMenuItemActionPerformed
+        ChooseAlgorithmDialog chooseAlgorithm = new ChooseAlgorithmDialog((JFrame) this, true);
+        chooseAlgorithm.setVisible(true);
+    }//GEN-LAST:event_colorGrapheMenuItemActionPerformed
 
     
     /**
@@ -542,11 +575,19 @@ public class MainFrame extends JFrame implements Logiciel {
         String actualString = text;
         textAreaInfosGene.setText(actualString);
     }
-
+    
+    public void setColoringGraph(Graph coloringGraph) {
+        this.coloringGraph = coloringGraph;
+    }
     
     public JPanel getGraphstreamContener() {
         return graphstreamContener;
     }
+    
+    public JCheckBoxMenuItem getDarkModeCheckBoxMenuItem() {
+        return DarkModeCheckBoxMenuItem;
+    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboMapType;
@@ -554,6 +595,7 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JPanel ScreenPanel;
     private javax.swing.JButton buttonColoration;
     private javax.swing.JButton buttonFunctions;
+    private javax.swing.JMenuItem colorGrapheMenuItem;
     private javax.swing.JPanel graphstreamContener;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenuBar jMenuBar1;
