@@ -55,6 +55,7 @@ sae\models\FontEnum.class
 sae\view\jDialog\LoadAirspaceDialog$5.class
 sae\view\jDialog\FunctionChooserDialog.class
 sae\view\easterGame\MonumentWaypoint$1.class
+sae\view\jDialog\GivenHourDialog$2.class
 sae\view\jFrame\WelcomeFrame$3.class
 sae\view\jDialog\ColorationsDialog.class
 sae\view\jFrame\GraphstreamFrame$GraphLoader.class
@@ -83,6 +84,7 @@ sae\utils\Settings.class
 sae\models\airports\Airport.class
 sae\models\FontEnum$1.class
 sae\view\jFrame\MainFrame$6.class
+sae\view\jDialog\GivenHourDialog.class
 sae\controller\Controller.class
 sae\view\jDialog\LoadGraphDialog$1.class
 sae\view\jDialog\FunctionChooserDialog$2.class
@@ -94,4 +96,5 @@ sae\view\jDialog\LoadingDialog.class
 sae\view\easterGame\MonumentWaypoint.class
 sae\view\mapCustom\MapCustom$1.class
 sae\view\jDialog\LoadAirspaceDialog$4.class
+sae\view\jDialog\GivenHourDialog$1.class
 sae\controller\Interfaces\ModelLine.class

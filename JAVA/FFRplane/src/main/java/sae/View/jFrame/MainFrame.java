@@ -19,6 +19,7 @@ import sae.controller.Logiciel;
 import sae.controller.Controller;
 import sae.view.jDialog.*;
 import sae.utils.IconUtil;
+import sae.utils.Settings;
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
@@ -61,8 +62,7 @@ public class MainFrame extends JFrame implements Logiciel {
         buttonMenu.setContentAreaFilled(false);
         
         controller = new Controller(mapCustom);
-        controller.initMapPoints(true);
-        controller.initMapLines();
+        controller.initMapCustom();
         
         
         mapCustom.add(buttonMenu);

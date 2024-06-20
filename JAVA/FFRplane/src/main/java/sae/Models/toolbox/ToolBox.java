@@ -50,7 +50,7 @@ public class ToolBox {
      * @throws FileNotFoundException si le fichier est introuvable
      * @throws FileFormatException s'il y a une erreur de format dans le fichier
      */
-    public static boolean fillAirportList(String filePath, AirportCatalog airportsCatalog) throws FileNotFoundException, FileFormatException {
+    public static boolean fillAirportsCatalog(String filePath, AirportCatalog airportsCatalog) throws FileNotFoundException, FileFormatException {
         List<String> possibleValues = new ArrayList<>();
                 possibleValues.add("N");
                 possibleValues.add("E");
@@ -92,7 +92,7 @@ public class ToolBox {
      * @return true si l'opération est réussie, false sinon
      * @throws FileNotFoundException si le fichier est introuvable
      */
-    public static boolean fillFlightList(String filePathAirports, String filePathFlights, FlightCatalog flightsCatalog, AirportCatalog airportsCatalog) throws FileNotFoundException {
+    public static boolean fillFlightsCatalog(String filePathAirports, String filePathFlights, FlightCatalog flightsCatalog, AirportCatalog airportsCatalog) throws FileNotFoundException {
         int lineCount = 1;
         try {
             File file = new File(filePathFlights);

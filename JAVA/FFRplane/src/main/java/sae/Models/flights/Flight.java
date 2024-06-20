@@ -22,6 +22,7 @@ public class Flight implements ModelLine{
     private int departureHour;
     private int departureMinute;
     private int duration;
+    private int flightHeighLevel;
 
     private double flightDistance; // Calculé une fois pour éviter de recalculer pour chaque comparaison entre vols
 
@@ -60,7 +61,18 @@ public class Flight implements ModelLine{
                              departureHour, departureMinute, duration);
     }
 
+    public int getFlightHeighLevel() {
+        return flightHeighLevel;
+    }
 
+    public void setFlightHeighLevel(int flightHeighLevel) {
+        this.flightHeighLevel = flightHeighLevel;
+    }
+
+
+    
+    
+    
     /**
      * Obtient le nom du vol.
      *

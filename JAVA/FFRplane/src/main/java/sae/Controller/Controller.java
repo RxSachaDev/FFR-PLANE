@@ -3,8 +3,6 @@ package sae.controller;
 import sae.controller.Interfaces.*;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 import java.util.HashSet;
 import java.util.Set;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -40,17 +38,19 @@ public class Controller {
     }
 
     
-    public void refreshMap (){
-        
+    public void refreshMainFrame (){
+        refreshMapCustom();
+    }
+    
+    public void initMapCustom(){
+        fillAirportsCatalog();
+        fillFlightsCatalog();
+        initMapPoints(Settings.isEasterEggActivated());
+        initMapLines();
     }
     
     
     public void initMapPoints (Boolean isEasterEggActivated) {
-        try {
-            ToolBox.fillAirportList(Settings.getAirportsFilePath(),airportsCatalog);
-        } catch (Exception e) {
-        }
-        
         for (Airport airport : airportsCatalog.getAirports()) {
             mapPointSet.add(new MapPoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
@@ -73,26 +73,44 @@ public class Controller {
     /**
      * Supprime les marqueurs des aéroports de la carte.
      */
-    public void removeMapPoints() {
-        for (MapPoint d : mapPointSet) {
-            mapCustom.remove(d.getButton());
-        }
-        mapPointSet.clear();
-        initMapPoints(true);
+    public void refreshMapCustom() {
+        mapLineSet.clear();
+        initMapLines();
+    }
+    
+    
+    public void fillAirportsCatalog(){
+        try {
+            ToolBox.fillAirportsCatalog(Settings.getAirportsFilePath(),airportsCatalog);
+        } catch (Exception e) {}
+    }
+    
+    
+    public void fillFlightsCatalog(){
+        try {
+            ToolBox.fillFlightsCatalog(Settings.getAirportsFilePath(),Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
+        } catch (Exception e) {}
     }
     
     
     public void initMapLines() {
-        try {
-            ToolBox.fillFlightList(Settings.getAirportsFilePath(),Settings.getFlightsFilePath(),flightsCatalog,airportsCatalog);
-        } catch (Exception e) {
-        }
-        for (Flight flight : flightsCatalog.getFlights()) {
-            System.out.println(flight);
-            mapLineSet.add(new MapLine(flight,Color.BLACK,mapCustom)); // Utilisation du constructeur avec Airport comme argument
+        FlightCatalog tempCatalog = new FlightCatalog();
+        if(Settings.getRefiningColor() == 0) {
+            for (Flight flight : flightsCatalog.getFlights()) {
+                mapLineSet.add(new MapLine(flight,Color.BLACK,mapCustom)); // Utilisation du constructeur avec Airport comme argument
+                tempCatalog.addFlight(flight);
+            }
+        } 
+        if(tempCatalog.getFlights().isEmpty()) { //Afficher les vols par niveau de hauteur
+            for (Flight flight : flightsCatalog.getFlights()) {
+                if(flight.getFlightHeighLevel() == Settings.getRefiningColor()) {
+                    mapLineSet.add(new MapLine(flight,Color.BLACK,mapCustom)); // Utilisation du constructeur avec Airport comme argument
+                    tempCatalog.addFlight(flight);
+                }
+            }
         }
         mapCustom.repaint();
-        ToolBox.createGraphTextFile(flightsCatalog);
+        ToolBox.createGraphTextFile(tempCatalog);
     }
 
     

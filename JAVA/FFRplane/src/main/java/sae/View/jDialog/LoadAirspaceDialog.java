@@ -203,16 +203,16 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-        System.out.println("ok");
         try {
             // <* Cette partie ne sert qu'à déclancher les exceptions
             AirportCatalog temp = new AirportCatalog();
-            ToolBox.fillAirportList(airportsFileTextField.getText(), temp);
-            ToolBox.fillFlightList(airportsFileTextField.getText(),flightsFileTextField.getText(), new FlightCatalog(), temp);
+            ToolBox.fillAirportsCatalog(airportsFileTextField.getText(), temp);
+            ToolBox.fillFlightsCatalog(airportsFileTextField.getText(),flightsFileTextField.getText(), new FlightCatalog(), temp);
             // *>
             
             Settings.setAirportsFilePath(airportsFileTextField.getText());
             Settings.setFlightsFilePath(flightsFileTextField.getText());
+            Settings.setRefiningColor(0);
             dispose();
             SwingUtilities.getWindowAncestor(this).dispose();
             MainFrame mainFrame = new MainFrame();

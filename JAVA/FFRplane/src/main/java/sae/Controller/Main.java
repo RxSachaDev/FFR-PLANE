@@ -24,6 +24,7 @@ public class Main {
      * cette application).
      */
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.uiScale", "125%");
         setPoliceNimbus();
         WelcomeFrame wframe = new WelcomeFrame();
         wframe.setVisible(true);

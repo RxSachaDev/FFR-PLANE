@@ -21,7 +21,7 @@ public class Test {
         AirportCatalog airportCatalog = new AirportCatalog();
         FlightCatalog flightCatalog = new FlightCatalog();
         try {
-            ToolBox.fillAirportList(Settings.getAirportsFilePath(), airportCatalog);
+            ToolBox.fillAirportsCatalog(Settings.getAirportsFilePath(), airportCatalog);
             
             Airport A1 = airportCatalog.getAirport("MRS");
             System.out.println(A1.getCoordinates()[0]+","+A1.getCoordinates()[1]);
@@ -48,7 +48,7 @@ public class Test {
             String temp = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test"+ii+".csv";
             String temp2 = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
             try {
-                ToolBox.fillFlightList(temp2,temp,flightCatalog,airportCatalog);
+                ToolBox.fillFlightsCatalog(temp2,temp,flightCatalog,airportCatalog);
             } catch (FileNotFoundException e) {}
             int count = 0;
             List<Flight> flightsList = flightCatalog.getFlights();

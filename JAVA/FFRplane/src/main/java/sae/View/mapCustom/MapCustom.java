@@ -17,7 +17,6 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import sae.controller.Controller;
-import sae.view.jFrame.MainFrame;
 
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des
