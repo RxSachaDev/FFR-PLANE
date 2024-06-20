@@ -1,13 +1,11 @@
-/*
-     * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-     * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sae.view.mapCustom;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -18,7 +16,8 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.GeoPosition;
 
-import sae.controller.MapController;
+import sae.controller.Controller;
+import sae.view.jFrame.MainFrame;
 
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des
@@ -33,26 +32,52 @@ import sae.controller.MapController;
  * @author mathe
  */
 public class MapCustom extends JXMapViewer {
-    MapController mapController = new MapController(this);
+    /**
+     * Le niveau de zoom maximal autorisé pour la carte.
+     */
+    private int maxZoom = 17;
+
+    /**
+     * Le niveau de zoom minimal autorisé pour la carte.
+     */
+    private int minZoom = 2;
+
+    private Controller controller;
+    
+    
     
     /**
      * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
      */
     public MapCustom() {
-        init(46.6396031,2.7105474,14);
         
-        mapController.initMapPoints(true);
-        mapController.initMapLines();
+        init(46.6396031, 2.7105474, 14);
         
         
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mapController.handleMapClick(e);
-            } 
+                controller.handleMapClick(e);
+            }
+        });
+
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int wheelRotation = e.getWheelRotation();
+                int currentZoom = getZoom();
+
+                if (!(currentZoom < 15)) {
+                    setZoom(currentZoom - 1);
+                }
+
+                if (!(2 < currentZoom)) {
+                    setZoom(currentZoom + 1);
+                }
+            }
         });
     }
-    
+
     
     /**
      * Initialise la carte avec la latitude, la longitude et le zoom spécifiés.
@@ -76,6 +101,11 @@ public class MapCustom extends JXMapViewer {
 
         // rendre la map zoomable
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
+    }
+
+    
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
     
     
@@ -129,6 +159,7 @@ public class MapCustom extends JXMapViewer {
      * @param maxZ Le niveau de zoom maximal autorisé.
      */
     public void setMaxZoom(int maxZ) {
+        maxZoom = maxZ;
         if (getZoom() > maxZ) {
             setZoom(maxZ);
         }
@@ -140,10 +171,21 @@ public class MapCustom extends JXMapViewer {
      *
      * @param maxM Le niveau de zoom minimal autorisé.
      */
-    public void setMinZoom(int maxM) {
-        if (getZoom() < maxM) {
-            setZoom(maxM);
+    public void setMinZoom(int minZ) {
+        minZoom = minZ;
+        if (getZoom() < minZ) {
+            setZoom(minZ);
         }
+    }
+
+    
+    public int getMaxZoom() {
+        return this.maxZoom;
+    }
+
+    
+    public int getMinZoom() {
+        return this.minZoom;
     }
 
     
@@ -166,7 +208,8 @@ public class MapCustom extends JXMapViewer {
         setAddressLocation(new GeoPosition(latitude, longitude));
     }
 
-/*    
+    
+    /*  
     public void addMonuments(MonumentWaypoint mWP) {
         monumentPointSet.add(mWP);
         WaypointPainter<Airportpoint> ap = new AirportpointRender();
@@ -174,22 +217,21 @@ public class MapCustom extends JXMapViewer {
         setOverlayPainter(ap);
         add(mWP.getButton());
         validate();
-    }
-*/
-    
+    }*/
+     
     public void setCoords(int latitude, int longitude) {
         GeoPosition geo = new GeoPosition(latitude, longitude);
         setAddressLocation(geo);
     }
 
-    
+/*    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         //Dessiner les lignes
-        for (MapLine line : mapController.getMapLineSet()) {
+        for (MapLine line : controller.getMapLineSet()) {
             line.paint(g2, this, getWidth(), getHeight());
         }
-    }
+    }*/
 }

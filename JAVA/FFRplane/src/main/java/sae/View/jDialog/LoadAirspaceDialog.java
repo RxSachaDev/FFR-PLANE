@@ -12,6 +12,9 @@ import javax.swing.SwingUtilities;
 
 import sae.utils.*;
 import sae.exceptions.*;
+import sae.models.airports.AirportCatalog;
+import sae.models.flights.FlightCatalog;
+import sae.models.toolbox.ToolBox;
 import sae.view.jFrame.*;
 import sae.view.jFileChooser.*;
 
@@ -138,6 +141,7 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         });
 
         labelError.setForeground(new java.awt.Color(255, 51, 51));
+        labelError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,7 +157,8 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(firstFileLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
+                                .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                                .addComponent(labelError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(secondFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,10 +170,6 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
                                     .addComponent(buttonChooseFlightsFile, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(labelError)
-                .addGap(171, 171, 171))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,12 +205,15 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         System.out.println("ok");
         try {
-            Scanner scan = new Scanner(new File(airportsFileTextField.getText())); //Déclanche l'éxception si le chemin d'exces est foireux
-            scan = new Scanner(new File(flightsFileTextField.getText()));
+            // <* Cette partie ne sert qu'à déclancher les exceptions
+            AirportCatalog temp = new AirportCatalog();
+            ToolBox.fillAirportList(airportsFileTextField.getText(), temp);
+            ToolBox.fillFlightList(airportsFileTextField.getText(),flightsFileTextField.getText(), new FlightCatalog(), temp);
+            // *>
+            
             Settings.setAirportsFilePath(airportsFileTextField.getText());
             Settings.setFlightsFilePath(flightsFileTextField.getText());
             dispose();
-            //GERER L'EXCEPTION FileFormatError
             SwingUtilities.getWindowAncestor(this).dispose();
             MainFrame mainFrame = new MainFrame();
             mainFrame.setVisible(true);
@@ -217,7 +221,9 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         } catch(FileNotFoundException e){
             labelError.setText("L'un des chemin d'accès est introuvable !");
         } catch(FileFormatException e) {
-            labelError.setText("Format Invalide !");
+            labelError.setText(e.getMessage());
+        } catch (DataMismatchException e){
+            labelError.setText(e.getMessage());
         }
     }//GEN-LAST:event_OkButtonActionPerformed
 

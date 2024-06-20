@@ -18,18 +18,14 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import sae.models.toolbox.ToolBox;
 
+
 /**
- * La classe AlgoColoration permet de charger un graphe à partir d'un fichier,
- * d'appliquer des algorithmes de coloration pour minimiser les conflits de
- * coloration, et de générer des fichiers de sortie.
- *
- * @author Sacha
+ * La classe Coloration permet de lire un graphe à partir d'un fichier, de
+ * l'afficher, et d'appliquer des algorithmes de coloration pour minimiser les
+ * conflits de coloration.
  */
 public class AlgoColoration {
 
-    /**
-     * Le nombre maximum de couleurs utilisables pour colorer le graphe.
-     */
     private int kmax;
 
     /**
@@ -48,6 +44,7 @@ public class AlgoColoration {
     private Graph fileGraph;
     
     private ToolBox toolBox = new ToolBox();
+    private int nbSommet;
 
     /**
      * Constructeur par défaut qui initialise un nouveau MultiGraph.

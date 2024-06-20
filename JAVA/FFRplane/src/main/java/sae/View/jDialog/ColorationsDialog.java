@@ -48,14 +48,14 @@ public class ColorationsDialog extends javax.swing.JDialog {
         EditableItemsPanel = new javax.swing.JPanel();
         KmaxLabel = new javax.swing.JLabel();
         KmaxSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-        MinLabel = new javax.swing.JLabel();
-        MinjSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        safetyMarginLabel = new javax.swing.JLabel();
+        safetyMarginSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         ChoicesPanel = new javax.swing.JPanel();
         CancelButton = new javax.swing.JButton();
         OkButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("FFRplane - coloration settings");
+        setTitle("FFRplane - Paramètres de Coloration");
         setPreferredSize(null);
         setResizable(false);
         setSize(new java.awt.Dimension(400, 230));
@@ -67,9 +67,9 @@ public class ColorationsDialog extends javax.swing.JDialog {
 
         KmaxSpinner.setValue(Settings.getKmax());
 
-        MinLabel.setText("Marge de sécurité (en min) : ");
+        safetyMarginLabel.setText("Marge de sécurité (en min) : ");
 
-        MinjSpinner.setValue(Settings.getSafetyMargin());
+        safetyMarginSpinner.setValue(Settings.getSafetyMargin());
 
         javax.swing.GroupLayout EditableItemsPanelLayout = new javax.swing.GroupLayout(EditableItemsPanel);
         EditableItemsPanel.setLayout(EditableItemsPanelLayout);
@@ -79,10 +79,10 @@ public class ColorationsDialog extends javax.swing.JDialog {
                 .addGap(0, 0, 0)
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(KmaxLabel)
-                    .addComponent(MinLabel))
+                    .addComponent(safetyMarginLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MinjSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(safetyMarginSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(KmaxSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
@@ -95,8 +95,8 @@ public class ColorationsDialog extends javax.swing.JDialog {
                     .addComponent(KmaxSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(EditableItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(MinLabel)
-                    .addComponent(MinjSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(safetyMarginLabel)
+                    .addComponent(safetyMarginSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
 
@@ -162,7 +162,9 @@ public class ColorationsDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-        System.out.println("ok");
+        Settings.setKmax((int)KmaxSpinner.getValue());
+        Settings.setSafetyMargin((int)safetyMarginSpinner.getValue());
+        dispose();
     }//GEN-LAST:event_OkButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -171,9 +173,9 @@ public class ColorationsDialog extends javax.swing.JDialog {
     private javax.swing.JPanel EditableItemsPanel;
     private javax.swing.JLabel KmaxLabel;
     private javax.swing.JSpinner KmaxSpinner;
-    private javax.swing.JLabel MinLabel;
-    private javax.swing.JSpinner MinjSpinner;
     private javax.swing.JButton OkButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel safetyMarginLabel;
+    private javax.swing.JSpinner safetyMarginSpinner;
     // End of variables declaration//GEN-END:variables
 }

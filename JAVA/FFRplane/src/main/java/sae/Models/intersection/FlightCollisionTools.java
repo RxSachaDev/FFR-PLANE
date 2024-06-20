@@ -2,6 +2,7 @@ package sae.models.intersection;
 import sae.models.airports.*;
 import sae.models.flights.*;
 import sae.models.toolbox.*;
+import sae.utils.Settings;
 
 /**
  * La classe FlightCollisionTools fournit des méthodes pour détecter les collisions potentielles entre les vols.
@@ -17,7 +18,7 @@ public class FlightCollisionTools {
      * @return true s'il y a une collision, false sinon
      */
     public static boolean hasCollision(Flight flight1, Flight flight2) {
-        double res = 16; // (PARAMETRE MODIFIABLE)
+        double res = Settings.getSafetyMargin()+1; 
         int intersectionCase = calculateIntersectionCase(flight1, flight2);
         switch (intersectionCase) {
             case 1: // Cas où flight1 et flight2 ont les mêmes trajectoires (directions opposées)
@@ -49,7 +50,7 @@ public class FlightCollisionTools {
                 }
                 break;
         }
-        return (res < 15); // (PARAMETRE MODIFIABLE)
+        return (res < Settings.getSafetyMargin());
     }
 
 

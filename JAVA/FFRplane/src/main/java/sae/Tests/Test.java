@@ -46,8 +46,9 @@ public class Test {
     public static void flightsTestFilesResult(FlightCatalog flightCatalog,AirportCatalog airportCatalog){
         for(int ii = 1 ; ii<10 ; ii++){
             String temp = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test"+ii+".csv";
+            String temp2 = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
             try {
-                ToolBox.fillFlightList(temp,flightCatalog,airportCatalog);
+                ToolBox.fillFlightList(temp2,temp,flightCatalog,airportCatalog);
             } catch (FileNotFoundException e) {}
             int count = 0;
             List<Flight> flightsList = flightCatalog.getFlights();
