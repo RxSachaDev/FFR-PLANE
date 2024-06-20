@@ -1,4 +1,5 @@
 sae\tests\Test.class
+sae\view\jFrame\MainFrame$12.class
 sae\utils\IconUtil.class
 sae\exceptions\FileFormatException.class
 sae\view\easterGame\ActionDialog.class
@@ -21,7 +22,6 @@ sae\models\airports\AirportCatalog.class
 sae\view\easterGame\EasterGame.class
 sae\view\easterGame\Plane.class
 sae\view\easterGame\EasterGame$6.class
-sae\view\jFrame\viewer.class
 sae\models\algocoloration\ResultatColoration.class
 sae\controller\Interfaces\ModelPoint.class
 sae\view\jDialog\LoadAirspaceDialog$2.class
@@ -60,7 +60,6 @@ sae\view\jDialog\GivenHourDialog$2.class
 sae\view\jFrame\WelcomeFrame$3.class
 sae\view\jDialog\ColorationsDialog.class
 sae\view\jFrame\GraphstreamFrame$GraphLoader.class
-sae\view\mapCustom\MapCustom$2.class
 sae\view\jDialog\ColorationsDialog$2.class
 sae\models\flights\FlightCatalog.class
 sae\controller\Logiciel.class

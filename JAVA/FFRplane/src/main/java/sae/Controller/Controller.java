@@ -1,8 +1,11 @@
 package sae.controller;
 
 import java.awt.Color;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
 
@@ -43,6 +46,13 @@ public class Controller {
         this.mainFrame = mainFrame;
         this.mapCustom = mainFrame.getMapCustom();
         this.mapCustom.setController(this);
+    }
+    
+    
+    public void colorMapLine(Graph graph){
+        for (Flight flight :  flightsCatalog.getFlights()){
+            flight.setFlightHeighLevel(graph.getNode(String.valueOf(flight.getFlightNumber())).getAttribute("color"));
+        }
     }
 
     
@@ -190,5 +200,56 @@ public class Controller {
      */
     public Set<MapLine> getMapLineSet(){
         return mapLineSet;
+    }
+
+    
+    
+    // <*A RETIRER
+    public void handleMapClick(MouseEvent e) {
+        /*GeoPosition geo = mapCustom.convertPointToGeoPosition(e.getPoint());
+        
+        System.out.println(geo);
+        if (geo != null) {
+            MapLine closestLine = null;
+            double closestDistance = Double.MAX_VALUE;
+            for (MapLine flightLine : mapLineSet) {
+                
+                double distance = distToMapLine(flightLine,geo);
+                System.out.println(flightLine.getModelLine().getPoint1().getLatitude()+" -- "+distance);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestLine = flightLine;
+                }
+                
+            }
+            if (closestLine != null && closestDistance <= 0.1) {  
+                closestLine.setColor(Color.ORANGE);
+                if (lastSelectedLine != null && lastSelectedLine != closestLine) {
+                    lastSelectedLine.setColor(Color.BLACK);
+                }
+                lastSelectedLine = closestLine;
+            }
+            mapCustom.repaint();
+        }*/
+    }
+    public static double distToMapLine(MapLine mapLine,GeoPosition point) {
+        //Point1
+        double x1 = mapLine.getPoint1().getLatitude();
+        double y1 = mapLine.getPoint1().getLongitude();
+        
+        //Point2
+        double x2 = mapLine.getPoint2().getLatitude();
+        double y2 = mapLine.getPoint2().getLongitude();
+        
+        //Point cliqué
+        double x = point.getLatitude(); 
+        double y = point.getLongitude();
+        
+        //Equation de la droite Point1,Point2
+        double a = (y2 - y1) / (x2 - x1);
+        double b = y2 - a * x2;
+
+        double distance = Math.abs(-a*x + y - b)/Math.sqrt(Math.pow(a, 2)+1);
+        return distance;
     }
 }

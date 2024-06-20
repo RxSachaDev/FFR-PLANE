@@ -35,7 +35,7 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
      */
     public ChooseAlgorithmDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        
+
         // Chargement du graphe avec le fichier temporel
         algoColoration.setFichier("src/main/java/data/temp/graph-testTEMP.txt");
         try {
@@ -156,7 +156,7 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         // Mise à jour du panel
         mainFrame.getGraphstreamContener().revalidate();
         mainFrame.getGraphstreamContener().repaint();
-        mainFrame.getGraphstreamContener().setVisible(true);
+        mainFrame.getGraphstreamPanel().setVisible(true);
     }
 
     /**
@@ -175,25 +175,27 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         if (algoColoration.getKmax() != -1) {
             generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
-                .append(" Nombre de conflits : ").append(conflict).append("\n");
+                    .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n");
         } else {
             generalInformation.append(" Kmax :  Aucun").append("\n")
-                .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
-                .append(" Nombre de conflits : ").append(conflict).append("\n");
+                    .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n");
         }
-        
+
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
         mainFrame.setColoringGraph(resultatColoration.getGraph());
-        
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()){
+
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
             setViewer(resultatColoration.getGraph(), true);
         } else {
             setViewer(resultatColoration.getGraph(), false);
         }
+        mainFrame.getController().colorMapLine(resultatColoration.getGraph());
+        mainFrame.setAlgorithmeChoisi("BestAlgo");
     }//GEN-LAST:event_bestalgoButtonActionPerformed
 
     /**
@@ -211,24 +213,26 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         if (algoColoration.getKmax() != -1) {
             generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                .append(" Nombre de conflits : ").append(conflict).append("\n");
+                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n");
         } else {
             generalInformation.append(" Kmax :  Aucun").append("\n")
-                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                .append(" Nombre de conflits : ").append(conflict).append("\n");
+                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n");
         }
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
         mainFrame.setColoringGraph(algoColoration.getFileGraph());
-        
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()){
+
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
             setViewer(algoColoration.getFileGraph(), true);
         } else {
             setViewer(algoColoration.getFileGraph(), false);
         }
+        mainFrame.getController().colorMapLine(algoColoration.getFileGraph());
+        mainFrame.setAlgorithmeChoisi("WelshPowell");
     }//GEN-LAST:event_wpButtonActionPerformed
 
     /**
@@ -246,44 +250,43 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
         if (algoColoration.getKmax() != -1) {
             generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                .append(" Nombre de conflits : ").append(conflict).append("\n");
+                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n");
         } else {
             generalInformation.append(" Kmax :  Aucun").append("\n")
-                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                .append(" Nombre de conflits : ").append(conflict).append("\n");
+                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n");
         }
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
         mainFrame.setColoringGraph(algoColoration.getFileGraph());
-        
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()){
+
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
             setViewer(algoColoration.getFileGraph(), true);
         } else {
             setViewer(algoColoration.getFileGraph(), false);
         }
-        
+        mainFrame.getController().colorMapLine(algoColoration.getFileGraph());
+        mainFrame.setAlgorithmeChoisi("Dsatur");
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
-    public void setViewer(Graph graph, boolean darkMode){
-        MainFrame mainFrame = (MainFrame) this.getParent();
-        if (darkMode){
-            String css = "graph { fill-color: #aeaeae; }";
+    public void setViewer(Graph graph, boolean darkMode) {
+        if (darkMode) {
+            String css = "graph { fill-color: #313338; }";
             graph.setAttribute("ui.stylesheet", css);
-        }
-        else {
+        } else {
             String css = "graph { fill-color: #ffffff; }";
             graph.setAttribute("ui.stylesheet", css);
         }
-        
+
         Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
         viewer.enableAutoLayout();
-        
+
         updateGraphVisualization(viewer);
     }
-    
+
     /**
      * @param args the command line arguments
      */

@@ -80,7 +80,7 @@ public class Flight implements ModelLine{
         return flightHeighLevel;
     }
 
-    
+
     public void setFlightHeighLevel(int flightHeighLevel) {
         this.flightHeighLevel = flightHeighLevel;
     }

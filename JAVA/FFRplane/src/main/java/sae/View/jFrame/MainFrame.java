@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import org.graphstream.graph.Graph;
 import sae.View.jDialog.ChooseAlgorithmDialog;
+import sae.View.jFrame.GraphstreamFrame;
 import sae.view.jDialog.LoadAirspaceDialog;
 
 import sae.controller.Logiciel;
@@ -28,6 +29,7 @@ import sae.utils.IconUtil;
 import sae.utils.Settings;
 import sae.view.mapCustom.MapCustom;
 import sae.view.mapCustom.MapLine;
+
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
@@ -44,6 +46,7 @@ public class MainFrame extends JFrame implements Logiciel {
     private final ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
     private final Rectangle boundsMenuBar;
     private Graph coloringGraph;
+    private String algorithmeChoisi;
     
 
     private Controller controller;
@@ -70,7 +73,9 @@ public class MainFrame extends JFrame implements Logiciel {
         
         buttonMenu.setContentAreaFilled(false);
         
+
         controller = new Controller(this);
+
         controller.initMapCustom();
         
         
@@ -83,7 +88,7 @@ public class MainFrame extends JFrame implements Logiciel {
         
         boundsMenuBar = panelRightBar.getBounds(); //Sert pour la MenuBar rétractable
         
-        graphstreamContener.setVisible(false);
+        graphstreamPanel.setVisible(false);
     }
 
     public JComboBox<MapLine> getMapLineComboBox() {
@@ -140,7 +145,9 @@ public class MainFrame extends JFrame implements Logiciel {
         panelButton = new javax.swing.JPanel();
         buttonColoration = new javax.swing.JButton();
         buttonFunctions = new javax.swing.JButton();
+        graphstreamPanel = new javax.swing.JPanel();
         graphstreamContener = new javax.swing.JPanel();
+        enlargeButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
@@ -179,7 +186,7 @@ public class MainFrame extends JFrame implements Logiciel {
                     .addGroup(mapCustomLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(372, Short.MAX_VALUE))
+                .addContainerGap(369, Short.MAX_VALUE))
         );
         mapCustomLayout.setVerticalGroup(
             mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,9 +263,7 @@ public class MainFrame extends JFrame implements Logiciel {
         textAreaInfosSelect.setBorder(null);
         textAreaInfosSelect.setCaretColor(null);
         textAreaInfosSelect.setDisabledTextColor(null);
-
         mapLineComboBox.setModel(new DefaultComboBoxModel<MapLine>());
-
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);
         panelInfosSelectLayout.setHorizontalGroup(
@@ -304,8 +309,8 @@ public class MainFrame extends JFrame implements Logiciel {
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+            .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,19 +322,44 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        graphstreamPanel.setBackground(null);
+
         graphstreamContener.setBackground(new java.awt.Color(221, 221, 221));
         graphstreamContener.setLayout(new java.awt.BorderLayout());
+
+        enlargeButton.setBackground(new java.awt.Color(235, 173, 59));
+        enlargeButton.setForeground(new java.awt.Color(0, 0, 0));
+        enlargeButton.setText("Agrandir");
+        enlargeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enlargeButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout graphstreamPanelLayout = new javax.swing.GroupLayout(graphstreamPanel);
+        graphstreamPanel.setLayout(graphstreamPanelLayout);
+        graphstreamPanelLayout.setHorizontalGroup(
+            graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(graphstreamPanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(graphstreamContener, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(enlargeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        graphstreamPanelLayout.setVerticalGroup(
+            graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(graphstreamPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(enlargeButton))
+        );
 
         javax.swing.GroupLayout panelContainerRightBarLayout = new javax.swing.GroupLayout(panelContainerRightBar);
         panelContainerRightBar.setLayout(panelContainerRightBarLayout);
         panelContainerRightBarLayout.setHorizontalGroup(
             panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(panelContainerRightBarLayout.createSequentialGroup()
                 .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -342,6 +372,14 @@ public class MainFrame extends JFrame implements Logiciel {
                         .addGap(25, 25, 25)
                         .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(graphstreamPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelContainerRightBarLayout.setVerticalGroup(
             panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,9 +393,9 @@ public class MainFrame extends JFrame implements Logiciel {
                 .addComponent(labelInfosSelect2)
                 .addGap(6, 6, 6)
                 .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graphstreamPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -458,17 +496,22 @@ public class MainFrame extends JFrame implements Logiciel {
         ChooseAlgorithmDialog chooseAlgorithmDialog = new ChooseAlgorithmDialog(this, true);
         if (DarkModeCheckBoxMenuItem.isSelected()) {
             // le darkmode est activé
-            panelRightBar.setBackground(new Color(50, 50, 50));
-            panelInfosGene.setBackground(new Color(174, 174, 174));
-            panelInfosSelect.setBackground(new Color(174, 174, 174));
-            textAreaInfosGene.setBackground(new Color(174, 174, 174));
-            textAreaInfosSelect.setBackground(new Color(174, 174, 174));
-            ComboMapType.setSelectedIndex(3);
-            mapCustom.changeStyle(3);
-            labelInfosGene.setForeground(new Color(174, 174, 174));
-            labelInfosSelect1.setForeground(new Color(174, 174, 174));
-            labelInfosSelect2.setForeground(new Color(174, 174, 174));
-            chooseAlgorithmDialog.setViewer(coloringGraph, true);
+            panelRightBar.setBackground(new Color(30, 31, 34));
+        panelInfosGene.setBackground(new Color(49, 51, 56));
+        panelInfosSelect.setBackground(new Color(49, 51, 56));
+        textAreaInfosGene.setBackground(new Color(49, 51, 56));
+        textAreaInfosSelect.setBackground(new Color(49, 51, 56));
+        ComboMapType.setSelectedIndex(3);
+        mapCustom.changeStyle(3);
+        labelInfosGene.setForeground(Color.white);
+        labelInfosSelect1.setForeground(Color.white);
+        labelInfosSelect2.setForeground(Color.white);
+        textAreaInfosGene.setForeground(Color.white);
+        textAreaInfosSelect.setForeground(Color.white);
+            if (coloringGraph != null) {
+                chooseAlgorithmDialog.setViewer(coloringGraph, true);
+            }
+            
 
         } else {
             //le darkmode est désactivé
@@ -482,7 +525,11 @@ public class MainFrame extends JFrame implements Logiciel {
             labelInfosGene.setForeground(Color.BLACK);
             labelInfosSelect1.setForeground(Color.BLACK);
             labelInfosSelect2.setForeground(Color.BLACK);
-            chooseAlgorithmDialog.setViewer(coloringGraph, false);
+            textAreaInfosGene.setForeground(Color.BLACK);
+            textAreaInfosSelect.setForeground(Color.BLACK);
+            if (coloringGraph != null) {
+                chooseAlgorithmDialog.setViewer(coloringGraph, false);
+            }
         }
     }
 
@@ -553,6 +600,15 @@ public class MainFrame extends JFrame implements Logiciel {
         chooseAlgorithm.setVisible(true);
     }//GEN-LAST:event_colorGrapheMenuItemActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void enlargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enlargeButtonActionPerformed
+        GraphstreamFrame graphstreamFrame = new GraphstreamFrame(this, "src/main/java/data/temp/graph-testTEMP.txt", algorithmeChoisi);
+        graphstreamFrame.setVisible(true);
+    }//GEN-LAST:event_enlargeButtonActionPerformed
+
     
     /**
      * Définit la couleur du texte de tous les composants JLabel dans le
@@ -597,10 +653,20 @@ public class MainFrame extends JFrame implements Logiciel {
     public void setColoringGraph(Graph coloringGraph) {
         this.coloringGraph = coloringGraph;
     }
+
+    public void setAlgorithmeChoisi(String algorithmeChoisi) {
+        this.algorithmeChoisi = algorithmeChoisi;
+    }
+    
     
     public JPanel getGraphstreamContener() {
         return graphstreamContener;
     }
+
+    public JPanel getGraphstreamPanel() {
+        return graphstreamPanel;
+    }
+    
     
     public JCheckBoxMenuItem getDarkModeCheckBoxMenuItem() {
         return DarkModeCheckBoxMenuItem;
@@ -614,7 +680,10 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JButton buttonColoration;
     private javax.swing.JButton buttonFunctions;
     private javax.swing.JMenuItem colorGrapheMenuItem;
+    private javax.swing.JButton enlargeButton;
     private javax.swing.JPanel graphstreamContener;
+    private javax.swing.JPanel graphstreamPanel;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
