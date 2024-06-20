@@ -18,6 +18,28 @@ public class Settings {
     private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test1.csv";
     private static String graphTestPath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\test\\graph-test0.txt";
     
+    /**
+     * Couleur d'affinage qui permet d'affiner l'affichage des vols par couleur
+     * '0' est la veleur par défaut, cela signifie qu'il n'y a pas d'affinage à faire
+     */
+    private static int refiningColor = 0;
+    
+    
+    private static boolean easterEggActivated = true;
+    
+    
+    public static boolean isEasterEggActivated(){
+        return easterEggActivated;
+    }
+
+    public static int getRefiningColor() {
+        return refiningColor;
+    }
+
+    public static void setRefiningColor(int refiningColor) {
+        Settings.refiningColor = refiningColor;
+    }
+    
     
     /**
      * Constructeur par défaut de la classe Settings.

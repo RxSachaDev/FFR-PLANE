@@ -2,6 +2,7 @@ sae\View\jDialog\LoadGraphDialog$2.class
 sae\View\easterGame\EasterGame$5.class
 sae\Utils\ImageUtil.class
 sae\View\jFrame\MainFrame$10.class
+sae\View\jDialog\GivenHourDialog.class
 sae\Models\toolbox\ToolBox.class
 sae\exceptions\FileFormatException.class
 sae\View\easterGame\EasterGame$2.class
@@ -17,6 +18,7 @@ sae\View\jDialog\LoadingDialog$1.class
 sae\View\jDialog\ChooseAlgorithmDialog.class
 sae\Models\flights\Flight.class
 sae\View\jFrame\MainFrame$2.class
+sae\View\jDialog\GivenHourDialog$1.class
 sae\View\easterGame\ActionDialog$1.class
 sae\Models\airports\Airport.class
 sae\Models\FontEnum$1.class
@@ -36,12 +38,14 @@ sae\View\jFrame\WelcomeFrame$3.class
 sae\Models\algocoloration\AlgoColoration.class
 sae\View\jDialog\LoadAirspaceDialog$2.class
 sae\View\jDialog\LoadGraphDialog$4.class
+sae\View\jFrame\MainFrame$12.class
 sae\View\jDialog\JInfosDialog.class
 sae\View\mapCustom\MapLine.class
 sae\exceptions\DataMismatchException.class
 sae\View\jDialog\ColorationsDialog$2.class
 sae\View\jDialog\LoadAirspaceDialog$3.class
 sae\View\jDialog\LoadGraphDialog.class
+sae\View\jFrame\MainFrame$11.class
 sae\View\easterGame\EasterGame$6.class
 sae\View\jFrame\viewer.class
 sae\View\jDialog\LoadGraphDialog$3.class
@@ -60,6 +64,7 @@ sae\Models\FontEnum.class
 sae\Models\intersection\FlightCollisionTools.class
 sae\View\mapCustom\MapPoint.class
 sae\View\jFrame\WelcomeFrame.class
+sae\View\jDialog\GivenHourDialog$2.class
 sae\View\jDialog\JInfosDialog$1.class
 sae\View\jFrame\MainFrame$3.class
 sae\View\easterGame\EasterPoint.class
