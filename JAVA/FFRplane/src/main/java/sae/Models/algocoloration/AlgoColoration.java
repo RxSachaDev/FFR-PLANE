@@ -18,7 +18,6 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import sae.models.toolbox.ToolBox;
 
-
 /**
  * La classe Coloration permet de lire un graphe à partir d'un fichier, de
  * l'afficher, et d'appliquer des algorithmes de coloration pour minimiser les
@@ -42,7 +41,7 @@ public class AlgoColoration {
      * L'objet Graph représentant le graphe à colorer.
      */
     private Graph fileGraph;
-    
+
     private ToolBox toolBox = new ToolBox();
     private int nbSommet;
 
@@ -110,7 +109,6 @@ public class AlgoColoration {
         return nbNode;
     }
 
-   
     /**
      * Charge le graphe à partir du fichier source.
      *
@@ -140,26 +138,35 @@ public class AlgoColoration {
                         break;
                     // Les lignes suivantes contiennent les arêtes
                     default:
-                        Node node1 = fileGraph.getNode(elements[0]);
-                        Node node2 = fileGraph.getNode(elements[1]);
-                        // Ajouter les sommets s'ils n'existent pas déjà
-                        if (node1 == null) {
-                            node1 = fileGraph.addNode(elements[0]);
+                        if (elements.length == 2) {
+                            Node node1 = fileGraph.getNode(elements[0]);
+                            Node node2 = fileGraph.getNode(elements[1]);
+                            // Ajouter les sommets s'ils n'existent pas déjà
+                            if (node1 == null) {
+                                node1 = fileGraph.addNode(elements[0]);
+                            }
+                            if (node2 == null) {
+                                node2 = fileGraph.addNode(elements[1]);
+                            }
+                            // Ajouter une arête entre les sommets
+                            String edgeId = elements[0] + "_" + elements[1];
+                            fileGraph.addEdge(edgeId, node1, node2);
+                            break;
                         }
-                        if (node2 == null) {
-                            node2 = fileGraph.addNode(elements[1]);
+                        else {
+                            Node node1 = fileGraph.getNode(elements[0]);
+                            if (node1 == null) {
+                                node1 = fileGraph.addNode(elements[0]);
+                                node1.setAttribute("color", 1);
+                            }
                         }
-                        // Ajouter une arête entre les sommets
-                        String edgeId = elements[0] + "_" + elements[1];
-                        fileGraph.addEdge(edgeId, node1, node2);
-                        break;
                 }
                 cpt++;
             }
         }
     }
-    
-        /**
+
+    /**
      * Applique l'algorithme de Welsh-Powell pour colorier le graphe. Réduit les
      * conflits en ajustant les couleurs.
      *
@@ -173,7 +180,7 @@ public class AlgoColoration {
         int chromaticNumber = wp.getChromaticNumber();
 
         // Ajuster la coloration si le nombre chromatique dépasse kmax
-        if (chromaticNumber > kmax) {
+        if (kmax != -1 && chromaticNumber > kmax) {
             for (int i = 0; i < 20; i++) {
                 for (Node aloneNode : fileGraph.getEachNode()) {
                     int minConflicts = Integer.MAX_VALUE;
@@ -206,8 +213,8 @@ public class AlgoColoration {
 
         return countConflicts(fileGraph);
     }
-    
-        /**
+
+    /**
      * Applique l'algorithme DSATUR pour colorier le graphe.
      *
      * @param graph le graphe à colorier
@@ -260,8 +267,8 @@ public class AlgoColoration {
         toolBox.colorGraph(graph);
         return countConflicts(graph);
     }
-    
-        /**
+
+    /**
      * Minimise les conflits de coloration en utilisant les algorithmes DSATUR
      * et Welsh-Powell.
      *
@@ -566,7 +573,7 @@ public class AlgoColoration {
             // Gère les exceptions d'entrée/sortie en imprimant la trace de la pile
             e.printStackTrace();
         }
-    }    
+    }
 
     /**
      * Méthode principale pour tester l'algorithme de coloration. Charge un

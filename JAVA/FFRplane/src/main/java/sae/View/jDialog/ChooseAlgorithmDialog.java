@@ -37,7 +37,7 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         super(parent, modal);
         
         // Chargement du graphe avec le fichier temporel
-        algoColoration.setFichier("src/main/java/data/test/graph-test0.txt");
+        algoColoration.setFichier("src/main/java/data/temp/graph-testTEMP.txt");
         try {
             algoColoration.fillGraph();
         } catch (IOException e) {
@@ -173,10 +173,18 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         int conflict = resultatColoration.getConflict();
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+        if (algoColoration.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
                 .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
                 .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
+        } else {
+            generalInformation.append(" Kmax :  Aucun").append("\n")
+                .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
+                .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
+                .append(" Nombre de conflits : ").append(conflict).append("\n");
+        }
+        
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
         mainFrame.setColoringGraph(resultatColoration.getGraph());
@@ -201,10 +209,17 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         int conflict = algoColoration.welshPowell();
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+        if (algoColoration.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
                 .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
                 .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
+        } else {
+            generalInformation.append(" Kmax :  Aucun").append("\n")
+                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                .append(" Nombre de conflits : ").append(conflict).append("\n");
+        }
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
         mainFrame.setColoringGraph(algoColoration.getFileGraph());
@@ -229,10 +244,17 @@ public class ChooseAlgorithmDialog extends javax.swing.JDialog {
         int conflict = algoColoration.dsatur(algoColoration.getFileGraph());
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+        if (algoColoration.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
                 .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
                 .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
                 .append(" Nombre de conflits : ").append(conflict).append("\n");
+        } else {
+            generalInformation.append(" Kmax :  Aucun").append("\n")
+                .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
+                .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                .append(" Nombre de conflits : ").append(conflict).append("\n");
+        }
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.setJTextAreaText2(generalInformation.toString());
         mainFrame.setColoringGraph(algoColoration.getFileGraph());
