@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import sae.exceptions.DataMismatchException;
 import sae.models.airports.Airport;
 import sae.models.airports.AirportCatalog;
@@ -172,4 +174,65 @@ public class ToolBox {
 
         return true;
     }
+    
+    
+    /**
+     * Colore les nœuds d'un graphe avec des couleurs prédéfinies.
+     *
+     * <p>
+     * Cette méthode parcourt chaque nœud du graphe et attribue une couleur de
+     * remplissage en fonction de l'attribut "color" du nœud. Les couleurs sont
+     * prédéfinies dans un tableau. Si la valeur de l'attribut "color" est
+     * inférieure à la longueur du tableau de couleurs, la couleur
+     * correspondante est appliquée au nœud.
+     *
+     * @param graph le {@link Graph} contenant les nœuds à colorer
+     */
+    public void colorGraph(Graph graph) {
+        for (Node node : graph) {
+            // Tableau de couleurs
+            String[] colors = {
+                "red", "green", "blue", "yellow", "cyan", "magenta", "orange", "pink", "purple", "brown",
+                "maroon", "navy", "teal", "olive", "lime", "aqua", "fuchsia", "silver", "gray", "black",
+                "indianred", "lightcoral", "salmon", "darksalmon", "lightsalmon", "crimson", "firebrick", "darkred", "red",
+                "orangered", "tomato", "coral", "darkorange", "orange", "gold", "yellow", "lightyellow", "lemonchiffon",
+                "lightgoldenrodyellow", "papayawhip", "moccasin", "peachpuff", "palegoldenrod", "khaki", "darkkhaki",
+                "lavender", "thistle", "plum", "violet", "orchid", "fuchsia", "magenta", "mediumorchid", "mediumpurple",
+                "rebeccapurple", "blueviolet", "darkviolet", "darkorchid", "darkmagenta", "purple", "indigo", "slateblue",
+                "darkslateblue", "mediumslateblue", "greenyellow", "chartreuse", "lawngreen", "lime", "limegreen", "palegreen",
+                "lightgreen", "mediumspringgreen", "springgreen", "mediumseagreen", "seagreen", "forestgreen", "green", "darkgreen",
+                "yellowgreen", "olivedrab", "darkolivegreen", "mediumaquamarine", "darkseagreen", "lightseagreen", "darkcyan",
+                "cyan", "lightcyan", "paleturquoise", "aquamarine", "turquoise", "mediumturquoise", "darkturquoise", "cadetblue",
+                "steelblue", "lightsteelblue", "powderblue", "lightblue", "skyblue", "lightskyblue", "deepskyblue", "dodgerblue",
+                "cornflowerblue", "royalblue", "blue", "mediumblue", "darkblue", "navy", "midnightblue", "cornsilk", "blanchedalmond",
+                "bisque", "navajowhite", "wheat", "burlywood", "tan", "rosybrown", "sandybrown", "goldenrod", "darkgoldenrod",
+                "peru", "chocolate", "saddlebrown", "sienna", "brown", "darkred", "azure", "aliceblue", "mintcream", "honeydew", "lightcoral", "cornflowerblue", "skyblue", "thistle", "seashell", "lavender",
+                "blanchedalmond", "bisque", "antiquewhite", "floralwhite", "ghostwhite", "oldlace", "linen", "mistyrose", "peachpuff", "navajowhite",
+                "palegoldenrod", "lightgoldenrodyellow", "lemonchiffon", "lightyellow", "papayawhip", "moccasin", "khaki", "darkkhaki", "ivory",
+                "beige", "lightgrey", "lightsteelblue", "lightslategray", "slategray", "dimgrey", "darkslategray", "grey", "darkgrey", "lightslategrey",
+                "midnightblue", "navy", "darkblue", "mediumblue", "blue", "darkgreen", "darkolivegreen", "olive", "olivedrab", "yellowgreen",
+                "greenyellow", "darkseagreen", "forestgreen", "limegreen", "lightgreen", "palegreen", "springgreen", "mediumspringgreen", "lawngreen",
+                "chartreuse", "aquamarine", "mediumaquamarine", "paleturquoise", "lightseagreen", "darkturquoise", "cadetblue", "darkcyan", "teal",
+                "lightcyan", "powderblue", "lightblue", "deepskyblue", "dodgerblue", "cornflowerblue", "steelblue", "royalblue", "mediumslateblue",
+                "slateblue", "darkslateblue", "mediumorchid", "blueviolet", "darkviolet", "darkorchid", "darkmagenta", "purple", "indigo", "mediumpurple",
+                "thistle", "plum", "violet", "orchid", "fuchsia", "magenta", "mediumorchid", "mediumpurple", "rebeccapurple"
+            };
+            // Modification de l'attribut ui style de chaque sommet du graphe
+            if ((int) node.getAttribute("color") < colors.length) {
+                String color = colors[(int) node.getAttribute("color")];
+                node.setAttribute("ui.style", "fill-color: " + color + ";");
+            }
+        }
+    }
+
+    /**
+     * Affiche le graphe en utilisant l'interface utilisateur GraphStream.
+     *
+     * @param graph le graphe à afficher
+     */
+    public void displayGraph(Graph graph) {
+        System.setProperty("org.graphstream.ui", "org.graphstream.ui.swing");
+        graph.display();
+    }
+
 }

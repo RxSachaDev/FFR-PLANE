@@ -224,7 +224,7 @@ public class MapCustom extends JXMapViewer {
         setAddressLocation(geo);
     }
 
-    
+/*    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -233,5 +233,5 @@ public class MapCustom extends JXMapViewer {
         for (MapLine line : controller.getMapLineSet()) {
             line.paint(g2, this, getWidth(), getHeight());
         }
-    }
+    }*/
 }
