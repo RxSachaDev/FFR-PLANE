@@ -606,6 +606,9 @@ public class MainFrame extends JFrame implements Logiciel {
 
     private void enlargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enlargeButtonActionPerformed
         GraphstreamFrame graphstreamFrame = new GraphstreamFrame(this, "src/main/java/data/temp/graph-testTEMP.txt", algorithmeChoisi);
+        if (DarkModeCheckBoxMenuItem.isSelected()){
+            graphstreamFrame.graphstreamFrameDarkMode();
+        }
         graphstreamFrame.setVisible(true);
     }//GEN-LAST:event_enlargeButtonActionPerformed
 
