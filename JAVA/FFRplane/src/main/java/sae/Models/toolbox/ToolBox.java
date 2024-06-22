@@ -1,5 +1,7 @@
 package sae.models.toolbox;
 
+import java.awt.Event;
+import java.awt.event.MouseWheelEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,6 +17,7 @@ import java.util.Scanner;
 import java.util.Set;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.swingViewer.ViewPanel;
 import sae.exceptions.DataMismatchException;
 import sae.models.airports.Airport;
 import sae.models.airports.AirportsCatalog;
@@ -233,6 +236,20 @@ public class ToolBox {
     public void displayGraph(Graph graph) {
         System.setProperty("org.graphstream.ui", "org.graphstream.ui.swing");
         graph.display();
+    }
+    
+    public  void zoomGraphMouseWheelMoved(MouseWheelEvent mwe, ViewPanel view_panel){
+        if (Event.ALT_MASK != 0) {            
+            if (mwe.getWheelRotation() > 0) {
+                double new_view_percent = view_panel.getCamera().getViewPercent() + 0.05;
+                view_panel.getCamera().setViewPercent(new_view_percent);               
+            } else if (mwe.getWheelRotation() < 0) {
+                double current_view_percent = view_panel.getCamera().getViewPercent();
+                if(current_view_percent > 0.05){
+                    view_panel.getCamera().setViewPercent(current_view_percent - 0.05);                
+                }
+            }
+        }                     
     }
 
 }

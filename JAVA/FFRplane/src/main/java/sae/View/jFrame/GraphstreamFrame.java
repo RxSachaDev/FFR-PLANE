@@ -3,6 +3,8 @@ package sae.view.jFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,9 +15,10 @@ import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
-import sae.models.algocoloration.AlgoColoration;
-import sae.models.algocoloration.ResultatColoration;
+import sae.Models.colorationalgorithm.ColorationAlgorithm;
+import sae.Models.colorationalgorithm.ResultatColoration;
 import org.graphstream.ui.view.util.DefaultMouseManager;
+import sae.models.toolbox.ToolBox;
 import sae.utils.IconUtil;
 import sae.view.jDialog.LoadGraphDialog;
 
@@ -33,27 +36,27 @@ public class GraphstreamFrame extends javax.swing.JFrame {
      * de coloration. Cette instance est initialisée au moment de la
      * déclaration.
      */
-    private AlgoColoration algoColoration = new AlgoColoration();
+    private ColorationAlgorithm algoColoration = new ColorationAlgorithm();
     private final IconUtil iconU = new IconUtil();
     private Graph graph;
+    
 
     private String algo;
-    private JFrame parent;
+
 
     /**
      * Construit une nouvelle instance de GraphstreamFrame.
      *
      * @param parent parent de cette JDialog
-     * @param chemin Le chemin vers le fichier du graphe.
+     * @param filePath Le filePath vers le fichier du graphe.
      * @param algo L'algorithme utilisé
      */
-    public GraphstreamFrame(JFrame parent, String chemin, String algo) {
+    public GraphstreamFrame(JFrame parent, String filePath, String algo) {
         iconU.setIcon(this);
         this.algo = algo;
-        this.parent = parent;
         initComponents();
         labelLogo.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\logo_1.png"));
-        jPanel1.setLayout(new BorderLayout());
+        GraphstreamPanel.setLayout(new BorderLayout());
 
         // Mettre la frame en plein écran immédiatement
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -61,10 +64,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         if (parent instanceof MainFrame) {
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             loadAnotherGraphButton.setVisible(false);
+            mainWindowButton.setVisible(false);
         }
 
         // Charger le graph en arrière-plan
-        new GraphLoader(this, chemin, parent).execute();
+        new GraphLoader(this, filePath, parent).execute();
     }
 
     /**
@@ -72,29 +76,28 @@ public class GraphstreamFrame extends javax.swing.JFrame {
      */
     private class GraphLoader extends SwingWorker<Void, Void> {
 
-        private String chemin;
+        private String filePath;
         private JFrame parent;
         private JFrame frameParent;
+        private ToolBox toolBox = new ToolBox(); 
 
         /**
          * Construit une nouvelle instance de GraphLoader.
          *
-         * @param chemin Le chemin vers le fichier du graphe.
+         * @param filePath Le filePath vers le fichier du graphe.
          */
-        public GraphLoader(JFrame parent, String chemin, JFrame frameParent) {
-            this.chemin = chemin;
+        public GraphLoader(JFrame parent, String filePath, JFrame frameParent) {
+            this.filePath = filePath;
             this.parent = parent;
             this.frameParent = frameParent;
         }
 
         @Override
-        protected Void doInBackground() {
-            algoColoration.setFichier(chemin);
-            try {
-                algoColoration.fillGraph();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        protected Void doInBackground() throws IOException {
+            algoColoration.setFile(filePath);
+            
+            algoColoration.fillGraph();
+            
             return null;
         }
 
@@ -103,12 +106,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
             int conflict;
             // Récupère le graph 
-            if (algo.equals(""
-                    + "BestAlgo")) {
-                ResultatColoration resultatColoration = algoColoration.minConflict();
-                conflict = resultatColoration.getConflict();
-                graph = resultatColoration.getGraph();
-            } else if (algo.equals("Dsatur")) {
+            if (algo.equals("Dsatur")) {
                 conflict = algoColoration.dsatur(algoColoration.getFileGraph());
                 graph = algoColoration.getFileGraph();
             } else {
@@ -124,13 +122,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                             + "edge { fill-color: #ffffff; }"
                             + "node { text-color: #ffffff; }";
                     graph.setAttribute("ui.stylesheet", css);
-                    System.out.println("Dark mode CSS applied.");
                 } else {
                     String css = "graph { fill-color: #ffffff; }"
                             + "edge { fill-color: #000000; }"
                             + "node { text-color: #000000; }";
                     graph.setAttribute("ui.stylesheet", css);
-                    System.out.println("Light mode CSS applied.");
                 }
             }
             
@@ -145,11 +141,19 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
             org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
             viewer.getDefaultView().setMouseManager(new CustomMouseManager(parent, viewer.getDefaultView()));
-            jPanel1.add(viewPanel, BorderLayout.CENTER);
+            
+            viewPanel.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent mwe) {
+                toolBox.zoomGraphMouseWheelMoved(mwe, viewPanel);
+            }
+        });
+            
+            GraphstreamPanel.add(viewPanel, BorderLayout.CENTER);
 
             // Mettre à jour jPanel1
-            jPanel1.revalidate();
-            jPanel1.repaint();
+            GraphstreamPanel.revalidate();
+            GraphstreamPanel.repaint();
             // Modifier les labels avec les bonnes valeurs
             if (algoColoration.getKmax() != -1) {
                 kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
@@ -163,6 +167,8 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             conflictLabel.setText("Nombre de conflits : " + conflict);
 
         }
+        
+        
     }
 
     public void graphstreamFrameDarkMode() {
@@ -179,7 +185,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         }
     }
 
-    public class CustomMouseManager extends DefaultMouseManager {
+    private class CustomMouseManager extends DefaultMouseManager {
 
         private View view;
         private JFrame parent;
@@ -218,7 +224,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        GraphstreamPanel = new javax.swing.JPanel();
         rightBarPanel = new javax.swing.JPanel();
         informationPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -234,15 +240,16 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         nodeLabel = new javax.swing.JLabel();
         edgeLabel = new javax.swing.JLabel();
         colorLabel = new javax.swing.JLabel();
+        mainWindowButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FFR Plane - Graphstream Frame");
         setMinimumSize(new java.awt.Dimension(1000, 800));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-        getContentPane().add(jPanel1);
+        GraphstreamPanel.setBackground(new java.awt.Color(255, 255, 255));
+        GraphstreamPanel.setLayout(new java.awt.GridBagLayout());
+        getContentPane().add(GraphstreamPanel);
 
         rightBarPanel.setBackground(java.awt.Color.white);
 
@@ -343,21 +350,31 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        mainWindowButton.setBackground(new java.awt.Color(235, 173, 59));
+        mainWindowButton.setForeground(new java.awt.Color(0, 0, 0));
+        mainWindowButton.setText("Revenir à la fenêtre principale");
+        mainWindowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mainWindowButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout rightBarPanelLayout = new javax.swing.GroupLayout(rightBarPanel);
         rightBarPanel.setLayout(rightBarPanelLayout);
         rightBarPanelLayout.setHorizontalGroup(
             rightBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightBarPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
             .addGroup(rightBarPanelLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(rightBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(informationPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nodeInformationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loadAnotherGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(loadAnotherGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainWindowButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightBarPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
         );
         rightBarPanelLayout.setVerticalGroup(
             rightBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,9 +385,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 .addComponent(nodeInformationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(loadAnotherGraphButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainWindowButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         getContentPane().add(rightBarPanel);
@@ -388,6 +407,12 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         LoadGraphDialog loadGraphDialog = new LoadGraphDialog(this, true);
         loadGraphDialog.setVisible(true);
     }//GEN-LAST:event_loadAnotherGraphButtonActionPerformed
+
+    private void mainWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainWindowButtonActionPerformed
+        dispose();
+        WelcomeFrame welcomeFrame = new WelcomeFrame();
+        welcomeFrame.setVisible(true);
+    }//GEN-LAST:event_mainWindowButtonActionPerformed
 
     public JLabel getColorLabel() {
         return colorLabel;
@@ -407,6 +432,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel GraphstreamPanel;
     private javax.swing.JLabel chromaticNumberLabel;
     private javax.swing.JLabel colorLabel;
     private javax.swing.JLabel conflictLabel;
@@ -414,10 +440,10 @@ public class GraphstreamFrame extends javax.swing.JFrame {
     private javax.swing.JPanel informationPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel kmaxLabel;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JButton loadAnotherGraphButton;
+    private javax.swing.JButton mainWindowButton;
     private javax.swing.JLabel nbEdgeLabel;
     private javax.swing.JLabel nbNodeLabel;
     private javax.swing.JPanel nodeInformationPanel;

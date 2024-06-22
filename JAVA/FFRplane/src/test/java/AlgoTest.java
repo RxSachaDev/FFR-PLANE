@@ -6,16 +6,16 @@ import org.graphstream.graph.Node;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.models.algocoloration.AlgoColoration;
-import sae.models.algocoloration.ResultatColoration;
+import sae.Models.colorationalgorithm.ColorationAlgorithm;
+import sae.Models.colorationalgorithm.ResultatColoration;
 
 public class AlgoTest {
 
-    private AlgoColoration algoColoration;
+    private ColorationAlgorithm algoColoration;
 
     @Before
     public void setUp() {
-        algoColoration = new AlgoColoration();
+        algoColoration = new ColorationAlgorithm();
 
     }
 

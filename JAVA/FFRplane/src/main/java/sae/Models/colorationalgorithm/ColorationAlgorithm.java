@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package sae.models.algocoloration;
+package sae.Models.colorationalgorithm;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
+import sae.exceptions.FileFormatException;
 import sae.models.toolbox.ToolBox;
 
 /**
@@ -23,7 +25,7 @@ import sae.models.toolbox.ToolBox;
  * l'afficher, et d'appliquer des algorithmes de coloration pour minimiser les
  * conflits de coloration.
  */
-public class AlgoColoration {
+public class ColorationAlgorithm {
 
     private int kmax;
 
@@ -35,7 +37,7 @@ public class AlgoColoration {
     /**
      * Le nom du fichier contenant les données du graphe.
      */
-    private String fichier;
+    private String file;
 
     /**
      * L'objet Graph représentant le graphe à colorer.
@@ -43,12 +45,12 @@ public class AlgoColoration {
     private Graph fileGraph;
 
     private ToolBox toolBox = new ToolBox();
-    private int nbSommet;
+
 
     /**
      * Constructeur par défaut qui initialise un nouveau MultiGraph.
      */
-    public AlgoColoration() {
+    public ColorationAlgorithm() {
         fileGraph = new MultiGraph("test");
     }
 
@@ -57,7 +59,7 @@ public class AlgoColoration {
      *
      * @param graph le graphe à utiliser
      */
-    public AlgoColoration(Graph graph) {
+    public ColorationAlgorithm(Graph graph) {
         this.fileGraph = graph = new MultiGraph("test");
     }
 
@@ -66,8 +68,8 @@ public class AlgoColoration {
      *
      * @param fichier le chemin du fichier source
      */
-    public void setFichier(String fichier) {
-        this.fichier = fichier;
+    public void setFile(String fichier) {
+        this.file = fichier;
     }
 
     /**
@@ -88,8 +90,8 @@ public class AlgoColoration {
      *
      * @return le chemin du fichier source
      */
-    public String getFichier() {
-        return fichier;
+    public String getFile() {
+        return file;
     }
 
     /**
@@ -108,62 +110,73 @@ public class AlgoColoration {
     public int getNbNode() {
         return nbNode;
     }
+    
 
     /**
      * Charge le graphe à partir du fichier source.
      *
      * @throws IOException si une erreur d'entrée/sortie se produit
+     * @throws java.io.FileNotFoundException
      */
     public void fillGraph() throws IOException {
-        int cpt = 0;
-        FileInputStream fileInputStream = new FileInputStream(this.fichier);
+        int lineCount = 0;
+        FileInputStream fileInputStream = new FileInputStream(this.file);
         Scanner scanner = new Scanner(fileInputStream);
 
         // Lire le fichier ligne par ligne
-        while (scanner.hasNextLine()) {
+        try {
+            while (scanner.hasNextLine()) {
             String line = scanner.nextLine().trim();
             if (!line.isEmpty()) {
                 String[] elements = line.split("\\s+");
-
-                switch (cpt) {
-                    // La première ligne contient kmax
-                    case 0:
-                        kmax = Integer.parseInt(elements[0]);
-                        fileGraph.addAttribute("kmax", kmax);
-                        break;
-                    // La deuxième ligne contient le nombre de sommets
-                    case 1:
-                        nbNode = Integer.parseInt(elements[0]);
-                        fileGraph.addAttribute("nbSommet", nbNode);
-                        break;
-                    // Les lignes suivantes contiennent les arêtes
-                    default:
-                        if (elements.length == 2) {
-                            Node node1 = fileGraph.getNode(elements[0]);
-                            Node node2 = fileGraph.getNode(elements[1]);
-                            // Ajouter les sommets s'ils n'existent pas déjà
-                            if (node1 == null) {
-                                node1 = fileGraph.addNode(elements[0]);
-                            }
-                            if (node2 == null) {
-                                node2 = fileGraph.addNode(elements[1]);
-                            }
-                            // Ajouter une arête entre les sommets
-                            String edgeId = elements[0] + "_" + elements[1];
-                            fileGraph.addEdge(edgeId, node1, node2);
-                            break;
-                        }
-                        else {
-                            Node node1 = fileGraph.getNode(elements[0]);
-                            if (node1 == null) {
-                                node1 = fileGraph.addNode(elements[0]);
-                                node1.setAttribute("color", 1);
-                            }
-                        }
+                if (elements.length > 2){
+                    throw new NumberFormatException();
                 }
-                cpt++;
+                
+                    switch (lineCount) {
+                        // La première ligne contient kmax
+                        case 0:
+                            kmax = Integer.parseInt(elements[0]);
+                            fileGraph.addAttribute("kmax", kmax);
+                            break;
+                        // La deuxième ligne contient le nombre de sommets
+                        case 1:
+                            nbNode = Integer.parseInt(elements[0]);
+                            fileGraph.addAttribute("nbSommet", nbNode);
+                            break;
+                        // Les lignes suivantes contiennent les arêtes
+                        default:
+                            if (elements.length == 2) {
+                                Node node1 = fileGraph.getNode(elements[0]);
+                                Node node2 = fileGraph.getNode(elements[1]);
+                                // Ajouter les sommets s'ils n'existent pas déjà
+                                if (node1 == null) {
+                                    node1 = fileGraph.addNode(elements[0]);
+                                }
+                                if (node2 == null) {
+                                    node2 = fileGraph.addNode(elements[1]);
+                                }
+                                // Ajouter une arête entre les sommets
+                                String edgeId = elements[0] + "_" + elements[1];
+                                fileGraph.addEdge(edgeId, node1, node2);
+                                break;
+                            } else {
+                                Node node1 = fileGraph.getNode(elements[0]);
+                                if (node1 == null) {
+                                    node1 = fileGraph.addNode(elements[0]);
+                                    node1.setAttribute("color", 1);
+                                }
+                            }
+                    }
+                }
+
+                lineCount++;
             }
-        }
+        } catch( NumberFormatException | IndexOutOfBoundsException problem){
+            throw new FileFormatException(lineCount, this.file);
+        } 
+        
+        
     }
 
     /**
@@ -275,10 +288,11 @@ public class AlgoColoration {
      * @return le nombre de conflits après la coloration
      */
     public ResultatColoration minConflict() {
+        String algorithm = "Dsatur";
         int conflict = dsatur(fileGraph);
         Graph saveGraph = copyGraphWithAttributes(fileGraph);
         if (conflict != 0) {
-            fileGraph = new MultiGraph(fichier);
+            fileGraph = new MultiGraph(file);
             try {
                 fillGraph();
             } catch (IOException e) {
@@ -289,12 +303,13 @@ public class AlgoColoration {
 
                 conflict = wp;
                 saveGraph = copyGraphWithAttributes(fileGraph);
+                algorithm = "WelshPowell";
             }
         }
 
         toolBox.colorGraph(saveGraph);
         //afficherGraphe(saveGraph);
-        return new ResultatColoration(conflict, saveGraph);
+        return new ResultatColoration(conflict, saveGraph, algorithm);
     }
 
     /**
@@ -504,7 +519,7 @@ public class AlgoColoration {
             // Boucle permettant la conception des fichiers colo-eval
             for (int i = 0; i < filesList.size(); i++) {
                 String nomFichier = filesList.get(i);
-                setFichier(directoryPath + "/" + nomFichier);
+                setFile(directoryPath + "/" + nomFichier);
                 try {
                     fillGraph();
                 } catch (IOException e) {
@@ -525,7 +540,7 @@ public class AlgoColoration {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                fileGraph = new MultiGraph(fichier);
+                fileGraph = new MultiGraph(file);
             }
 
         } catch (IOException e) {
@@ -585,7 +600,7 @@ public class AlgoColoration {
      */
     public static void main(String[] args) {
         Graph graph = new MultiGraph("test");
-        AlgoColoration test = new AlgoColoration(graph);
+        ColorationAlgorithm test = new ColorationAlgorithm(graph);
         /*test.setFichier("src/main/java/data/test/graph-test17.txt");
         try {
             test.charger_graphe();
