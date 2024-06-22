@@ -51,7 +51,7 @@ public class EasterPoint extends MapPoint {
     public EasterPoint(GeoPosition coord) {
         // Appelle le constructeur de la classe parent avec la position géographique spécifiée
         super(coord); 
-        super.setPoint(new Airport("IUT c'est bizarre", coord));
+        super.setModelPoint(new Airport("IUT c'est bizarre", coord));
         initButton();
     }
 

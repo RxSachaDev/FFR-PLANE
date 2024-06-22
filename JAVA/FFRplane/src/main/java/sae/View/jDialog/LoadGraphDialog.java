@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package sae.view.jDialog;
 
 import java.io.File;
@@ -11,19 +7,18 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sae.View.jFrame.GraphstreamFrame;
 import sae.exceptions.FileFormatException;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
+import sae.view.jFrame.GraphstreamFrame;
 import sae.view.jFileChooser.OpenFileChooser;
-import sae.view.jFrame.WelcomeFrame;
 
 
 /**
- * Cette classe représente une boîte de dialogue de chargement de graphique.
+ * La LoadGraphDialog sert à ouvrir un graphe.
  * Elle étend la classe javax.swing.JDialog.
  *
- * @author fillo
+ * @author sacha
  * @author mathe
  */
 public class LoadGraphDialog extends javax.swing.JDialog {
@@ -34,13 +29,13 @@ public class LoadGraphDialog extends javax.swing.JDialog {
      */
     private static final IconUtil iconU = new IconUtil();
 
+    
     /**
-     * Crée une nouvelle instance de la boîte de dialogue de chargement de
-     * graphique qui permet de spécifier les liens des fichiers qui crééront le
-     * graphe
+     * Crée une nouvelle instance de la LoadGraphDialog 
+     * qui permet de spécifier le fichier comportant les informations du graphe.
      *
-     * @param parent La fenêtre parente de la boîte de dialogue.
-     * @param modal Spécifie si la boîte de dialogue doit être modale ou non.
+     * @param parent La fenêtre parente de LoadGraphDialog.
+     * @param modal Spécifie si la LoadGraphDialog doit être modale ou non.
      */
     public LoadGraphDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -179,10 +174,15 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /* ••••••••••••• LISTENERS ••••••••••••• */
+    
+    
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_CancelButtonActionPerformed
 
+    
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         try { //TODO COUVRIR LES EXCEPTIONS
             // <* Cette partie ne sert qu'à déclancher les exceptions
@@ -200,16 +200,9 @@ public class LoadGraphDialog extends javax.swing.JDialog {
             labelError.setText("Le chemin d'accès est introuvable !");
         } catch(FileFormatException e) {
             labelError.setText(e.getMessage());
-        }
-
-        
+        } 
     }//GEN-LAST:event_OkButtonActionPerformed
 
-    
-    
-    private void choiceFileButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceFileButton1ActionPerformed
-
-    }//GEN-LAST:event_choiceFileButton1ActionPerformed
 
     private void buttonChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFileActionPerformed
         JFileChooser fileChooser = new OpenFileChooser();
@@ -228,6 +221,7 @@ public class LoadGraphDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_graphFileTextFieldActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JPanel ChoicesPanel;

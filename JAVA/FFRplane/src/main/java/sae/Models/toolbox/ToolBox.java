@@ -17,10 +17,10 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import sae.exceptions.DataMismatchException;
 import sae.models.airports.Airport;
-import sae.models.airports.AirportCatalog;
+import sae.models.airports.AirportsCatalog;
 import sae.exceptions.FileFormatException;
 import sae.models.flights.Flight;
-import sae.models.flights.FlightCatalog;
+import sae.models.flights.FlightsCatalog;
 import sae.models.intersection.FlightCollisionTools;
 import sae.utils.Settings;
 
@@ -52,7 +52,7 @@ public class ToolBox {
      * @throws FileNotFoundException si le fichier est introuvable
      * @throws FileFormatException s'il y a une erreur de format dans le fichier
      */
-    public static boolean fillAirportsCatalog(String filePath, AirportCatalog airportsCatalog) throws FileNotFoundException, FileFormatException {
+    public static boolean fillAirportsCatalog(String filePath, AirportsCatalog airportsCatalog) throws FileNotFoundException, FileFormatException {
         List<String> possibleValues = new ArrayList<>();
                 possibleValues.add("N");
                 possibleValues.add("E");
@@ -94,7 +94,7 @@ public class ToolBox {
      * @return true si l'opération est réussie, false sinon
      * @throws FileNotFoundException si le fichier est introuvable
      */
-    public static boolean fillFlightsCatalog(String filePathAirports, String filePathFlights, FlightCatalog flightsCatalog, AirportCatalog airportsCatalog) throws FileNotFoundException {
+    public static boolean fillFlightsCatalog(String filePathAirports, String filePathFlights, FlightsCatalog flightsCatalog, AirportsCatalog airportsCatalog) throws FileNotFoundException {
         int lineCount = 1;
         try {
             File file = new File(filePathFlights);
@@ -125,7 +125,7 @@ public class ToolBox {
     * @param flightCatalog le catalogue des vols
     * @return true si l'opération réussit, false sinon
     */
-    public static boolean createGraphTextFile(FlightCatalog flightCatalog) {
+    public static boolean createGraphTextFile(FlightsCatalog flightCatalog) {
         List<Flight> flightsList = flightCatalog.getFlights();
         int nbNode = 0;
         HashMap<Integer, Set<Integer>> edgeMap = new HashMap<>();

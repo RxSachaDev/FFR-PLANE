@@ -2,8 +2,6 @@ package sae.view.mapCustom;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.event.MouseInputListener;
@@ -21,8 +19,9 @@ import sae.controller.Controller;
 /**
  * Cette classe étend JXMapViewer pour créer une carte personnalisée avec des
  * fonctionnalités spécifiques. Elle permet d'initialiser la carte avec des
- * aéroports prédéfinis, de gérer les événements de souris pour le déplacement
- * et le zoom, et de changer le style de la carte en fonction de l'index fourni.
+ * MapPoint (Aeroports) et des MapLine (Vols) prédéfinis, 
+ * de gérer les événements de souris pour le déplacement et le zoom, 
+ * et de changer le style de la carte en fonction de l'index fourni.
  *
  * Elle utilise des types provenant de différents fournisseurs de cartes, comme
  * OpenStreetMap ou Virtual Earth.
@@ -31,44 +30,34 @@ import sae.controller.Controller;
  * @author mathe
  */
 public class MapCustom extends JXMapViewer {
+    
     /**
-     * Le niveau de zoom maximal autorisé pour la carte.
+     * Le niveau de zoom maximal autorisé pour la Map.
      */
     private int maxZoom = 17;
 
     /**
-     * Le niveau de zoom minimal autorisé pour la carte.
+     * Le niveau de zoom minimal autorisé pour la Map.
      */
     private int minZoom = 2;
-
-    private Controller controller;
-    
-    
-    
-    
     
     /**
-     * Constructeur de la classe MapCustom. Initialise les aéroports prédéfinis.
+     * Le niveau de zoom initial de la Map.
+     */
+    private final int initialZoom = 14;
+
+    private Controller controller; 
+
+    /**
+     * Constructeur de la classe MapCustom.
      */
     public MapCustom() {
-        init(46.6396031, 2.7105474, 14);
-        
-        addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                int wheelRotation = e.getWheelRotation();
-                int currentZoom = getZoom();
-
-                if (!(currentZoom < 15)) {
-                    setZoom(currentZoom - 1);
-                }
-
-                if (!(2 < currentZoom)) {
-                    setZoom(currentZoom + 1);
-                }
-            }
-        });
+        init(46.6396031, 2.7105474, initialZoom);
+        listenersManager();
     }
+    
+    
+    /* ••••••••••••• MÉTHODES ••••••••••••• */
 
     
     /**
@@ -94,10 +83,32 @@ public class MapCustom extends JXMapViewer {
         // rendre la map zoomable
         addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
     }
-
     
-    public void setController(Controller controller) {
-        this.controller = controller;
+    
+    /**
+     * Gère les différents écouteurs d'événements de la carte.
+     */
+    private void listenersManager(){
+        addMouseWheelListener(new MouseWheelListener(){
+            /**
+             * Gère le comportement du zoom de la carte en réponse aux événements de la molette de la souris.
+             * Réduit le niveau de zoom si celui-ci est supérieur au maxZoom, 
+             * l'augmente s'il est inférieur au minZoom.
+             */
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                // int wheelRotation = e.getWheelRotation();
+                int currentZoom = getZoom();
+
+                if (currentZoom > maxZoom) {
+                    setZoom(maxZoom);
+                }
+
+                if (currentZoom < minZoom) {
+                    setZoom(minZoom);
+                }
+            }
+        });
     }
     
     
@@ -146,6 +157,49 @@ public class MapCustom extends JXMapViewer {
 
     
     /**
+     * Initialise une Map avec une vue satellite.
+     *
+     * @param latitude La latitude du point central de la carte.
+     * @param longitude La longitude du point central de la carte.
+     */
+    public void initGameMap(double latitude, double longitude) {
+        TileFactoryInfo info = new OSMTileFactoryInfo();
+        info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+        setTileFactory(tileFactory);
+        GeoPosition geo = new GeoPosition(latitude, longitude);
+        setAddressLocation(geo);
+        setZoom(5);
+    }
+ 
+
+    /* ••••••••••••• GETTERS / SETTERS ••••••••••••• */
+    
+    
+    /**
+     * Définit le contrôleur associé à cette MapCustom.
+     *
+     * @param controller Le contrôleur à associer.
+     */
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    
+
+    /**
+     * Définit les coordonnées de la Map avec une latitude et une longitude
+     * spécifiques.
+     *
+     * @param latitude La latitude du point central de la carte.
+     * @param longitude La longitude du point central de la carte.
+     */
+    public void setCoords(int latitude, int longitude) {
+        GeoPosition geo = new GeoPosition(latitude, longitude);
+        setAddressLocation(geo);
+    }
+    
+        
+    /**
      * Définit le niveau de zoom maximal de la carte.
      *
      * @param maxZ Le niveau de zoom maximal autorisé.
@@ -161,7 +215,7 @@ public class MapCustom extends JXMapViewer {
     /**
      * Définit le niveau de zoom minimal de la carte.
      *
-     * @param maxM Le niveau de zoom minimal autorisé.
+     * @param minZ Le niveau de zoom minimal autorisé.
      */
     public void setMinZoom(int minZ) {
         minZoom = minZ;
@@ -171,52 +225,35 @@ public class MapCustom extends JXMapViewer {
     }
 
     
+    /**
+     * Retourne le niveau de zoom maximal actuellement autorisé.
+     *
+     * @return Le niveau de zoom maximal.
+     */
     public int getMaxZoom() {
         return this.maxZoom;
     }
-
     
+
+    /**
+     * Retourne le niveau de zoom minimal actuellement autorisé.
+     *
+     * @return Le niveau de zoom minimal.
+     */
     public int getMinZoom() {
         return this.minZoom;
     }
 
-    
-    public void initGameMap(double latitude, double longitude) {
-        TileFactoryInfo info = new OSMTileFactoryInfo();
-        info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
-        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
-        setTileFactory(tileFactory);
-        GeoPosition geo = new GeoPosition(latitude, longitude);
-        setAddressLocation(geo);
-        setZoom(5);
-    }
 
+    /* ••••••••••••• MÉTHODES @OVERRIDE ••••••••••••• */
     
-    public void moveMap(double stepX, double stepY) {
-        double slowdownFactor = 0.1;
-        GeoPosition currentPosition = getAddressLocation();
-        double latitude = currentPosition.getLatitude() + stepY * slowdownFactor;
-        double longitude = currentPosition.getLongitude() + stepX * slowdownFactor;
-        setAddressLocation(new GeoPosition(latitude, longitude));
-    }
-
     
-    /*  
-    public void addMonuments(MonumentWaypoint mWP) {
-        monumentPointSet.add(mWP);
-        WaypointPainter<Airportpoint> ap = new AirportpointRender();
-        ap.setWaypoints(monumentPointSet);
-        setOverlayPainter(ap);
-        add(mWP.getButton());
-        validate();
-    }*/
-     
-    public void setCoords(int latitude, int longitude) {
-        GeoPosition geo = new GeoPosition(latitude, longitude);
-        setAddressLocation(geo);
-    }
-
-    
+    /**
+     * Redéfinition de la méthode paintComponent pour dessiner les lignes sur la
+     * carte, si un contrôleur est défini.
+     *
+     * @param g L'objet Graphics pour dessiner.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if(controller!=null){
@@ -228,4 +265,47 @@ public class MapCustom extends JXMapViewer {
             }
         }
     }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // ******************************************* JE DOUTE QUE CE SOIT DANS MAPCUSTOM   
+    
+    /**
+     * Déplace la carte de manière relative aux coordonnées actuelles.
+     *
+     * @param stepX Pas de déplacement horizontal.
+     * @param stepY Pas de déplacement vertical.
+     */
+    public void moveMap(double stepX, double stepY) {
+        double slowdownFactor = 0.1;
+        GeoPosition currentPosition = getAddressLocation();
+        double latitude = currentPosition.getLatitude() + stepY * slowdownFactor;
+        double longitude = currentPosition.getLongitude() + stepX * slowdownFactor;
+        setAddressLocation(new GeoPosition(latitude, longitude));
+    }
+
+/*     
+    public void addMonuments(MonumentWaypoint mWP) {
+        monumentPointSet.add(mWP);
+        WaypointPainter<Airportpoint> ap = new AirportpointRender();
+        ap.setWaypoints(monumentPointSet);
+        setOverlayPainter(ap);
+        add(mWP.getButton());
+        validate();
+    }
+*/
+// *******************************************<**>
+
+
+
 }

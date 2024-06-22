@@ -1,12 +1,3 @@
-/*
- * CustomAeroportPoint.java
- * 
- * Représente un bouton personnalisé pour afficher les points d'aéroport sur une carte.
- * 
- * @author fillo
- * @version 1.0
- */
-
 package sae.view.jButton;
 
 import java.awt.Cursor;
@@ -16,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 /**
- * Classe de bouton personnalisé représentant les points d'aéroport sur une carte.
+ * Classe de bouton personnalisé représentant les points du model (Aeroports) sur une Map.
  */
 public class CustomButtonMapPoint extends JButton {
     
@@ -25,7 +16,6 @@ public class CustomButtonMapPoint extends JButton {
      */
     public CustomButtonMapPoint() {
         setContentAreaFilled(false);        // Rendre le bouton transparent        
-        // Définir l'icône pour représenter un aéroport
         setIcon(new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\airportIcon.png"));
         setCursor(new Cursor(Cursor.HAND_CURSOR));      
         setSize(new Dimension(30, 30));          

@@ -27,5 +27,5 @@ public interface ModelLine {
      */
     GeoPosition getPoint2();
     
-    String getPointNames();
+    String toStringPointNames();
 }

@@ -17,19 +17,23 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Ouvrir un graphe"/>
+                <Property name="text" type="java.lang.String" value="Charger un nouvel Espace Aerien"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemOpenGActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="colorGrapheMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Colorier le graphe actuel"/>
+                <Property name="text" type="java.lang.String" value="Charger le Graph de Coloration"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorGrapheMenuItemActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemreturnWelcomeFrame">
               <Properties>
@@ -183,9 +187,6 @@
       <SubComponents>
         <Container class="javax.swing.JPanel" name="panelContainerRightBar">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color type="null"/>
-            </Property>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[250, 700]"/>
@@ -395,11 +396,6 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="panelButton">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color type="null"/>
-                </Property>
-              </Properties>
 
               <Layout>
                 <DimensionLayout dim="0">
@@ -454,11 +450,6 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="graphstreamPanel">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color type="null"/>
-                </Property>
-              </Properties>
 
               <Layout>
                 <DimensionLayout dim="0">

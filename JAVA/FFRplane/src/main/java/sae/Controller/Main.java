@@ -14,6 +14,8 @@ import sae.view.jFrame.*;
  * icônes pour les composants graphiques.
  *
  * @author fillo
+ * @author mathe
+ * @author sacha
  */
 public class Main {
     /**
