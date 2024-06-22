@@ -148,6 +148,7 @@ public class MainFrame extends JFrame {
         graphstreamPanel = new javax.swing.JPanel();
         graphstreamContener = new javax.swing.JPanel();
         enlargeButton = new javax.swing.JButton();
+        graphLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
@@ -195,7 +196,7 @@ public class MainFrame extends JFrame {
             .addGroup(mapCustomLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ComboMapType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 539, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 694, Short.MAX_VALUE)
                 .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58))
         );
@@ -222,7 +223,6 @@ public class MainFrame extends JFrame {
         panelInfosGene.setBackground(new java.awt.Color(255, 255, 255));
         panelInfosGene.setPreferredSize(new java.awt.Dimension(200, 160));
 
-        textAreaInfosGene.setBackground(null);
         textAreaInfosGene.setColumns(20);
         textAreaInfosGene.setRows(5);
         textAreaInfosGene.setText("  \n\n\nPour avoir plus d'informations \n      veuillez colorier le graphe\n");
@@ -233,7 +233,7 @@ public class MainFrame extends JFrame {
         panelInfosGeneLayout.setHorizontalGroup(
             panelInfosGeneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfosGeneLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addComponent(textAreaInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -259,7 +259,6 @@ public class MainFrame extends JFrame {
         panelInfosSelect.setBackground(new java.awt.Color(255, 255, 255));
         panelInfosSelect.setPreferredSize(new java.awt.Dimension(200, 160));
 
-        textAreaInfosSelect.setBackground(null);
         textAreaInfosSelect.setColumns(20);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
@@ -345,6 +344,11 @@ public class MainFrame extends JFrame {
             }
         });
 
+        graphLabel.setForeground(new java.awt.Color(0, 0, 0));
+        graphLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        graphLabel.setText("GRAPHSTREAM GRAPHE");
+        graphLabel.setPreferredSize(new java.awt.Dimension(200, 16));
+
         javax.swing.GroupLayout graphstreamPanelLayout = new javax.swing.GroupLayout(graphstreamPanel);
         graphstreamPanel.setLayout(graphstreamPanelLayout);
         graphstreamPanelLayout.setHorizontalGroup(
@@ -355,13 +359,19 @@ public class MainFrame extends JFrame {
                     .addComponent(graphstreamContener, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(enlargeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, graphstreamPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
         graphstreamPanelLayout.setVerticalGroup(
             graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(graphstreamPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(enlargeButton))
         );
 
@@ -507,11 +517,10 @@ public class MainFrame extends JFrame {
             labelInfosSelect2.setForeground(Color.white);
             textAreaInfosGene.setForeground(Color.white);
             textAreaInfosSelect.setForeground(Color.white);
+            graphLabel.setForeground(Color.white);
             if (coloringGraph != null) {
                 chooseAlgorithmDialog.setViewer(coloringGraph, true);
             }
-            
-
         } else {
             //le darkmode est désactivé
             textAreaInfosSelect.setBackground(Color.white);
@@ -526,6 +535,7 @@ public class MainFrame extends JFrame {
             labelInfosSelect2.setForeground(Color.BLACK);
             textAreaInfosGene.setForeground(Color.BLACK);
             textAreaInfosSelect.setForeground(Color.BLACK);
+            graphLabel.setForeground(Color.BLACK);
             if (coloringGraph != null) {
                 chooseAlgorithmDialog.setViewer(coloringGraph, false);
             }
@@ -619,6 +629,9 @@ public class MainFrame extends JFrame {
      */
     private void enlargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enlargeButtonActionPerformed
         GraphstreamFrame graphstreamFrame = new GraphstreamFrame(this, "src/main/java/data/temp/graph-testTEMP.txt", chosenAlgorithm);
+        if (DarkModeCheckBoxMenuItem.isSelected()){
+            graphstreamFrame.graphstreamFrameDarkMode();
+        }
         graphstreamFrame.setVisible(true);
     }//GEN-LAST:event_enlargeButtonActionPerformed
     
@@ -746,6 +759,7 @@ public class MainFrame extends JFrame {
     private javax.swing.JButton buttonFunctions;
     private javax.swing.JMenuItem colorGrapheMenuItem;
     private javax.swing.JButton enlargeButton;
+    private javax.swing.JLabel graphLabel;
     private javax.swing.JPanel graphstreamContener;
     private javax.swing.JPanel graphstreamPanel;
     private javax.swing.JMenuBar jMenuBar1;

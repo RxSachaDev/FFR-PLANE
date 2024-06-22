@@ -3,6 +3,7 @@ package sae.view.jDialog.functionsDialog;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 
 import sae.models.algocoloration.AlgoColoration;
@@ -171,18 +172,29 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
      */
     public void setViewer(Graph graph, boolean darkMode) {
         if (darkMode) {
-            String css = "graph { fill-color: #313338; }";
+            String css = "graph { fill-color: #313338; }"
+                    + "edge { fill-color: #ffffff; }"
+                    + "node { text-color: #ffffff; }";
             graph.setAttribute("ui.stylesheet", css);
         } else {
-            String css = "graph { fill-color: #ffffff; }";
+            String css = "graph { fill-color: #ffffff; }"
+                    + "edge { fill-color: #000000; }"
+                    + "node { text-color: #000000; }";
             graph.setAttribute("ui.stylesheet", css);
         }
 
+        // Initialisation du Viewer et activation du layout automatique
         Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
         viewer.enableAutoLayout();
 
+        // Attribution des labels aux nœuds
+        for (Node node : graph) {
+            node.addAttribute("ui.label", node.getId());
+        }
         updateGraphVisualization(viewer);
     }
+    
+    
 
     
     /* ••••••••••••• LISTENERS ••••••••••••• */
@@ -303,7 +315,7 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
         mainFrame.setChosenAlgorithm("Dsatur");
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bestalgoButton;
     private javax.swing.JButton dsaturButton;
