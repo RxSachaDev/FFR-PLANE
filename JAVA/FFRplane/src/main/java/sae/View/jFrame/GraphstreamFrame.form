@@ -49,12 +49,16 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="labelLogo" min="-2" pref="167" max="-2" attributes="0"/>
                       <Component id="informationPanel" alignment="0" max="32767" attributes="0"/>
                       <Component id="nodeInformationPanel" alignment="1" max="32767" attributes="0"/>
                       <Component id="loadAnotherGraphButton" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="16" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="labelLogo" min="-2" pref="167" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -167,7 +171,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="labelLogo">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel2"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="nodeInformationPanel">

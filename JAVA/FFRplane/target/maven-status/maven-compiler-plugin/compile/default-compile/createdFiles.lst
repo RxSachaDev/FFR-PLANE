@@ -27,6 +27,7 @@ sae\View\easterGame\EasterGame.class
 sae\View\jDialog\LoadAirspaceDialog$1.class
 sae\View\jDialog\LoadAirspaceDialog$4.class
 sae\View\jFrame\GraphstreamFrame.class
+sae\View\jFrame\MainFrame$13.class
 sae\View\airport\AirportpointRender.class
 sae\View\easterGame\Plane.class
 sae\View\jDialog\ChooseAlgorithmDialog$1.class
