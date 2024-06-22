@@ -1,7 +1,8 @@
 package sae.models.intersection;
-import sae.models.airports.*;
-import sae.models.flights.*;
-import sae.models.toolbox.*;
+
+import sae.models.airports.Airport;
+import sae.models.flights.Flight;
+import sae.models.toolbox.ToolBox;
 import sae.utils.Settings;
 
 /**
@@ -10,6 +11,7 @@ import sae.utils.Settings;
  * @author mathe
  */
 public class FlightCollisionTools {
+    
     /**
      * Détermine s'il y a une collision entre deux vols.
      *

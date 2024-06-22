@@ -1,11 +1,12 @@
 package sae.controller;
 
+import sae.view.mapCustom.MapPointRender;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
 
@@ -13,7 +14,6 @@ import sae.utils.*;
 import sae.models.airports.*;
 import sae.models.toolbox.*;
 import sae.models.flights.*;
-import sae.view.airport.*;
 import sae.view.mapCustom.*;
 import sae.view.easterGame.*;
 import sae.view.jFrame.MainFrame;
@@ -28,10 +28,10 @@ public class Controller {
     private final MainFrame mainFrame;
     private final MapCustom mapCustom;
     
-    private final AirportCatalog airportsCatalog = new AirportCatalog();
-    private final FlightCatalog flightsCatalog = new FlightCatalog();
+    private final AirportsCatalog airportsCatalog = new AirportsCatalog();
+    private final FlightsCatalog flightsCatalog = new FlightsCatalog();
     
-    private final FlightCatalog refinedFlightsCatalog = new FlightCatalog();
+    private final FlightsCatalog refinedFlightsCatalog = new FlightsCatalog();
     
     private final Set<MapPoint> mapPointSet = new HashSet<>();
     private final Set<MapLine> mapLineSet = new HashSet<>();
@@ -76,8 +76,27 @@ public class Controller {
     }
    
     
+    /**
+     * Réactualise le fichier de collisions des differentes MapLines.
+     * Utilisé en cas de modification de KMAX (Condition de coloration) ou de la SafetyMargin (Condition d'intersection) 
+     */
+    public void refreshIntersections(){
+        ToolBox.createGraphTextFile(flightsCatalog);
+    }
+    
+    
     //PARTIE RELATIVE A LA MainFrame
 
+    
+    /**
+     * Initialise la MainFrame.
+     */
+    public void initMainFrame(){
+        initMapCutom();
+        initMapLineComboBoxModel();
+        ToolBox.createGraphTextFile(flightsCatalog);
+    }
+    
     
     /**
      * Rafraîchit l'affichage de la MainFrame.
@@ -115,12 +134,11 @@ public class Controller {
     /**
      * Initialise la MapCustom.
      */
-    public void initMapCustom(){
+    public void initMapCutom(){
         fillAirportsCatalog();
         fillFlightsCatalog();
         initMapPoints(Settings.isEasterEggActivated());
         initMapLines();
-        initMapLineComboBoxModel();
     }
    
     
@@ -142,12 +160,12 @@ public class Controller {
         for (Airport airport : airportsCatalog.getAirports()) {
             mapPointSet.add(new MapPoint(airport)); // Utilisation du constructeur avec Airport comme argument
         }
-        WaypointPainter<MapPoint> ap = new AirportpointRender();
+        WaypointPainter<MapPoint> ap = new MapPointRender();
         if(isEasterEggActivated) initEasterEgg();
         ap.setWaypoints(mapPointSet);
         mapCustom.setOverlayPainter(ap);
         for (MapPoint d : mapPointSet) {
-            ModelPoint airport = d.getPoint();
+            ModelPoint airport = d.getModelPoint();
             if (airport != null) {
                 mapCustom.add(d.getButton());
             } else {
@@ -162,23 +180,38 @@ public class Controller {
      * Initialise les lignes sur la carte, en fontion des parametres d'affinage.
      */
     public void initMapLines() {
-        refinedFlightsCatalog.clearCatalog();
-        if(Settings.getRefiningColor() == 0) {
-            for (Flight flight : flightsCatalog.getFlights()) {
-                mapLineSet.add(new MapLine(flight, Color.BLACK)); // Utilisation du constructeur avec Airport comme argument
-                refinedFlightsCatalog.addFlight(flight);
-            }
-        } 
-        if(refinedFlightsCatalog.getFlights().isEmpty()) { //Afficher les vols par niveau de hauteur
+        int refiningColor = Settings.getRefiningColor();
+        Date refiningStartHour = Settings.getRefiningStartHour();
+        Date refiningEndHour = Settings.getRefiningEndHour();
+        
+        if(refiningColor != 0){
             for (Flight flight : flightsCatalog.getFlights()) {
                 if(flight.getFlightHeighLevel() == Settings.getRefiningColor()) {
-                    mapLineSet.add(new MapLine(flight, Color.BLACK)); // Utilisation du constructeur avec Airport comme argument
+                    mapLineSet.add(new MapLine(flight, Color.BLACK));
                     refinedFlightsCatalog.addFlight(flight);
                 }
             }
         }
+        if(refiningStartHour != null){
+            FlightsCatalog tempCatalog = flightsCatalog;
+            if(!refinedFlightsCatalog.getFlights().isEmpty()) {
+                tempCatalog = refinedFlightsCatalog;
+                refinedFlightsCatalog.clearCatalog();
+            }
+            for (Flight flight : tempCatalog.getFlights()) {
+                if(refiningStartHour.getHours()*60+refiningStartHour.getMinutes() <= flight.getDepartureTime() && 
+                   flight.getArrivalTime() <= refiningEndHour.getHours()*60+refiningEndHour.getMinutes()){
+                    mapLineSet.add(new MapLine(flight, Color.BLACK)); 
+                    refinedFlightsCatalog.addFlight(flight);
+                }
+            }
+        } else {
+            for (Flight flight : flightsCatalog.getFlights()) {
+                mapLineSet.add(new MapLine(flight, Color.BLACK));    
+            }
+        }
+        
         mapCustom.repaint();
-        ToolBox.createGraphTextFile(refinedFlightsCatalog);
     }
 
     
@@ -203,10 +236,13 @@ public class Controller {
     }
 
     
+    public Set<MapPoint> getMapPointSet(){
+        return mapPointSet;
+    }
     
     // <*A RETIRER
     public void handleMapClick(MouseEvent e) {
-        /*GeoPosition geo = mapCustom.convertPointToGeoPosition(e.getPoint());
+        /*GeoPosition geo = mapCustom.convertPointToGeoPosition(e.getModelPoint());
         
         System.out.println(geo);
         if (geo != null) {
@@ -252,4 +288,5 @@ public class Controller {
         double distance = Math.abs(-a*x + y - b)/Math.sqrt(Math.pow(a, 2)+1);
         return distance;
     }
+    // *>
 }

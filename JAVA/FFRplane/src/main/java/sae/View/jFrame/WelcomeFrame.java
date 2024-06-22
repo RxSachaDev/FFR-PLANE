@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package sae.view.jFrame;
 
 import java.awt.Dimension;
@@ -155,6 +151,10 @@ public class WelcomeFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /* ••••••••••••• LISTENERS ••••••••••••• */
+    
+    
     /**
      * Gère les actions déclenchées par les événements associés aux boutons de
      * la fenêtre WelcomeFrame.
@@ -165,6 +165,7 @@ public class WelcomeFrame extends javax.swing.JFrame {
         loadD.setVisible(true);
     }//GEN-LAST:event_buttonLoadAirspaceActionPerformed
 
+    
     /**
      * Affiche une fenêtre modale JInfosDialog lorsque le bouton "À propos" est
      * cliqué. Cette fenêtre fournit des informations sur l'application.
@@ -175,6 +176,7 @@ public class WelcomeFrame extends javax.swing.JFrame {
         infosD.setVisible(true);
     }//GEN-LAST:event_buttonAboutActionPerformed
 
+    
     /**
      * Affiche une fenêtre modale LoadAgraphDialog lorsque le bouton "Charger"
      * est cliqué. Cette fenêtre permet à l'utilisateur de charger un graphe.
@@ -185,6 +187,7 @@ public class WelcomeFrame extends javax.swing.JFrame {
         loadD.setVisible(true);
     }//GEN-LAST:event_buttonLoadGraphActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAbout;
     private javax.swing.JButton buttonLoadAirspace;

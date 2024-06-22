@@ -19,4 +19,6 @@ public interface ModelPoint {
      * @return la position géographique (GeoPosition).
      */
     GeoPosition getGeoPosition();
+    
+    String toStringName();
 }

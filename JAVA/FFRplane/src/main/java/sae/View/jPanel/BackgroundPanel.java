@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sae.view.jPanel;
 
 import java.awt.Graphics;
@@ -12,13 +8,22 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
- *
+ * Panel personnalisé avec une image d'arrière-plan redimensionnée et centrée.
+ * Utilisé pour afficher une image spécifiée lors de la création du panel.
+ * L'image est redimensionnée pour remplir complètement le panel tout en conservant l'aspect ratio.
+ * Si l'image ne peut pas être chargée, une exception est affichée dans la console.
+ * 
  * @author mathe
  */
 public class BackgroundPanel extends JPanel {
+    
     private BufferedImage backgroundImage;
 
-    // Constructeur pour charger l'image
+    /**
+     * Constructeur pour initialiser le panel avec une image d'arrière-plan.
+     *
+     * @param filePath le chemin vers le fichier de l'image à charger
+     */
     public BackgroundPanel(String filePath) {
         try {
             backgroundImage = ImageIO.read(new File(filePath));
@@ -27,6 +32,12 @@ public class BackgroundPanel extends JPanel {
         }
     }
 
+    
+    /**
+     * Méthode Override pour dessiner l'image d'arrière-plan redimensionnée et centrée.
+     * 
+     * @param g l'objet Graphics utilisé pour dessiner
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

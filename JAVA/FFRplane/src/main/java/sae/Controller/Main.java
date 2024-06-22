@@ -14,6 +14,8 @@ import sae.view.jFrame.*;
  * icônes pour les composants graphiques.
  *
  * @author fillo
+ * @author mathe
+ * @author sacha
  */
 public class Main {
     /**
@@ -24,7 +26,7 @@ public class Main {
      * cette application).
      */
     public static void main(String[] args) {
-        System.setProperty("sun.java2d.uiScale", "125%");
+        System.setProperty("sun.java2d.uiScale", "100%");
         setPoliceNimbus();
         WelcomeFrame wframe = new WelcomeFrame();
         wframe.setVisible(true);

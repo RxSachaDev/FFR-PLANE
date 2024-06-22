@@ -1,21 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package sae.View.jFrame;
+package sae.view.jFrame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import org.graphstream.graph.Graph;
 import org.graphstream.ui.view.Viewer;
-import sae.Models.algocoloration.AlgoColoration;
-import sae.Models.algocoloration.ResultatColoration;
+import sae.models.algocoloration.AlgoColoration;
+import sae.models.algocoloration.ResultatColoration;
 import sae.utils.IconUtil;
 import sae.view.jDialog.LoadGraphDialog;
-import sae.view.jFrame.MainFrame;
 
 /**
  * La classe GraphstreamFrame représente une interface graphique (GUI) pour

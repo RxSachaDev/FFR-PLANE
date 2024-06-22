@@ -6,14 +6,15 @@ package sae.exceptions;
  * @author mathe
  */
 public class FileFormatException extends NumberFormatException {
-    private int line;
-    private String fileName;
+    private final int line;
+    private final String fileName;
 
+    
     /**
      * Construit un nouveau FileFormatError avec le numéro de ligne et le nom du fichier spécifiés.
      *
      * @param lineInFile le numéro de ligne où l'erreur s'est produite
-     * @param fileName le nom du fichier où l'erreur s'est produite
+     * @param filePath le chemin d'accès au fichier où l'erreur s'est produite
      */
     public FileFormatException(int lineInFile, String filePath) {
         this.line = lineInFile;

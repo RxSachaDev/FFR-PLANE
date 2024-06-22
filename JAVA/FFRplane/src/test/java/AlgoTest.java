@@ -6,8 +6,8 @@ import org.graphstream.graph.Node;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.Models.algocoloration.AlgoColoration;
-import sae.Models.algocoloration.ResultatColoration;
+import sae.models.algocoloration.AlgoColoration;
+import sae.models.algocoloration.ResultatColoration;
 
 public class AlgoTest {
 

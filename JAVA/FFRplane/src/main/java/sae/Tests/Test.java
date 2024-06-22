@@ -18,8 +18,8 @@ import sae.models.toolbox.*;
 public class Test {
     
     public static void main(String[] args) {
-        AirportCatalog airportCatalog = new AirportCatalog();
-        FlightCatalog flightCatalog = new FlightCatalog();
+        AirportsCatalog airportCatalog = new AirportsCatalog();
+        FlightsCatalog flightCatalog = new FlightsCatalog();
         try {
             ToolBox.fillAirportsCatalog(Settings.getAirportsFilePath(), airportCatalog);
             
@@ -43,7 +43,7 @@ public class Test {
     }
 
     
-    public static void flightsTestFilesResult(FlightCatalog flightCatalog,AirportCatalog airportCatalog){
+    public static void flightsTestFilesResult(FlightsCatalog flightCatalog,AirportsCatalog airportCatalog){
         for(int ii = 1 ; ii<10 ; ii++){
             String temp = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test"+ii+".csv";
             String temp2 = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";

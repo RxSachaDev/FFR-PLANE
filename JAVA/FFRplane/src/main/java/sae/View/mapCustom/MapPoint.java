@@ -1,11 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sae.view.mapCustom;
-
-import sae.controller.Interfaces.ModelPoint;
-import java.awt.Frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,48 +7,54 @@ import javax.swing.SwingUtilities;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 
-import sae.controller.Logiciel;
-import sae.view.jButton.*;
+import sae.view.jFrame.MainFrame;
+import sae.controller.Interfaces.ModelPoint;
+import sae.view.jButton.CustomButtonMapPoint;
 
 /**
- * Classe représentant un point d'aéroport sur la carte. Un point d'aéroport est
- * une extension d'un Waypoint par défaut, il inclut également un bouton associé
- * permettant d'afficher le nom de l'aéroport. Lorsque le bouton est cliqué, le
- * nom de l'aéroport est affiché dans un JTextArea parent, dans MainFrame.
- *
- * @author fillo
+ * Représente un point sur une carte (mapPoint).
+ * Un mapPoint est une extension d'un Waypoint par défaut avec un bouton associé pour afficher des informations.
+ * Lorsque le bouton est cliqué, les informations sur le point sont affichées dans une JTextArea du parent (MainFrame).
  * 
+ * @author fillo
  */
 public class MapPoint extends DefaultWaypoint {
 
-    // Le nom de l'aéroport
-    ModelPoint point;
-
-    // Le bouton associé à ce point d'aéroport
+    private ModelPoint modelPoint;
     private JButton button;
 
     
     /**
-     * Constructeur de la classe Airportpoint.
+     * Constructeur pour créer un MapPoint à partir d'un modèle de point spécifié.
      *
-     * @param airport Le nom de l'aéroport.
+     * @param point Modèle de point contenant la position géographique et d'autres informations.
      */
     public MapPoint(ModelPoint point) {
         super(point.getGeoPosition()); // Appelle le constructeur de la classe parent avec la position géographique spécifiée
-        this.point = point;
+        this.modelPoint = point;
         initButton();
     }
     
 
+    /**
+     * Constructeur pour créer un MapPoint à partir d'une position géographique.
+     *
+     * @param geoPosition Position géographique du MapPoint à créer.
+     */
     public MapPoint(GeoPosition geoPosition) {
         super(geoPosition); // Appelle le constructeur de la classe parent avec la position géographique spécifiée
-        this.point = null;
+        this.modelPoint = null;
         initButton();
     }
     
+
+    /* ••••••••••••• MÉTHODES ••••••••••••• */
+    
     
     /**
-     * Initialise le bouton associé à ce point d'aéroport.
+     * Initialise le bouton associé à ce MapPoint.
+     * Utilise CustomButtonMapPoint comme type de bouton spécialisé.
+     * Configure l'ActionListener pour afficher les informations du point dans le parent (MainFrame).
      */
     private void initButton() {
         button = new CustomButtonMapPoint();
@@ -64,61 +63,76 @@ public class MapPoint extends DefaultWaypoint {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 // Récupère le Frame parent du bouton
-                Frame parentFrame = (Frame) SwingUtilities.getWindowAncestor(button);
-                // Vérifie si le parent est une instance de Logiciel
-                if (parentFrame instanceof Logiciel) {
-                    // Si c'est le cas, affecte le nom de l'aéroport au JTextArea du Logiciel
-                    Logiciel textAreaSetter = (Logiciel) parentFrame;
-                    textAreaSetter.setJTextAreaText1(point.toString());
-                } else {
-                    // Sinon, affiche un message d'erreur
-                    System.err.println("Le composant parent ne met pas en œuvre JTextAreaSetter.");
-                }
+                MainFrame parent = (MainFrame) SwingUtilities.getWindowAncestor(button);
+                parent.getTextAreaInfosSelect().setText(modelPoint.toString());
             }
         });
     }
 
     
-
     /**
-     * getter Renvoie le nom de l'aéroport.
+     * Retourne une représentation en chaîne des informations sur le modelPoint associé.
      *
-     * @return Le nom de l'aéroport.
+     * @return Représentation en chaîne des informations du modelPoint.
      */
-    public ModelPoint getPoint() {
-        return point;
+    public String toStringModelPoint(){
+        return modelPoint.toString();
+    }
+    
+    
+    /* ••••••••••••• GETTERS / SETTERS ••••••••••••• */
+    
+    
+    /**
+     * Définit le ModelPoint associé à ce MapPoint.
+     *
+     * @param point Nouveau MapPoint à associer à ce MapPoint.
+     */
+    public void setModelPoint(ModelPoint point) {
+        this.modelPoint = point;
     }
 
+    
     /**
-     * setter Définit le nom de l'aéroport.
+     * Définit le bouton associé à ce MapPoint.
      *
-     * @param airport Le nom de l'aéroport à définir.
-     */
-    public void setPoint(ModelPoint point) {
-        this.point = point;
-    }
-
-    /**
-     * getter Renvoie le bouton associé à ce point d'aéroport.
-     *
-     * @return Le bouton associé à ce point d'aéroport.
-     */
-    public JButton getButton() {
-        return this.button;
-    }
-
-    /**
-     * setter Définit le bouton associé à ce point d'aéroport.
-     *
-     * @param button Le bouton à associer à ce point d'aéroport.
+     * @param button Nouveau bouton à associer à ce MapPoint.
      */
     public void setButton(JButton button) {
         this.button = button;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + (point != null ? point.toString() : "Airport data not available");
+    
+    /**
+     * Retourne le ModelPoint associé à ce MapPoint.
+     *
+     * @return ModelPoint associé à ce MapPoint.
+     */
+    public ModelPoint getModelPoint() {
+        return modelPoint;
     }
 
+    
+    /**
+     * Retourne le bouton associé à ce MapPoint.
+     *
+     * @return Bouton associé à ce MapPoint.
+     */
+    public JButton getButton() {
+        return this.button;
+    }
+
+    
+    /* ••••••••••••• MÉTHODES @OVERRIDE ••••••••••••• */
+    
+    
+    /**
+     * Retourne une représentation en chaîne du nom du ModelPoint.
+     *
+     * @return Représentation en chaîne du nom du ModelPoint.
+     */
+    @Override
+    public String toString() {
+        return modelPoint.toStringName();
+    }
 }

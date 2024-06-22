@@ -1,25 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package sae.view.jDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
-import sae.utils.*;
-import sae.exceptions.*;
-import sae.models.airports.AirportCatalog;
-import sae.models.flights.FlightCatalog;
+import sae.exceptions.DataMismatchException;
+import sae.exceptions.FileFormatException;
+import sae.models.airports.AirportsCatalog;
+import sae.models.flights.FlightsCatalog;
 import sae.models.toolbox.ToolBox;
-import sae.view.jFrame.*;
-import sae.view.jFileChooser.*;
+import sae.utils.IconUtil;
+import sae.utils.Settings;
+import sae.view.jFileChooser.OpenFileChooser;
+import sae.view.jFrame.MainFrame;
+
 
 /**
- * Cette classe représente une boîte de dialogue de chargement de graphique.
+ * Cette classe permet de charger un espace aérien.
  * Elle étend la classe javax.swing.JDialog.
  *
  * @author fillo
@@ -33,13 +31,13 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
      */
     private static final IconUtil iconU = new IconUtil();
 
+    
     /**
-     * Crée une nouvelle instance de la boîte de dialogue de chargement de
-     * graphique qui permet de spécifier les liens des fichiers qui crééront le
-     * graphe
+     * Crée une nouvelle instance de la LoadAirspaceDialog qui permet de spécifier 
+     * les liens des fichiers qui crééront la MainFrame
      *
-     * @param parent La fenêtre parente de la boîte de dialogue.
-     * @param modal Spécifie si la boîte de dialogue doit être modale ou non.
+     * @param parent La fenêtre parente de la LoadAirspaceDialog.
+     * @param modal Spécifie si la LoadAirspaceDialog doit être modale ou non.
      */
     public LoadAirspaceDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -198,16 +196,21 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /* ••••••••••••• LISTENERS ••••••••••••• */
+    
+    
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_CancelButtonActionPerformed
 
+    
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         try {
             // <* Cette partie ne sert qu'à déclancher les exceptions
-            AirportCatalog temp = new AirportCatalog();
+            AirportsCatalog temp = new AirportsCatalog();
             ToolBox.fillAirportsCatalog(airportsFileTextField.getText(), temp);
-            ToolBox.fillFlightsCatalog(airportsFileTextField.getText(),flightsFileTextField.getText(), new FlightCatalog(), temp);
+            ToolBox.fillFlightsCatalog(airportsFileTextField.getText(),flightsFileTextField.getText(), new FlightsCatalog(), temp);
             // *>
             
             Settings.setAirportsFilePath(airportsFileTextField.getText());
@@ -227,6 +230,7 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_OkButtonActionPerformed
 
+    
     private void buttonChooseAirportFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseAirportFileActionPerformed
         JFileChooser fileChooser = new OpenFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\src\\main\\java\\data\\"));
@@ -237,6 +241,7 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         } else if(result == JFileChooser.CANCEL_OPTION) {}
     }//GEN-LAST:event_buttonChooseAirportFileActionPerformed
 
+    
     private void buttonChooseFlightsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFlightsFileActionPerformed
         JFileChooser fileChooser = new OpenFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\src\\main\\java\\data\\"));
@@ -247,6 +252,7 @@ public class LoadAirspaceDialog extends javax.swing.JDialog {
         } else if(result == JFileChooser.CANCEL_OPTION) {}
     }//GEN-LAST:event_buttonChooseFlightsFileActionPerformed
 
+    
     private void flightsFileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flightsFileTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_flightsFileTextFieldActionPerformed

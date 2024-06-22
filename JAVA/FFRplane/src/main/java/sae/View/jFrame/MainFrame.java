@@ -1,8 +1,6 @@
 package sae.view.jFrame;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -14,42 +12,39 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import org.graphstream.graph.Graph;
-import sae.View.jDialog.ChooseAlgorithmDialog;
-import sae.View.jFrame.GraphstreamFrame;
-import sae.view.jDialog.LoadAirspaceDialog;
 
-import sae.controller.Logiciel;
-import sae.controller.Controller;
-import sae.view.jDialog.*;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
-import sae.view.mapCustom.MapCustom;
+import sae.controller.Controller;
 import sae.view.mapCustom.MapLine;
-
+import sae.view.mapCustom.MapCustom;
+import sae.view.jDialog.LoadAirspaceDialog;
+import sae.view.jDialog.ColorationSettingsDialog;
+import sae.view.jDialog.functionsDialog.FunctionChooserDialog;
+import sae.view.jDialog.functionsDialog.ChooseColorationAlgorithmDialog;
 
 /**
  * Cette classe représente la fenêtre principale de l'application. Elle est la
- * jFrame qui affiche le graphe, la carte etc... Elle étend la classe
- * javax.swing.JFrame et implémente l'interface Logiciel.
+ * jFrame qui affiche le la MapCustom et toutes ses informations. 
+ * Elle étend la classe javax.swing.JFrame.
  *
  * @author fillo
  * @author mathe
  */
-public class MainFrame extends JFrame implements Logiciel {
+public class MainFrame extends JFrame {
     private boolean isMenuVisible = true;
     private final JButton buttonMenu = new JButton();
     private final ImageIcon iconButtonMenuClose = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-right.png");
     private final ImageIcon iconButtonMenuOpen = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\sae\\Assets\\chevron-left.png");
-    private final Rectangle boundsMenuBar;
-    private Graph coloringGraph;
-    private String algorithmeChoisi;
+    private final Rectangle boundsMenuBar; //Sert pour la MenuBar rétractable
     
+    private Graph coloringGraph;
+    private String chosenAlgorithm;
 
-    private Controller controller;
+    private final Controller controller;
     
     /**
      * Instance de la classe IconUtil utilisée pour configurer les icônes des
@@ -60,24 +55,22 @@ public class MainFrame extends JFrame implements Logiciel {
     
     /**
      * Crée une nouvelle instance de la classe MainFrame. Initialise les
-     * composants de la fenêtre, configure la carte personnalisée avec les
-     * coordonnées et le zoom standard, affiche les aéroports sur la carte,
+     * composants de la fenêtre, fais appel au controller pour initialiser la MapCustom, 
      * configure l'affichage des champs de texte, configure les icônes et
-     * configure l'état de la fenêtre pour être maximisé. (constructeur)
+     * configure l'état de la fenêtre pour être maximisé.
      */
     public MainFrame() {
+        Settings.resetAll();
         initComponents();
-        listenerManager();
+        listenersManager();
         setMinimumSize(new Dimension(1300,900));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         buttonMenu.setContentAreaFilled(false);
         
-
         controller = new Controller(this);
 
-        controller.initMapCustom();
-        
+        controller.initMainFrame();
         
         mapCustom.add(buttonMenu);
         
@@ -86,26 +79,37 @@ public class MainFrame extends JFrame implements Logiciel {
         
         iconU.setIcon(this);
         
-        boundsMenuBar = panelRightBar.getBounds(); //Sert pour la MenuBar rétractable
+        boundsMenuBar = panelRightBar.getBounds();
         
         graphstreamPanel.setVisible(false);
     }
 
-    public JComboBox<MapLine> getMapLineComboBox() {
-        return mapLineComboBox;
-    }
     
-    private void listenerManager(){
+    /**
+     * Gere les listeners
+     */
+    private void listenersManager(){
         mapLineComboBox.addItemListener(new java.awt.event.ItemListener() {
+            /**
+             * Actualise l'affiche de la mapLineComboBox en fonction de l'item qui est selectionné
+             */
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if((MapLine)mapLineComboBox.getSelectedItem()!=null) textAreaInfosSelect.setText(((MapLine)mapLineComboBox.getSelectedItem()).toStringModelLine());
+                MapLine selectedMapLine = (MapLine)mapLineComboBox.getSelectedItem();
+                if(selectedMapLine != null) {
+                    textAreaInfosSelect.setText(selectedMapLine.toStringModelLine());
+                    for(MapLine mapLine : controller.getMapLineSet()){
+                        mapLine.setColor(Color.BLACK);
+                    } 
+                    selectedMapLine.setColor(Color.ORANGE);
+                    mapCustom.repaint();
+                }
             }
         });
         
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
-                setButtonPosition();
+                setButtonMenuPosition();
             }
         });
         
@@ -114,15 +118,11 @@ public class MainFrame extends JFrame implements Logiciel {
             public void actionPerformed(ActionEvent e){
                 isMenuVisible = !isMenuVisible;
                 panelRightBar.setVisible(isMenuVisible);
-                setButtonPosition();
+                setButtonMenuPosition();
             }
         });
     }
-    
-    public Controller getController(){
-            return controller;
-    }
-    
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -151,7 +151,9 @@ public class MainFrame extends JFrame implements Logiciel {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpenG = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         colorGrapheMenuItem = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemreturnWelcomeFrame = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         DarkModeCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
@@ -263,7 +265,14 @@ public class MainFrame extends JFrame implements Logiciel {
         textAreaInfosSelect.setBorder(null);
         textAreaInfosSelect.setCaretColor(null);
         textAreaInfosSelect.setDisabledTextColor(null);
+
         mapLineComboBox.setModel(new DefaultComboBoxModel<MapLine>());
+        mapLineComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelInfosSelectLayout = new javax.swing.GroupLayout(panelInfosSelect);
         panelInfosSelect.setLayout(panelInfosSelectLayout);
         panelInfosSelectLayout.setHorizontalGroup(
@@ -411,21 +420,23 @@ public class MainFrame extends JFrame implements Logiciel {
         });
 
         jMenuItemOpenG.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItemOpenG.setText("Ouvrir un graphe");
+        jMenuItemOpenG.setText("Charger un nouvel Espace Aerien");
         jMenuItemOpenG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemOpenGActionPerformed(evt);
             }
         });
         jMenuFile.add(jMenuItemOpenG);
+        jMenuFile.add(jSeparator1);
 
-        colorGrapheMenuItem.setText("Colorier le graphe actuel");
+        colorGrapheMenuItem.setText("Charger le Graph de Coloration");
         colorGrapheMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorGrapheMenuItemActionPerformed(evt);
             }
         });
         jMenuFile.add(colorGrapheMenuItem);
+        jMenuFile.add(jSeparator2);
 
         jMenuItemreturnWelcomeFrame.setText("Revenir au menu principal");
         jMenuItemreturnWelcomeFrame.addActionListener(new java.awt.event.ActionListener() {
@@ -455,20 +466,14 @@ public class MainFrame extends JFrame implements Logiciel {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
-    private void setButtonPosition(){
-        int buttonHeight = 50;
-        int buttonWidth = 50;
-        int buttonY = getHeight()/2 - buttonHeight;
-        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsMenuBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
-        buttonMenu.setIcon(isMenuVisible ? iconButtonMenuOpen : iconButtonMenuClose);
-    }
+    
+    /* ••••••••••••• LISTENERS ••••••••••••• */
     
     
     /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur le bouton des
-     * fonctions. Elle ouvre une instance de la classe FonctionsDialog en tant
-     * que boîte de dialogue modale.
+     * Méthode appelée lorsqu'un événement d'action se produit sur le 
+     * buttonFunctions. Elle ouvre une instance de la classe FunctionChooserDialog en
+     * tant que boîte de dialogue modale.
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
@@ -478,36 +483,30 @@ public class MainFrame extends JFrame implements Logiciel {
         dialogF.setVisible(true);
     }//GEN-LAST:event_buttonFunctionsActionPerformed
 
-    public MapCustom getMapCustom() {
-        return mapCustom;
-    }
-
-    
-    
     
     /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
-     * menu du mode sombre. Elle active ou désactive le mode sombre en fonction
-     * de l'état de la case à cocher.
+     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de menu
+     * DarkModeCheckBoxMenuItem. Elle applique les changements de style pour activer
+     * ou désactiver le mode sombre.
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
     private void DarkModeCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        ChooseAlgorithmDialog chooseAlgorithmDialog = new ChooseAlgorithmDialog(this, true);
+        ChooseColorationAlgorithmDialog chooseAlgorithmDialog = new ChooseColorationAlgorithmDialog(this, true);
         if (DarkModeCheckBoxMenuItem.isSelected()) {
             // le darkmode est activé
             panelRightBar.setBackground(new Color(30, 31, 34));
-        panelInfosGene.setBackground(new Color(49, 51, 56));
-        panelInfosSelect.setBackground(new Color(49, 51, 56));
-        textAreaInfosGene.setBackground(new Color(49, 51, 56));
-        textAreaInfosSelect.setBackground(new Color(49, 51, 56));
-        ComboMapType.setSelectedIndex(3);
-        mapCustom.changeStyle(3);
-        labelInfosGene.setForeground(Color.white);
-        labelInfosSelect1.setForeground(Color.white);
-        labelInfosSelect2.setForeground(Color.white);
-        textAreaInfosGene.setForeground(Color.white);
-        textAreaInfosSelect.setForeground(Color.white);
+            panelInfosGene.setBackground(new Color(49, 51, 56));
+            panelInfosSelect.setBackground(new Color(49, 51, 56));
+            textAreaInfosGene.setBackground(new Color(49, 51, 56));
+            textAreaInfosSelect.setBackground(new Color(49, 51, 56));
+            ComboMapType.setSelectedIndex(3);
+            mapCustom.changeStyle(3);
+            labelInfosGene.setForeground(Color.white);
+            labelInfosSelect1.setForeground(Color.white);
+            labelInfosSelect2.setForeground(Color.white);
+            textAreaInfosGene.setForeground(Color.white);
+            textAreaInfosSelect.setForeground(Color.white);
             if (coloringGraph != null) {
                 chooseAlgorithmDialog.setViewer(coloringGraph, true);
             }
@@ -534,25 +533,24 @@ public class MainFrame extends JFrame implements Logiciel {
     }
 
     
-    
     /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur le bouton des
-     * colorations. Elle ouvre une instance de la classe ColorationsDialog en
-     * tant que boîte de dialogue modale.
+     * Méthode appelée lorsqu'un événement d'action se produit sur le bouton
+     * buttonColoration. Elle ouvre une instance de la classe ColorationSettingsDialog
+     * en tant que boîte de dialogue modale.
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
     private void buttonColorationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonColorationActionPerformed
-        ColorationsDialog cdialog = new ColorationsDialog(this, true);
+        ColorationSettingsDialog cdialog = new ColorationSettingsDialog(this, true);
         cdialog.setLocationRelativeTo(this);
         cdialog.setVisible(true);
     }//GEN-LAST:event_buttonColorationActionPerformed
 
     
     /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
-     * menu pour ouvrir un graphe. Elle ouvre une instance de la classe
-     * LoadAgraphDialog en tant que boîte de dialogue modale.
+     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de menu
+     * jMenuItemOpenG. Elle ouvre une instance de la classe LoadAirspaceDialog en
+     * tant que boîte de dialogue modale.
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
@@ -560,29 +558,27 @@ public class MainFrame extends JFrame implements Logiciel {
         LoadAirspaceDialog loadDialog = new LoadAirspaceDialog(this, true);
         loadDialog.setLocationRelativeTo(this);
         loadDialog.setVisible(true);
-
     }//GEN-LAST:event_jMenuItemOpenGActionPerformed
 
     
     /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de
-     * menu pour revenir à la fenêtre d'accueil. Elle masque cette fenêtre et
-     * ouvre une nouvelle instance de la classe WelcomeFrame.
+     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de menu
+     * jMenuItemreturnWelcomeFrame. Elle ferme la fenêtre actuelle et ouvre une
+     * nouvelle instance de la classe WelcomeFrame.
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
     private void jMenuItemreturnWelcomeFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemreturnWelcomeFrameActionPerformed
-        this.setVisible(false);
+        dispose();
         WelcomeFrame welcomef = new WelcomeFrame();
-        welcomef.setLocationRelativeTo(this);
         welcomef.setVisible(true);
     }//GEN-LAST:event_jMenuItemreturnWelcomeFrameActionPerformed
 
     
     /**
-     * Méthode appelée lorsqu'un événement d'action se produit sur le sélecteur
-     * de type de carte. Elle change le style de la carte en fonction de l'index
-     * sélectionné dans le sélecteur.
+     * Méthode appelée lorsqu'un événement d'action se produit sur ComboMapType.
+     * Elle change le style de la carte en fonction de l'index sélectionné dans
+     * ComboMapType.
      *
      * @param evt L'événement d'action associé à l'appel de cette méthode.
      */
@@ -591,88 +587,157 @@ public class MainFrame extends JFrame implements Logiciel {
         mapCustom.changeStyle(index);
     }//GEN-LAST:event_ComboMapTypeActionPerformed
 
+
     private void jMenuFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuFileActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuFileActionPerformed
 
+    
+    /**
+     * Méthode appelée lorsqu'un événement d'action se produit sur l'élément de menu
+     * colorGrapheMenuItem. Elle ouvre une instance de la classe ChooseColorationAlgorithmDialog
+     * en tant que boîte de dialogue modale.
+     *  
+     * @param evt L'événement d'action associé à l'appel de cette méthode.
+     */
     private void colorGrapheMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorGrapheMenuItemActionPerformed
-        ChooseAlgorithmDialog chooseAlgorithm = new ChooseAlgorithmDialog((JFrame) this, true);
+        ChooseColorationAlgorithmDialog chooseAlgorithm = new ChooseColorationAlgorithmDialog((JFrame) this, true);
         chooseAlgorithm.setVisible(true);
     }//GEN-LAST:event_colorGrapheMenuItemActionPerformed
 
+    
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    
+    /**
+     * Méthode appelée lorsqu'un événement d'action se produit sur enlargeButton.
+     * Elle ouvre une nouvelle instance de la classe GraphstreamFrame.
+     *
+     * @param evt L'événement d'action associé à l'appel de cette méthode.
+     */
     private void enlargeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enlargeButtonActionPerformed
-        GraphstreamFrame graphstreamFrame = new GraphstreamFrame(this, "src/main/java/data/temp/graph-testTEMP.txt", algorithmeChoisi);
+        GraphstreamFrame graphstreamFrame = new GraphstreamFrame(this, "src/main/java/data/temp/graph-testTEMP.txt", chosenAlgorithm);
         graphstreamFrame.setVisible(true);
     }//GEN-LAST:event_enlargeButtonActionPerformed
-
+    
+    
+    /* ••••••••••••• GETTERS / SETTERS ••••••••••••• */
+    
     
     /**
-     * Définit la couleur du texte de tous les composants JLabel dans le
-     * conteneur spécifié ainsi que dans ses sous-conteneurs de manière
-     * récursive.
+     * Retourne l'instance de MapCustom associée à cette fenêtre.
      *
-     * @param container le conteneur dans lequel rechercher les composants
-     * JLabel
-     * @param color la couleur à définir comme couleur du texte
+     * @return L'instance de MapCustom.
      */
-    private void setLabelForeground(Container container, Color color) {
-        for (Component component : container.getComponents()) {
-            if (component instanceof JLabel jLabel) {
-                jLabel.setForeground(color);
-            } else if (component instanceof JPanel jPanel) {
-                // Si c'est un panel, parcourir les composants à l'intérieur
-                setLabelForeground(jPanel, color);
-            }
-        }
+    public MapCustom getMapCustom() {
+        return mapCustom;
     }
     
-
     
     /**
-     * Définit le texte du composant JTextArea sur le texte spécifié.
+     * Retourne l'instance de Controller associée à cette fenêtre.
      *
-     * @param text le texte à définir dans le JTextArea
+     * @return L'instance de Controller.
      */
-    @Override
-    public void setJTextAreaText1(String text) {
-        String actualString = text;
-        textAreaInfosSelect.setText(actualString);
+    public Controller getController(){
+            return controller;
     }
     
     
-    @Override
-    public void setJTextAreaText2(String text) {
-        String actualString = text;
-        textAreaInfosGene.setText(actualString);
-    }
-    
-    public void setColoringGraph(Graph coloringGraph) {
-        this.coloringGraph = coloringGraph;
-    }
-
-    public void setAlgorithmeChoisi(String algorithmeChoisi) {
-        this.algorithmeChoisi = algorithmeChoisi;
+    /**
+     * Retourne la JComboBox contenant les MapLine.
+     *
+     * @return La JComboBox des MapLine.
+     */
+    public JComboBox<MapLine> getMapLineComboBox() {
+        return mapLineComboBox;
     }
     
     
+    /**
+     * Retourne le JPanel contenant le graphe Graphstream.
+     *
+     * @return Le JPanel du graphe Graphstream.
+     */
     public JPanel getGraphstreamContener() {
         return graphstreamContener;
     }
 
+    
+    /**
+     * Retourne le JPanel du panel Graphstream.
+     *
+     * @return Le JPanel du panel Graphstream.
+     */
     public JPanel getGraphstreamPanel() {
         return graphstreamPanel;
     }
     
     
+    /**
+     * Retourne la JCheckBoxMenuItem du mode sombre.
+     *
+     * @return La JCheckBoxMenuItem du mode sombre.
+     */
     public JCheckBoxMenuItem getDarkModeCheckBoxMenuItem() {
         return DarkModeCheckBoxMenuItem;
     }
+    
+    
+    /**
+     * Retourne la JTextArea contenant les informations générales.
+     *
+     * @return La JTextArea des informations générales.
+     */
+    public JTextArea getTextAreaInfosGene() {
+        return textAreaInfosGene;
+    }
 
     
+    /**
+     * Retourne la JTextArea contenant les informations de sélection.
+     *
+     * @return La JTextArea des informations de sélection.
+     */
+    public JTextArea getTextAreaInfosSelect() {
+        return textAreaInfosSelect;
+    }
+    
+    
+    /**
+     * Positionne le bouton du menu à la bonne position sur l'écran.
+     */
+    private void setButtonMenuPosition(){
+        int buttonHeight = 50;
+        int buttonWidth = 50;
+        int buttonY = getHeight()/2 - buttonHeight;
+        buttonMenu.setBounds(getWidth() - (isMenuVisible ? boundsMenuBar.width + buttonWidth : buttonWidth) , buttonY, buttonWidth, buttonHeight);
+        buttonMenu.setIcon(isMenuVisible ? iconButtonMenuOpen : iconButtonMenuClose);
+    }
+    
+    
+    /**
+     * Définit le graphe de coloration.
+     *
+     * @param coloringGraph Le graphe de coloration.
+     */
+    public void setColoringGraph(Graph coloringGraph) {
+        this.coloringGraph = coloringGraph;
+    }
+
+    
+    /**
+     * Définit l'algorithme choisi.
+     *
+     * @param algorithmeChoisi L'algorithme choisi.
+     */
+    public void setChosenAlgorithm(String chosenAlgorithm) {
+        this.chosenAlgorithm = chosenAlgorithm;
+    }
+    
+      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboMapType;
     private javax.swing.JCheckBoxMenuItem DarkModeCheckBoxMenuItem;
@@ -683,12 +748,13 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JButton enlargeButton;
     private javax.swing.JPanel graphstreamContener;
     private javax.swing.JPanel graphstreamPanel;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemOpenG;
     private javax.swing.JMenuItem jMenuItemreturnWelcomeFrame;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel labelInfosGene;
     private javax.swing.JLabel labelInfosSelect1;
     private javax.swing.JLabel labelInfosSelect2;
@@ -703,16 +769,5 @@ public class MainFrame extends JFrame implements Logiciel {
     private javax.swing.JTextArea textAreaInfosGene;
     private javax.swing.JTextArea textAreaInfosSelect;
     // End of variables declaration//GEN-END:variables
-
-    
-    @Override
-    public void setJTextAreaText(String text) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    
-    public JTextArea getTextAreaInfosGene() {
-        return textAreaInfosGene;
-    }
 }
 

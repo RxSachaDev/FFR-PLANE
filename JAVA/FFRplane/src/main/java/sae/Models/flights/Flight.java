@@ -1,10 +1,11 @@
 package sae.models.flights;
 
-import sae.controller.Interfaces.ModelLine;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.controller.*;
-import sae.models.airports.*;
-import sae.models.toolbox.*;
+
+import sae.controller.Interfaces.ModelLine;
+import sae.models.airports.Airport;
+import sae.models.toolbox.ToolBox;
+
 
 /**
  * La classe Flight représente un vol avec ses détails incluant le nom, les aéroports de départ et d'arrivée, 
@@ -13,8 +14,9 @@ import sae.models.toolbox.*;
  * @author mathe
  */
 public class Flight implements ModelLine{
+    
     private static int i = 0; // Compteur pour attribuer un numéro de vol à chaque vol
-    private int flightNumber;
+    private final int flightNumber;
     
     private String name;
     private Airport departureAirport;
@@ -24,7 +26,7 @@ public class Flight implements ModelLine{
     private int duration;
     private int flightHeighLevel;
 
-    private double flightDistance; // Calculé une fois pour éviter de recalculer pour chaque comparaison entre vols
+    private double flightDistance; // Calculée une fois pour éviter de recalculer pour chaque comparaison entre vols
 
     /**
      * Constructeur pour instancier un vol avec des informations détaillées.
@@ -48,44 +50,100 @@ public class Flight implements ModelLine{
         this.flightNumber = i;
     }
 
+    
+    /* ••••••••••••• GETTERS / SETTERS ••••••••••••• */
+    
 
     /**
-     * Retourne une représentation en chaîne de caractères de l'objet Flight.
+     * Définit le niveau de vol en altitude.
      *
-     * @return une représentation en chaîne de caractères de l'objet Flight
+     * @param flightHeighLevel le nouveau niveau de vol en altitude
      */
-    @Override
-    public String toString() {
-        if(flightHeighLevel == 0){
-            return ("• VOL \n"+
-                    "   • Code : "+name+"\n"+ 
-                    "   • Depart : "+departureAirport.getLocation()+"\n"+
-                    "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
-                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
-                    "   • Durée : "+duration+" min\n"+
-                    "   • Hauteur : Non Parametrée");
-        } else {
-            return ("• VOL \n"+
-                    "   • Code : "+name+"\n"+ 
-                    "   • Depart : "+departureAirport.getLocation()+"\n"+
-                    "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
-                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
-                    "   • Durée : "+duration+"\n"+
-                    "   • Hauteur : "+flightHeighLevel);
-        }
-    }
-
-    
-    public int getFlightHeighLevel() {
-        return flightHeighLevel;
-    }
-
-
     public void setFlightHeighLevel(int flightHeighLevel) {
         this.flightHeighLevel = flightHeighLevel;
     }
 
+    
+    /**
+     * Définit le nom du vol.
+     *
+     * @param name le nouveau nom du vol
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    
+    /**
+     * Définit l'aéroport de départ.
+     *
+     * @param departureAirport le nouvel aéroport de départ
+     */
+    public void setDepartureAirport(Airport departureAirport) {
+        this.departureAirport = departureAirport;
+    }
+
+
+    /**
+     * Définit l'aéroport d'arrivée.
+     *
+     * @param arrivalAirport le nouvel aéroport d'arrivée
+     */
+    public void setArrivalAirport(Airport arrivalAirport) {
+        this.arrivalAirport = arrivalAirport;
+    }
+
+
+    /**
+     * Définit l'heure de départ.
+     *
+     * @param departureHour la nouvelle heure de départ
+     */
+    public void setDepartureHour(int departureHour) {
+        this.departureHour = departureHour;
+    }
+
+
+    /**
+     * Définit la minute de départ.
+     *
+     * @param departureMinute la nouvelle minute de départ
+     */
+    public void setDepartureMinute(int departureMinute) {
+        this.departureMinute = departureMinute;
+    }
+
+
+    /**
+     * Définit la durée du vol en minutes.
+     *
+     * @param duration la nouvelle durée du vol en minutes
+     */
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+
+    /**
+     * Définit la distance du vol.
+     *
+     * @param flightDistance la nouvelle distance du vol
+     */
+    public void setFlightDistance(double flightDistance) {
+        this.flightDistance = flightDistance;
+    }
+    
+
+    /**
+     * Obtient le niveau de vol en altitude.
+     *
+     * @return le niveau de vol en altitude
+     */
+    public int getFlightHeighLevel() {
+        return flightHeighLevel;
+    }
+
+    
     /**
      * Obtient le nom du vol.
      *
@@ -157,76 +215,6 @@ public class Flight implements ModelLine{
 
 
     /**
-     * Définit le nom du vol.
-     *
-     * @param name le nouveau nom du vol
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    
-    /**
-     * Définit l'aéroport de départ.
-     *
-     * @param departureAirport le nouvel aéroport de départ
-     */
-    public void setDepartureAirport(Airport departureAirport) {
-        this.departureAirport = departureAirport;
-    }
-
-
-    /**
-     * Définit l'aéroport d'arrivée.
-     *
-     * @param arrivalAirport le nouvel aéroport d'arrivée
-     */
-    public void setArrivalAirport(Airport arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
-    }
-
-
-    /**
-     * Définit l'heure de départ.
-     *
-     * @param departureHour la nouvelle heure de départ
-     */
-    public void setDepartureHour(int departureHour) {
-        this.departureHour = departureHour;
-    }
-
-
-    /**
-     * Définit la minute de départ.
-     *
-     * @param departureMinute la nouvelle minute de départ
-     */
-    public void setDepartureMinute(int departureMinute) {
-        this.departureMinute = departureMinute;
-    }
-
-
-    /**
-     * Définit la durée du vol en minutes.
-     *
-     * @param duration la nouvelle durée du vol en minutes
-     */
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-
-    /**
-     * Définit la distance du vol.
-     *
-     * @param flightDistance la nouvelle distance du vol
-     */
-    public void setFlightDistance(double flightDistance) {
-        this.flightDistance = flightDistance;
-    }
-
-
-    /**
      * Obtient le numéro de vol.
      *
      * @return le numéro de vol
@@ -255,18 +243,66 @@ public class Flight implements ModelLine{
         return getDepartureTime() + duration;
     }
     
+    
+    /* ••••••••••••• MÉTHODES @OVERRIDE ••••••••••••• */
+    
+    
+    /**
+     * Retourne une représentation en chaîne de caractères de l'objet Flight.
+     *
+     * @return une représentation en chaîne de caractères de l'objet Flight
+     */
+    @Override
+    public String toString() {
+        if(flightHeighLevel == 0){
+            return ("• VOL \n"+
+                    "   • Code : "+name+"\n"+ 
+                    "   • Depart : "+departureAirport.getLocation()+"\n"+
+                    "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
+                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
+                    "   • Durée : "+duration+" min\n"+
+                    "   • Hauteur : Non Parametrée");
+        } else {
+            return ("• VOL \n"+
+                    "   • Code : "+name+"\n"+ 
+                    "   • Depart : "+departureAirport.getLocation()+"\n"+
+                    "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
+                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
+                    "   • Durée : "+duration+"\n"+
+                    "   • Hauteur : "+flightHeighLevel);
+        }
+    }
+    
+    
+    /**
+     * Obtient la première position géographique de la ligne de vol, correspondant à l'aéroport de départ.
+     *
+     * @return la position géographique de l'aéroport de départ
+     */
     @Override 
     public GeoPosition getPoint1(){
         return departureAirport.getGeoPosition();
     }
     
+    
+    /**
+     * Obtient la deuxième position géographique de la ligne de vol, correspondant à l'aéroport d'arrivée.
+     *
+     * @return la position géographique de l'aéroport d'arrivée
+     */
     @Override 
     public GeoPosition getPoint2() {
         return arrivalAirport.getGeoPosition();
     }
     
+    
+    /**
+     * Retourne une représentation en chaîne des noms des points de la ligne de vol, séparés par un tiret.
+     *
+     * @return une représentation en chaîne des noms des points de la ligne de vol
+     */
     @Override
-    public String getPointNames(){
+    public String toStringPointNames(){
         return (departureAirport.getLocation()+" - "+arrivalAirport.getLocation());
     }
 }

@@ -7,9 +7,10 @@ package sae.exceptions;
  * @author mathe
  */
 public class DataMismatchException extends NumberFormatException {
-    private String fileName1;
-    private String fileName2;
+    private final String fileName1;
+    private final String fileName2;
 
+    
     /**
      * Construit une nouvelle DataMismatchException avec les chemins de fichiers spécifiés.
      *
@@ -23,6 +24,7 @@ public class DataMismatchException extends NumberFormatException {
         fileName2 = temp[temp.length-1];
     }
 
+    
     /**
      * Retourne une représentation en chaîne de caractères de l'exception DataMismatchException.
      *
