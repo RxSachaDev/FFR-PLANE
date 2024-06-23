@@ -89,24 +89,6 @@ public class MainFrame extends JFrame {
      * Gere les listeners
      */
     private void listenersManager(){
-        mapLineComboBox.addItemListener(new java.awt.event.ItemListener() {
-            /**
-             * Actualise l'affiche de la mapLineComboBox en fonction de l'item qui est selectionné
-             */
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                MapLine selectedMapLine = (MapLine)mapLineComboBox.getSelectedItem();
-                if(selectedMapLine != null) {
-                    textAreaInfosSelect.setText(selectedMapLine.toStringModelLine());
-                    for(MapLine mapLine : controller.getMapLineSet()){
-                        mapLine.setColor(Color.BLACK);
-                    } 
-                    selectedMapLine.setColor(Color.ORANGE);
-                    mapCustom.repaint();
-                }
-            }
-        });
-        
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 setButtonMenuPosition();
@@ -213,7 +195,7 @@ public class MainFrame extends JFrame {
 
         panelContainerRightBar.setBackground(null);
         panelContainerRightBar.setToolTipText("");
-        panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 700));
+        panelContainerRightBar.setPreferredSize(new java.awt.Dimension(250, 750));
 
         labelInfosGene.setBackground(new java.awt.Color(221, 221, 221));
         labelInfosGene.setForeground(new java.awt.Color(0, 0, 0));
@@ -233,9 +215,9 @@ public class MainFrame extends JFrame {
         panelInfosGeneLayout.setHorizontalGroup(
             panelInfosGeneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfosGeneLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addComponent(textAreaInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         panelInfosGeneLayout.setVerticalGroup(
             panelInfosGeneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,17 +299,17 @@ public class MainFrame extends JFrame {
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
             .addComponent(buttonColoration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(buttonFunctions, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
         );
         panelButtonLayout.setVerticalGroup(
             panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelButtonLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(buttonFunctions, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonColoration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         graphstreamPanel.setBackground(null);
@@ -354,24 +336,21 @@ public class MainFrame extends JFrame {
         graphstreamPanelLayout.setHorizontalGroup(
             graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(graphstreamPanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(25, 25, 25)
                 .addGroup(graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(graphstreamContener, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(enlargeButton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, graphstreamPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+            .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         graphstreamPanelLayout.setVerticalGroup(
             graphstreamPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(graphstreamPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
                 .addComponent(graphstreamContener, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(enlargeButton))
         );
 
@@ -380,14 +359,15 @@ public class MainFrame extends JFrame {
         panelContainerRightBarLayout.setHorizontalGroup(
             panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                .addGroup(panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(graphstreamPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelInfosGene, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelContainerRightBarLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
                         .addComponent(panelInfosGene, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelInfosSelect1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelInfosSelect2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelContainerRightBarLayout.createSequentialGroup()
+                    .addComponent(labelInfosSelect1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(labelInfosSelect2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelContainerRightBarLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -395,10 +375,6 @@ public class MainFrame extends JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelContainerRightBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(graphstreamPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
         panelContainerRightBarLayout.setVerticalGroup(
             panelContainerRightBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,10 +388,11 @@ public class MainFrame extends JFrame {
                 .addComponent(labelInfosSelect2)
                 .addGap(6, 6, 6)
                 .addComponent(panelInfosSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addComponent(graphstreamPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelRightBar.add(panelContainerRightBar, new java.awt.GridBagConstraints());
@@ -616,8 +593,19 @@ public class MainFrame extends JFrame {
     }//GEN-LAST:event_colorGrapheMenuItemActionPerformed
 
     
+    /**
+     * Actualise l'affiche de la mapLineComboBox en fonction de l'item qui est selectionné
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        MapLine selectedMapLine = (MapLine)mapLineComboBox.getSelectedItem();
+        if(selectedMapLine != null) {
+            textAreaInfosSelect.setText(selectedMapLine.toStringModelLine());
+            for(MapLine mapLine : controller.getMapLineSet()){
+                mapLine.setColor(Color.BLACK);
+            } 
+            selectedMapLine.setColor(Color.ORANGE);
+            mapCustom.repaint();
+        }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     
@@ -744,7 +732,7 @@ public class MainFrame extends JFrame {
     /**
      * Définit l'algorithme choisi.
      *
-     * @param algorithmeChoisi L'algorithme choisi.
+     * @param chosenAlgorithm L'algorithme choisi.
      */
     public void setChosenAlgorithm(String chosenAlgorithm) {
         this.chosenAlgorithm = chosenAlgorithm;

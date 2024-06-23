@@ -32,19 +32,19 @@ import sae.controller.Controller;
 public class MapCustom extends JXMapViewer {
     
     /**
-     * Le niveau de zoom maximal autorisé pour la Map.
+     * Le niveau de dézoom maximal autorisé pour la Map.
      */
-    private int maxZoom = 17;
+    private int maxUnzoom = 13;
 
     /**
-     * Le niveau de zoom minimal autorisé pour la Map.
+     * Le niveau de zoom maximal autorisé pour la Map.
      */
-    private int minZoom = 2;
+    private int maxZoom = 8;
     
     /**
      * Le niveau de zoom initial de la Map.
      */
-    private final int initialZoom = 14;
+    private final int initialZoom = 13;
 
     private Controller controller; 
 
@@ -97,15 +97,14 @@ public class MapCustom extends JXMapViewer {
              */
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                // int wheelRotation = e.getWheelRotation();
                 int currentZoom = getZoom();
 
-                if (currentZoom > maxZoom) {
-                    setZoom(maxZoom);
+                if (currentZoom > maxUnzoom) {
+                    setZoom(maxUnzoom);
                 }
 
-                if (currentZoom < minZoom) {
-                    setZoom(minZoom);
+                if (currentZoom < maxZoom) {
+                    setZoom(maxZoom);
                 }
             }
         });
@@ -122,23 +121,22 @@ public class MapCustom extends JXMapViewer {
         GeoPosition currentPosition = getAddressLocation();
         double actualLatitude = currentPosition.getLatitude();
         double actualLongitude = currentPosition.getLongitude();
+        
+        // Sert à limiter les bugs de zoom lorsqu'on change de style en zoomant/dézoomant
         int actualZoom = getZoom();
+        if(actualZoom > maxUnzoom) actualZoom = maxUnzoom;
+        else if (actualZoom < maxZoom) actualZoom = maxZoom;
+        setZoom(actualZoom);
+        
         switch (index) {
             case 0:
-                if (actualZoom > 16) {
-                    actualZoom = 16;
-                    System.out.println("Zoom : " + actualZoom);
-                }
                 init(actualLatitude, actualLongitude, actualZoom);
                 break;
             case 1:
                 info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
-                System.out.println("Zoom : " + actualZoom);
                 break;
             case 2:
                 info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.HYBRID);
-                System.out.println("Zoom : " + actualZoom);
-
                 break;
             case 3:
                 info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
@@ -151,20 +149,17 @@ public class MapCustom extends JXMapViewer {
             DefaultTileFactory tileFactory = new DefaultTileFactory(info);
             setTileFactory(tileFactory);
         }
-        setMinZoom(2);
-        setMaxZoom(17);
     }
 
     
     /**
-     * Initialise une Map avec une vue satellite.
+     * Initialise une Map avec une vue satellite pour l'easterGame.
      *
      * @param latitude La latitude du point central de la carte.
      * @param longitude La longitude du point central de la carte.
      */
     public void initGameMap(double latitude, double longitude) {
-        TileFactoryInfo info = new OSMTileFactoryInfo();
-        info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         setTileFactory(tileFactory);
         GeoPosition geo = new GeoPosition(latitude, longitude);
@@ -204,8 +199,8 @@ public class MapCustom extends JXMapViewer {
      *
      * @param maxZ Le niveau de zoom maximal autorisé.
      */
-    public void setMaxZoom(int maxZ) {
-        maxZoom = maxZ;
+    public void setMaxUnzoom(int maxZ) {
+        maxUnzoom = maxZ;
         if (getZoom() > maxZ) {
             setZoom(maxZ);
         }
@@ -217,8 +212,8 @@ public class MapCustom extends JXMapViewer {
      *
      * @param minZ Le niveau de zoom minimal autorisé.
      */
-    public void setMinZoom(int minZ) {
-        minZoom = minZ;
+    public void setMaxZoom(int minZ) {
+        maxZoom = minZ;
         if (getZoom() < minZ) {
             setZoom(minZ);
         }
@@ -230,8 +225,8 @@ public class MapCustom extends JXMapViewer {
      *
      * @return Le niveau de zoom maximal.
      */
-    public int getMaxZoom() {
-        return this.maxZoom;
+    public int getMaxUnzoom() {
+        return this.maxUnzoom;
     }
     
 
@@ -240,8 +235,8 @@ public class MapCustom extends JXMapViewer {
      *
      * @return Le niveau de zoom minimal.
      */
-    public int getMinZoom() {
-        return this.minZoom;
+    public int getMaxZoom() {
+        return this.maxZoom;
     }
 
 

@@ -1,11 +1,15 @@
 package sae.controller;
 
-import sae.view.mapCustom.MapPointRender;
+import sae.view.mapCustom.MapPointPainter;
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
+import javax.swing.JComboBox;
 import org.graphstream.graph.Graph;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
@@ -33,8 +37,8 @@ public class Controller {
     
     private final FlightsCatalog refinedFlightsCatalog = new FlightsCatalog();
     
-    private final Set<MapPoint> mapPointSet = new HashSet<>();
-    private final Set<MapLine> mapLineSet = new HashSet<>();
+    private final Set<MapPoint> mapPointSet = new TreeSet<>(); //TreeSet, choix pratique pour afficher les infos de manière trié
+    private final Set<MapLine> mapLineSet = new TreeSet<>();
     
     
     /**
@@ -104,6 +108,13 @@ public class Controller {
     public void refreshMainFrame (){
         refreshMapCustom();
         refreshMapLineComboBoxModel();
+        
+        MapLine selectedMapLine = (MapLine)mainFrame.getMapLineComboBox().getSelectedItem();
+        if(selectedMapLine == null) mainFrame.getTextAreaInfosSelect().setText("");
+        else {
+            mainFrame.getTextAreaInfosSelect().setText(selectedMapLine.toStringModelLine());
+            selectedMapLine.setColor(Color.ORANGE);
+        }
     }
     
     
@@ -157,33 +168,50 @@ public class Controller {
      * @param isEasterEggActivated Indique si l'easter egg est activé.
      */
     public void initMapPoints (Boolean isEasterEggActivated) {
+        Set<MapPoint> mapPointSetTemp = new HashSet<>();
+        
         for (Airport airport : airportsCatalog.getAirports()) {
-            mapPointSet.add(new MapPoint(airport)); // Utilisation du constructeur avec Airport comme argument
+            mapPointSet.add(new MapPoint(airport));
+            mapPointSetTemp.add(new MapPoint(airport));
         }
-        WaypointPainter<MapPoint> ap = new MapPointRender();
-        if(isEasterEggActivated) initEasterEgg();
-        ap.setWaypoints(mapPointSet);
-        mapCustom.setOverlayPainter(ap);
-        for (MapPoint d : mapPointSet) {
-            ModelPoint airport = d.getModelPoint();
-            if (airport != null) {
-                mapCustom.add(d.getButton());
-            } else {
-                mapCustom.add(d.getButton());
-                System.err.println("Airport associated with AirportWaypoint is null.");
-            }
+        
+        WaypointPainter<MapPoint> mpPainter = new MapPointPainter();
+        if(isEasterEggActivated) {
+            initEasterEgg(mapPointSetTemp);
+        }
+        mpPainter.setWaypoints(mapPointSetTemp);
+        mapCustom.setOverlayPainter(mpPainter);
+        for (MapPoint mapPoint : mapPointSetTemp) {
+            mapCustom.add(mapPoint.getButton());
         }
     }
-
+    
     
     /**
-     * Initialise les lignes sur la carte, en fontion des parametres d'affinage.
+     * Initialise l'easter egg.
+     * @param mapPointSetTemp Le set dans lequel ajouter le MapPoint EasterEgg
+     */
+    public void initEasterEgg(Set<MapPoint> mapPointSetTemp) {
+        mapPointSetTemp.add(new EasterPoint(new GeoPosition(45.7893371, 4.8808478)));
+    }
+ 
+    
+    /**
+     * Initialise les lignes sur la carte en fonction des paramètres d'affinage.
+     * Cette méthode ajuste les lignes affichées sur la carte en fonction des paramètres définis dans les Settings,
+     * tels que la couleur d'affinage, la plage horaire d'affinage et le code d'aéroport d'affinage.
+     * Si aucun paramètre d'affinage n'est défini, toutes les lignes de vol sont affichées.
      */
     public void initMapLines() {
-        int refiningColor = Settings.getRefiningColor();
-        Date refiningStartHour = Settings.getRefiningStartHour();
-        Date refiningEndHour = Settings.getRefiningEndHour();
+        refinedFlightsCatalog.clearCatalog();
         
+        // Récupération des paramètres d'affinage depuis les Settings
+        int refiningColor = Settings.getRefiningColor();
+        Date refiningStartTimeRange = Settings.getRefiningStartTimeRange();
+        Date refiningEndTimeRange = Settings.getRefiningEndTimeRange();
+        String refiningAirportCode = Settings.getRefiningAirportCode();
+        
+        // Affichage des lignes de vol en fonction de la couleur d'affinage
         if(refiningColor != 0){
             for (Flight flight : flightsCatalog.getFlights()) {
                 if(flight.getFlightHeighLevel() == Settings.getRefiningColor()) {
@@ -192,36 +220,63 @@ public class Controller {
                 }
             }
         }
-        if(refiningStartHour != null){
-            FlightsCatalog tempCatalog = flightsCatalog;
-            if(!refinedFlightsCatalog.getFlights().isEmpty()) {
-                tempCatalog = refinedFlightsCatalog;
-                refinedFlightsCatalog.clearCatalog();
-            }
+        
+        // Affichage des lignes de vol en fonction de la plage horaire d'affinage
+        if(refiningStartTimeRange != null){
+            mapLineSet.clear();
+            FlightsCatalog tempCatalog = defineTempCatalog();
             for (Flight flight : tempCatalog.getFlights()) {
-                if(refiningStartHour.getHours()*60+refiningStartHour.getMinutes() <= flight.getDepartureTime() && 
-                   flight.getArrivalTime() <= refiningEndHour.getHours()*60+refiningEndHour.getMinutes()){
+                if(flight.isFlightWithinTimeRange(refiningStartTimeRange,refiningEndTimeRange)){
                     mapLineSet.add(new MapLine(flight, Color.BLACK)); 
                     refinedFlightsCatalog.addFlight(flight);
                 }
             }
-        } else {
+        } 
+        
+        // Affichage des lignes de vol en fonction du code d'aéroport d'affinage
+        if(refiningAirportCode != null){
+            mapLineSet.clear();
+            FlightsCatalog tempCatalog = defineTempCatalog();
+            for (Flight flight : tempCatalog.getFlights()) {
+                if(flight.isLinkedToAirport(refiningAirportCode)){
+                    mapLineSet.add(new MapLine(flight, Color.BLACK)); 
+                    refinedFlightsCatalog.addFlight(flight);
+                }
+            }
+        }
+        
+        // Affichage de toutes les lignes de vol si aucun paramètre d'affinage n'est défini
+        if (Settings.noSettingsSet()) {
             for (Flight flight : flightsCatalog.getFlights()) {
                 mapLineSet.add(new MapLine(flight, Color.BLACK));    
             }
         }
-        
         mapCustom.repaint();
     }
-
+    
     
     /**
-     * Initialise l'easter egg.
+     * Méthode utilisé par initMapLines, elle sert dans l'affinage des vols à afficher.
+     * Définit un catalogue temporaire de vols en fonction du catalogue de vols affinés actuel.
+     * Si le catalogue de vols affinés n'est pas vide, les vols sont copiés dans le catalogue temporaire,
+     * puis le catalogue de vols affinés est effacé. Si le catalogue de vols affinés est vide,
+     * le catalogue temporaire est initialisé avec le catalogue principal de vols.
+     *
+     * @return Le catalogue temporaire de vols défini.
      */
-    public void initEasterEgg() {
-        mapPointSet.add(new EasterPoint(new GeoPosition(45.7893371, 4.8808478)));
+    private FlightsCatalog defineTempCatalog(){
+        FlightsCatalog tempCatalog = new FlightsCatalog();
+        if(!refinedFlightsCatalog.getFlights().isEmpty()) {
+            for(Flight flight : refinedFlightsCatalog.getFlights()){
+                tempCatalog.addFlight(flight);
+            }
+            refinedFlightsCatalog.clearCatalog();
+        } else {
+            tempCatalog = flightsCatalog;
+        }
+        return tempCatalog;
     }
- 
+
     
     //GETTERS / SETTERS
 
@@ -240,9 +295,11 @@ public class Controller {
         return mapPointSet;
     }
     
+    
     // <*A RETIRER
+    //private MapLine lastSelectedLine;
     public void handleMapClick(MouseEvent e) {
-        /*GeoPosition geo = mapCustom.convertPointToGeoPosition(e.getModelPoint());
+        /*GeoPosition geo = mapCustom.convertPointToGeoPosition(e.getPoint());
         
         System.out.println(geo);
         if (geo != null) {
@@ -266,7 +323,7 @@ public class Controller {
                 lastSelectedLine = closestLine;
             }
             mapCustom.repaint();
-        }*/
+        }
     }
     public static double distToMapLine(MapLine mapLine,GeoPosition point) {
         //Point1
@@ -286,7 +343,7 @@ public class Controller {
         double b = y2 - a * x2;
 
         double distance = Math.abs(-a*x + y - b)/Math.sqrt(Math.pow(a, 2)+1);
-        return distance;
+        return distance;*/
     }
     // *>
 }

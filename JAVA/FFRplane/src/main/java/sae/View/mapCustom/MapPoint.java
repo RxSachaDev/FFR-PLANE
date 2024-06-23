@@ -16,9 +16,10 @@ import sae.view.jButton.CustomButtonMapPoint;
  * Un mapPoint est une extension d'un Waypoint par défaut avec un bouton associé pour afficher des informations.
  * Lorsque le bouton est cliqué, les informations sur le point sont affichées dans une JTextArea du parent (MainFrame).
  * 
+ * @author mathe
  * @author fillo
  */
-public class MapPoint extends DefaultWaypoint {
+public class MapPoint extends DefaultWaypoint implements Comparable<MapPoint> {
 
     private ModelPoint modelPoint;
     private JButton button;
@@ -133,6 +134,12 @@ public class MapPoint extends DefaultWaypoint {
      */
     @Override
     public String toString() {
-        return modelPoint.toStringName();
+        if(modelPoint!=null) return modelPoint.toStringName();
+        return "";
+    }
+
+    @Override
+    public int compareTo(MapPoint other) {
+        return toString().compareTo(other.toString());
     }
 }

@@ -22,9 +22,10 @@ import sae.controller.Interfaces.ModelLine;
  * Les couleurs de ligne et les points géographiques peuvent être modifiés via des setters.
  * Les informations détaillées de la ligne sont accessibles via les méthodes getModelLine et toStringModelLine.
  * 
+ * @author mathe
  * @author fillo
  */
-public class MapLine implements Painter<JXMapViewer> {
+public class MapLine implements Painter<JXMapViewer>,Comparable<MapLine> {
 
     private Color couleur;
     private final GeoPosition point1;
@@ -149,5 +150,10 @@ public class MapLine implements Painter<JXMapViewer> {
 
         g.drawLine((int) pt1.getX(), (int) pt1.getY(), (int) pt2.getX(), (int) pt2.getY());
         g.dispose();
+    }
+
+    @Override
+    public int compareTo(MapLine other) {
+        return toString().compareTo(other.toString());
     }
 }

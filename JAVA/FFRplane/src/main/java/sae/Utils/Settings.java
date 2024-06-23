@@ -16,15 +16,15 @@ import java.util.Date;
  * - {@code kmax} : Limite de couleurs pour l'affichage des vols.
  * - {@code safetyMargin} : Marge de sécurité en minutes pour la détection de collisions.
  * - {@code refiningColor} : Couleur d'affinage pour l'affichage des vols. La valeur par défaut est 0, indiquant aucun affinage.
- * - {@code refiningStartHour} : Heure de début pour l'affinage de l'affichage des vols.
- * - {@code refiningEndHour} : Heure de fin pour l'affinage de l'affichage des vols.
+ * - {@code refiningStartTimeRange} : Heure de début pour l'affinage de l'affichage des vols.
+ * - {@code refiningEndTimeRange} : Heure de fin pour l'affinage de l'affichage des vols.
  *
  * @author mathe
  */
 public class Settings {
     
     private static String airportsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\aeroports.txt";
-    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test1.csv";
+    private static String flightsFilePath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\vol-test8.csv";
     private static final String graphTestPath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\test\\graph-test0.txt";
     private static final String graphTEMPPath = System.getProperty("user.dir") + "\\src\\main\\java\\data\\temp\\graph-testTEMP.txt";
     
@@ -32,8 +32,8 @@ public class Settings {
     private static int safetyMargin = 15;
     
     private static int refiningColor = 0;
-    private static Date refiningStartHour = null;
-    private static Date refiningEndHour = null;
+    private static Date refiningStartTimeRange = null;
+    private static Date refiningEndTimeRange = null;
     private static String refiningAirportCode = null;
     
     private static final boolean easterEggActivated = true;
@@ -49,8 +49,23 @@ public class Settings {
         safetyMargin = 15;
         kmax = 0;
         refiningColor = 0;
-        refiningStartHour = null;
-        refiningEndHour = null;
+        refiningStartTimeRange = null;
+        refiningEndTimeRange = null;
+        refiningAirportCode = null;
+    }
+    
+    /**
+     * Vérifie si aucun paramètre n'a été configuré.
+     * <p>
+     * Cette méthode retourne true si la carte des paramètres est nulle, vide, ou
+     * si tous les paramètres de la carte sont soit nuls, soit des chaînes vides.
+     * </p>
+     *
+     * @return true si aucun paramètre n'a été configuré, false sinon
+     */
+    public static boolean noSettingsSet(){
+        if(refiningColor == 0 && refiningStartTimeRange == null && refiningAirportCode == null) return true;
+        return false;
     }
     
     
@@ -100,20 +115,20 @@ public class Settings {
     /**
      * Définit l'heure de début pour l'affinage.
      *
-     * @param refiningStartHour l'heure de début pour l'affinage
+     * @param refiningStartTimeRange l'heure de début pour l'affinage
      */
-    public static void setRefiningStartHour(Date refiningStartHour) {
-        Settings.refiningStartHour = refiningStartHour;
+    public static void setRefiningStartTimeRange(Date refiningStartTimeRange) {
+        Settings.refiningStartTimeRange = refiningStartTimeRange;
     }
     
     
     /**
      * Définit l'heure de fin pour l'affinage.
      *
-     * @param refiningEndHour l'heure de fin pour l'affinage
+     * @param refiningEndTimeRange l'heure de fin pour l'affinage
      */
-    public static void setRefiningEndHour(Date refiningEndHour) {
-        Settings.refiningEndHour = refiningEndHour;
+    public static void setRefiningEndTimeRange(Date refiningEndTimeRange) {
+        Settings.refiningEndTimeRange = refiningEndTimeRange;
     }
 
 
@@ -125,7 +140,17 @@ public class Settings {
     public static void setRefiningColor(int refiningColor) {
         Settings.refiningColor = refiningColor;
     }
-    
+
+
+    /**
+     * Définit le code d'aéroport utilisé pour l'affinage de l'affichage des vols.
+     *
+     * @param refiningAirportCode le nouveau code d'aéroport à utiliser pour l'affinage
+     */
+    public static void setRefiningAirportCode(String refiningAirportCode) {
+        Settings.refiningAirportCode = refiningAirportCode;
+    }
+
     
     /**
      * Renvoie le chemin vers le fichier des aéroports.
@@ -173,8 +198,8 @@ public class Settings {
      *
      * @return l'heure de début pour l'affinage
      */
-    public static Date getRefiningStartHour() {
-        return refiningStartHour;
+    public static Date getRefiningStartTimeRange() {
+        return refiningStartTimeRange;
     }
 
     
@@ -183,8 +208,8 @@ public class Settings {
      *
      * @return l'heure de fin pour l'affinage
      */
-    public static Date getRefiningEndHour() {
-        return refiningEndHour;
+    public static Date getRefiningEndTimeRange() {
+        return refiningEndTimeRange;
     }
     
 
@@ -195,6 +220,16 @@ public class Settings {
      */
     public static int getRefiningColor() {
         return refiningColor;
+    }
+
+    
+    /**
+     * Renvoie le code d'aéroport utilisé pour l'affinage de l'affichage des vols.
+     *
+     * @return le code d'aéroport utilisé pour l'affinage de l'affichage des vols
+     */
+    public static String getRefiningAirportCode() {
+        return refiningAirportCode;
     }
     
 

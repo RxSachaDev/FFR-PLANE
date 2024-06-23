@@ -21,4 +21,6 @@ public interface ModelPoint {
     GeoPosition getGeoPosition();
     
     String toStringName();
+    
+    String getModelPointCode();
 }

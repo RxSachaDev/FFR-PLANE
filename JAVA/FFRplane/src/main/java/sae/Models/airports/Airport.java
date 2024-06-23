@@ -207,4 +207,15 @@ public class Airport implements ModelPoint{
     public String toStringName(){
         return location;
     }
+
+    
+    /**
+     * Retourne le code de l'aéroport.
+     *
+     * @return le code de l'aéroport
+     */
+    @Override
+    public String getModelPointCode() {
+        return code;
+    }
 }

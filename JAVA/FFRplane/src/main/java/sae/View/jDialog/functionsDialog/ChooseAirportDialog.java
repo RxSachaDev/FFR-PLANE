@@ -4,6 +4,7 @@ import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 
+import sae.utils.Settings;
 import sae.view.jFrame.MainFrame;
 import sae.view.mapCustom.MapPoint;
 
@@ -27,6 +28,9 @@ public class ChooseAirportDialog extends javax.swing.JDialog {
             model.addElement(mapPoint);
         }
         airportsComboBox.setModel(model);
+        
+        if(Settings.getRefiningAirportCode()!= null) deleteSettingButton.setVisible(true);
+        else deleteSettingButton.setVisible(false);
     }
 
     /**
@@ -42,11 +46,12 @@ public class ChooseAirportDialog extends javax.swing.JDialog {
         jComboBox1 = new javax.swing.JComboBox<>();
         labelTitle = new javax.swing.JLabel();
         separator = new javax.swing.JSeparator();
-        ChoicesPanel = new javax.swing.JPanel();
-        CancelButton = new javax.swing.JButton();
-        OkButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         airportsComboBox = new javax.swing.JComboBox<>();
+        ChoicesPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
+        deleteSettingButton = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -56,37 +61,6 @@ public class ChooseAirportDialog extends javax.swing.JDialog {
 
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("Selectionnez un aéroport parmis la liste suivante");
-
-        ChoicesPanel.setMaximumSize(new java.awt.Dimension(360, 80));
-        ChoicesPanel.setMinimumSize(new java.awt.Dimension(360, 80));
-
-        CancelButton.setBackground(new java.awt.Color(235, 173, 59));
-        CancelButton.setForeground(new java.awt.Color(0, 0, 0));
-        CancelButton.setText("Annuler");
-        CancelButton.setFocusPainted(false);
-        CancelButton.setMaximumSize(new java.awt.Dimension(100, 25));
-        CancelButton.setMinimumSize(new java.awt.Dimension(100, 25));
-        CancelButton.setPreferredSize(new java.awt.Dimension(100, 25));
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
-        ChoicesPanel.add(CancelButton);
-
-        OkButton.setBackground(new java.awt.Color(235, 173, 59));
-        OkButton.setForeground(new java.awt.Color(0, 0, 0));
-        OkButton.setText("Ok");
-        OkButton.setFocusPainted(false);
-        OkButton.setMaximumSize(new java.awt.Dimension(100, 25));
-        OkButton.setMinimumSize(new java.awt.Dimension(100, 25));
-        OkButton.setPreferredSize(new java.awt.Dimension(100, 25));
-        OkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OkButtonActionPerformed(evt);
-            }
-        });
-        ChoicesPanel.add(OkButton);
 
         airportsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -106,6 +80,74 @@ public class ChooseAirportDialog extends javax.swing.JDialog {
                 .addGap(0, 44, Short.MAX_VALUE))
         );
 
+        ChoicesPanel.setMaximumSize(new java.awt.Dimension(360, 80));
+        ChoicesPanel.setMinimumSize(new java.awt.Dimension(360, 80));
+
+        cancelButton.setBackground(new java.awt.Color(235, 173, 59));
+        cancelButton.setForeground(new java.awt.Color(0, 0, 0));
+        cancelButton.setText("Annuler");
+        cancelButton.setFocusPainted(false);
+        cancelButton.setMaximumSize(new java.awt.Dimension(100, 25));
+        cancelButton.setMinimumSize(new java.awt.Dimension(100, 25));
+        cancelButton.setPreferredSize(new java.awt.Dimension(100, 25));
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        okButton.setBackground(new java.awt.Color(235, 173, 59));
+        okButton.setForeground(new java.awt.Color(0, 0, 0));
+        okButton.setText("Ok");
+        okButton.setFocusPainted(false);
+        okButton.setMaximumSize(new java.awt.Dimension(100, 25));
+        okButton.setMinimumSize(new java.awt.Dimension(100, 25));
+        okButton.setPreferredSize(new java.awt.Dimension(100, 25));
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
+        deleteSettingButton.setBackground(new java.awt.Color(235, 173, 59));
+        deleteSettingButton.setForeground(new java.awt.Color(0, 0, 0));
+        deleteSettingButton.setText("Retirer ce paramètre");
+        deleteSettingButton.setFocusPainted(false);
+        deleteSettingButton.setMaximumSize(new java.awt.Dimension(100, 25));
+        deleteSettingButton.setMinimumSize(new java.awt.Dimension(100, 25));
+        deleteSettingButton.setPreferredSize(new java.awt.Dimension(100, 25));
+        deleteSettingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteSettingButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ChoicesPanelLayout = new javax.swing.GroupLayout(ChoicesPanel);
+        ChoicesPanel.setLayout(ChoicesPanelLayout);
+        ChoicesPanelLayout.setHorizontalGroup(
+            ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ChoicesPanelLayout.createSequentialGroup()
+                .addGap(115, 115, 115)
+                .addGroup(ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(deleteSettingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(ChoicesPanelLayout.createSequentialGroup()
+                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ChoicesPanelLayout.setVerticalGroup(
+            ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ChoicesPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteSettingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,10 +159,7 @@ public class ChooseAirportDialog extends javax.swing.JDialog {
                     .addComponent(separator)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(95, 95, 95))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(ChoicesPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,34 +169,44 @@ public class ChooseAirportDialog extends javax.swing.JDialog {
                 .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGap(2, 2, 2)
+                .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+    
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
-    }//GEN-LAST:event_CancelButtonActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-
+    
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        Settings.setRefiningAirportCode(((MapPoint)airportsComboBox.getSelectedItem()).getModelPoint().getModelPointCode());
         ((MainFrame)getParent()).getController().refreshMainFrame();
         dispose();
-    }//GEN-LAST:event_OkButtonActionPerformed
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    
+    private void deleteSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSettingButtonActionPerformed
+        Settings.setRefiningAirportCode(null);
+        ((MainFrame)getParent()).getController().refreshMainFrame();
+        dispose();
+    }//GEN-LAST:event_deleteSettingButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton CancelButton;
     private javax.swing.JPanel ChoicesPanel;
-    private javax.swing.JButton OkButton;
     private javax.swing.JComboBox<String> airportsComboBox;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton deleteSettingButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelTitle;
+    private javax.swing.JButton okButton;
     private javax.swing.JSeparator separator;
     // End of variables declaration//GEN-END:variables
 }

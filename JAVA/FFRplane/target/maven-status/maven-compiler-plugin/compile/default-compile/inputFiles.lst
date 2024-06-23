@@ -8,10 +8,10 @@ C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\mai
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\exceptions\FileFormatException.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseTimeRangeDialog.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFileChooser\OpenFileChooser.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\tests\Test.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\flights\Flight.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\Plane.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\utils\Settings.java
+C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapPointPainter.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jButton\CustomButtonMapPoint.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseAirportDialog.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\utils\IconUtil.java
@@ -30,7 +30,6 @@ C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\mai
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\airports\Airport.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jPanel\BackgroundPanel.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseColorationAlgorithmDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapPointRender.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\ActionDialog.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\LoadGraphDialog.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Interfaces\ModelLine.java

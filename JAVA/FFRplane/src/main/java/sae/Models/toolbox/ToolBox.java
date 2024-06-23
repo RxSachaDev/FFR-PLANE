@@ -88,13 +88,14 @@ public class ToolBox {
     /**
      * Remplit la liste des vols avec les données d'un fichier.
      *
-     * @param filePath le chemin vers le fichier
+     * @param filePathAirports chemin vers le fichier d'aéroports
+     * @param filePathFlights chemin vers le ficher de vols
      * @param flightsCatalog le catalogue des vols
      * @param airportsCatalog le catalogue des aéroports
      * @return true si l'opération est réussie, false sinon
      * @throws FileNotFoundException si le fichier est introuvable
      */
-    public static boolean fillFlightsCatalog(String filePathAirports, String filePathFlights, FlightsCatalog flightsCatalog, AirportsCatalog airportsCatalog) throws FileNotFoundException {
+    public static boolean fillFlightsCatalog(String filePathAirports, String filePathFlights, FlightsCatalog flightsCatalog, AirportsCatalog airportsCatalog) throws FileNotFoundException,FileFormatException,DataMismatchException {
         int lineCount = 1;
         try {
             File file = new File(filePathFlights);
@@ -115,6 +116,7 @@ public class ToolBox {
         } catch (NullPointerException e){
             throw new DataMismatchException(filePathAirports,filePathFlights);
         }
+        Flight.resetFlightIdIterator();
         return true;
     }
     

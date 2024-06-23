@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: AlgoTest
--------------------------------------------------------------------------------
-<<<<<<< HEAD
-Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.085 s -- in AlgoTest
-=======
-Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.215 s -- in AlgoTest
->>>>>>> 4ae9d721d22a2e5212a57969be238303085a0983

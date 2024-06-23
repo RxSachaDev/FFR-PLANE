@@ -32,28 +32,31 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="labelTitle" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace pref="100" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="labelStartHour" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="labelEndHour" min="-2" pref="100" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="ChoicesPanel" min="-2" pref="225" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="separator" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="spinnerStartHour" min="-2" pref="100" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                          <Component id="spinnerEndHour" min="-2" pref="100" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="labelStartHour" min="-2" pref="100" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="labelEndHour" min="-2" pref="100" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="separator" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="spinnerStartTimeRange" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Component id="spinnerEndTimeRange" min="-2" pref="100" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="ChoicesPanel" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -65,8 +68,8 @@
               <Component id="separator" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="spinnerEndHour" pref="26" max="32767" attributes="0"/>
-                  <Component id="spinnerStartHour" pref="26" max="32767" attributes="0"/>
+                  <Component id="spinnerEndTimeRange" pref="26" max="32767" attributes="0"/>
+                  <Component id="spinnerStartTimeRange" pref="26" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -87,7 +90,7 @@
         <Property name="text" type="java.lang.String" value="Veuillez s&#xe9;lectionner un intervalle horaire"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="spinnerStartHour">
+    <Component class="javax.swing.JSpinner" name="spinnerStartTimeRange">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[40, 20]"/>
@@ -100,7 +103,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="spinnerEndHour">
+    <Component class="javax.swing.JSpinner" name="spinnerEndTimeRange">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[40, 20]"/>
@@ -141,15 +144,16 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="104" pref="104" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="deleteIntervalButton" max="32767" attributes="0"/>
+                      <Component id="deleteSettingButton" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
                           <Component id="okButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -162,7 +166,7 @@
                       <Component id="okButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="deleteIntervalButton" min="-2" pref="23" max="-2" attributes="0"/>
+                  <Component id="deleteSettingButton" min="-2" pref="23" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -217,7 +221,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="deleteIntervalButton">
+        <Component class="javax.swing.JButton" name="deleteSettingButton">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="3b" green="ad" red="eb" type="rgb"/>
@@ -225,7 +229,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Supprimer l&apos;intervalle"/>
+            <Property name="text" type="java.lang.String" value="Retirer ce param&#xe8;tre"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 25]"/>
@@ -238,7 +242,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteIntervalButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteSettingButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

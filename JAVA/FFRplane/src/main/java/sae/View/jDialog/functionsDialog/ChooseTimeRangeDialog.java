@@ -38,8 +38,12 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
         initHours();
         setLocationRelativeTo(null);
         
-        if(Settings.getRefiningStartHour()!= null) deleteIntervalButton.setVisible(true);
-        else deleteIntervalButton.setVisible(false);
+        if(Settings.getRefiningStartTimeRange()!= null) {
+            deleteSettingButton.setVisible(true);
+            spinnerStartTimeRange.setValue(Settings.getRefiningStartTimeRange());
+            spinnerEndTimeRange.setValue(Settings.getRefiningEndTimeRange());
+        }
+        else deleteSettingButton.setVisible(false);
         
         
     }
@@ -56,15 +60,15 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
 
         jButton1 = new javax.swing.JButton();
         labelTitle = new javax.swing.JLabel();
-        spinnerStartHour = new javax.swing.JSpinner();
-        spinnerEndHour = new javax.swing.JSpinner();
+        spinnerStartTimeRange = new javax.swing.JSpinner();
+        spinnerEndTimeRange = new javax.swing.JSpinner();
         separator = new javax.swing.JSeparator();
         labelEndHour = new javax.swing.JLabel();
         labelStartHour = new javax.swing.JLabel();
         ChoicesPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
-        deleteIntervalButton = new javax.swing.JButton();
+        deleteSettingButton = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -73,13 +77,13 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("Veuillez sélectionner un intervalle horaire");
 
-        spinnerStartHour.setMaximumSize(new java.awt.Dimension(40, 20));
-        spinnerStartHour.setMinimumSize(new java.awt.Dimension(40, 20));
-        spinnerStartHour.setPreferredSize(new java.awt.Dimension(40, 20));
+        spinnerStartTimeRange.setMaximumSize(new java.awt.Dimension(40, 20));
+        spinnerStartTimeRange.setMinimumSize(new java.awt.Dimension(40, 20));
+        spinnerStartTimeRange.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        spinnerEndHour.setMaximumSize(new java.awt.Dimension(40, 20));
-        spinnerEndHour.setMinimumSize(new java.awt.Dimension(40, 20));
-        spinnerEndHour.setPreferredSize(new java.awt.Dimension(40, 20));
+        spinnerEndTimeRange.setMaximumSize(new java.awt.Dimension(40, 20));
+        spinnerEndTimeRange.setMinimumSize(new java.awt.Dimension(40, 20));
+        spinnerEndTimeRange.setPreferredSize(new java.awt.Dimension(40, 20));
 
         labelEndHour.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelEndHour.setText("Heure fin");
@@ -116,16 +120,16 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
             }
         });
 
-        deleteIntervalButton.setBackground(new java.awt.Color(235, 173, 59));
-        deleteIntervalButton.setForeground(new java.awt.Color(0, 0, 0));
-        deleteIntervalButton.setText("Supprimer l'intervalle");
-        deleteIntervalButton.setFocusPainted(false);
-        deleteIntervalButton.setMaximumSize(new java.awt.Dimension(100, 25));
-        deleteIntervalButton.setMinimumSize(new java.awt.Dimension(100, 25));
-        deleteIntervalButton.setPreferredSize(new java.awt.Dimension(100, 25));
-        deleteIntervalButton.addActionListener(new java.awt.event.ActionListener() {
+        deleteSettingButton.setBackground(new java.awt.Color(235, 173, 59));
+        deleteSettingButton.setForeground(new java.awt.Color(0, 0, 0));
+        deleteSettingButton.setText("Retirer ce paramètre");
+        deleteSettingButton.setFocusPainted(false);
+        deleteSettingButton.setMaximumSize(new java.awt.Dimension(100, 25));
+        deleteSettingButton.setMinimumSize(new java.awt.Dimension(100, 25));
+        deleteSettingButton.setPreferredSize(new java.awt.Dimension(100, 25));
+        deleteSettingButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteIntervalButtonActionPerformed(evt);
+                deleteSettingButtonActionPerformed(evt);
             }
         });
 
@@ -134,13 +138,14 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
         ChoicesPanelLayout.setHorizontalGroup(
             ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChoicesPanelLayout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(10, 10, 10)
                 .addGroup(ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(deleteIntervalButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteSettingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(ChoicesPanelLayout.createSequentialGroup()
                         .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0))
         );
         ChoicesPanelLayout.setVerticalGroup(
             ChoicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,7 +155,7 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteIntervalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(deleteSettingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -160,23 +165,24 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addContainerGap(100, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelStartHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25)
-                        .addComponent(labelEndHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(separator)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(spinnerStartHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(25, 25, 25)
-                            .addComponent(spinnerEndHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(100, 100, 100))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ChoicesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                        .addComponent(ChoicesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelStartHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)
+                                .addComponent(labelEndHour, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(separator)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(spinnerStartTimeRange, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(25, 25, 25)
+                                    .addComponent(spinnerEndTimeRange, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(100, 100, 100))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,8 +192,8 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
                 .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(spinnerEndHour, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-                    .addComponent(spinnerStartHour, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                    .addComponent(spinnerEndTimeRange, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(spinnerStartTimeRange, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelEndHour)
@@ -212,7 +218,7 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
         Date date = new Date();
 
         SpinnerDateModel smStart = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        spinnerStartHour.setModel(smStart);
+        spinnerStartTimeRange.setModel(smStart);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -220,13 +226,13 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
         Date endDate = calendar.getTime();
 
         SpinnerDateModel smEnd = new SpinnerDateModel(endDate, null, null, Calendar.HOUR_OF_DAY);
-        spinnerEndHour.setModel(smEnd);
+        spinnerEndTimeRange.setModel(smEnd);
 
-        JSpinner.DateEditor dateEditorStart = new JSpinner.DateEditor(spinnerStartHour, "HH:mm");
-        JSpinner.DateEditor dateEditorEnd = new JSpinner.DateEditor(spinnerEndHour, "HH:mm");
+        JSpinner.DateEditor dateEditorStart = new JSpinner.DateEditor(spinnerStartTimeRange, "HH:mm");
+        JSpinner.DateEditor dateEditorEnd = new JSpinner.DateEditor(spinnerEndTimeRange, "HH:mm");
 
-        spinnerStartHour.setEditor(dateEditorStart);
-        spinnerEndHour.setEditor(dateEditorEnd);
+        spinnerStartTimeRange.setEditor(dateEditorStart);
+        spinnerEndTimeRange.setEditor(dateEditorEnd);
     }
     
     
@@ -248,8 +254,8 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
      * puis rafraîchit la fenêtre principale.
      */
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        Settings.setRefiningStartHour((Date)spinnerStartHour.getValue());
-        Settings.setRefiningEndHour((Date)spinnerEndHour.getValue());
+        Settings.setRefiningStartTimeRange((Date)spinnerStartTimeRange.getValue());
+        Settings.setRefiningEndTimeRange((Date)spinnerEndTimeRange.getValue());
         ((MainFrame)getParent()).getController().refreshMainFrame();
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
@@ -260,25 +266,25 @@ public class ChooseTimeRangeDialog extends javax.swing.JDialog {
      * Efface les valeurs des heures de début et de fin dans les paramètres,
      * puis rafraîchit la fenêtre principale.
      */
-    private void deleteIntervalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteIntervalButtonActionPerformed
-        Settings.setRefiningStartHour(null);
-        Settings.setRefiningEndHour(null);
+    private void deleteSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSettingButtonActionPerformed
+        Settings.setRefiningStartTimeRange(null);
+        Settings.setRefiningEndTimeRange(null);
         ((MainFrame)getParent()).getController().refreshMainFrame();
         dispose();
-    }//GEN-LAST:event_deleteIntervalButtonActionPerformed
+    }//GEN-LAST:event_deleteSettingButtonActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChoicesPanel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton deleteIntervalButton;
+    private javax.swing.JButton deleteSettingButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel labelEndHour;
     private javax.swing.JLabel labelStartHour;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JButton okButton;
     private javax.swing.JSeparator separator;
-    private javax.swing.JSpinner spinnerEndHour;
-    private javax.swing.JSpinner spinnerStartHour;
+    private javax.swing.JSpinner spinnerEndTimeRange;
+    private javax.swing.JSpinner spinnerStartTimeRange;
     // End of variables declaration//GEN-END:variables
 }

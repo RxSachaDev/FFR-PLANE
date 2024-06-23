@@ -1,7 +1,11 @@
 package sae.models.intersection;
 
+import java.io.FileNotFoundException;
+import java.util.List;
 import sae.models.airports.Airport;
+import sae.models.airports.AirportsCatalog;
 import sae.models.flights.Flight;
+import sae.models.flights.FlightsCatalog;
 import sae.models.toolbox.ToolBox;
 import sae.utils.Settings;
 
@@ -11,7 +15,7 @@ import sae.utils.Settings;
  * @author mathe
  */
 public class FlightCollisionTools {
-    
+
     /**
      * Détermine s'il y a une collision entre deux vols.
      *
@@ -109,7 +113,7 @@ public class FlightCollisionTools {
         double m2 = (arrivalCoordinates2[1] - departureCoordinates2[1]) / (arrivalCoordinates2[0] - departureCoordinates2[0]);
         double p2 = arrivalCoordinates2[1] - m2 * arrivalCoordinates2[0];
 
-        double x = -(p2 - p1) / (m2 - m1); //PK YA UN - ICI
+        double x = -(p2 - p1) / (m2 - m1);
         double y = m1 * x + p1;
 
         if (isOnFlightSegment(x, y, flight1) && isOnFlightSegment(x, y, flight2)) {
@@ -153,4 +157,35 @@ public class FlightCollisionTools {
         double durationToPoint = (distanceToPoint * flight.getDuration()) / flight.getFlightDistance();
         return flight.getDepartureTime() + durationToPoint;
     }
+    
+    
+    /**
+     * Calcule le nombre de collisions potentielles entre les vols dans les fichiers spécifiés.
+     * <p>
+     * Cette méthode charge les catalogues d'aéroports et de vols à partir des fichiers spécifiés,
+     * et vérifie les collisions entre les vols.
+     * 
+     * @param airportsFilePath  le chemin du fichier contenant les informations sur les aéroports
+     * @param flightsFilePath   le chemin du fichier contenant les informations sur les vols
+     * @return le nombre de collisions potentielles entre les vols
+     * @throws Exception si une erreur survient lors du chargement des fichiers ou du traitement des données
+     */
+    public static int getNumberOfCollisions(String airportsFilePath, String flightsFilePath) throws Exception{
+        AirportsCatalog airportsCatalog = new AirportsCatalog();
+        FlightsCatalog flightsCatalog = new FlightsCatalog();
+        
+        //Génére des exceptions si les fichiers n'existent pas
+        ToolBox.fillAirportsCatalog(airportsFilePath, airportsCatalog);
+        ToolBox.fillFlightsCatalog(flightsFilePath, flightsFilePath, flightsCatalog, airportsCatalog);
+         
+        int count = 0;
+        List<Flight> flightsList = flightsCatalog.getFlights();
+        for(int i = 0 ; i < flightsList.size() ; i++) {
+            for(int j = i+1 ; j < flightsList.size() ; j++){
+                if(hasCollision(flightsList.get(i), flightsList.get(j))) count++;
+            }
+        }
+        return count;
+    }
 }
+    

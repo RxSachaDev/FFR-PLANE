@@ -23,7 +23,7 @@ import sae.view.jFrame.MainFrame;
  */
 public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
 
-    private AlgoColoration algoColoration = new AlgoColoration();
+    private AlgoColoration colorationAlgorithm = new AlgoColoration();
 
     /**
      * Crée une nouvelle instance de ChooseAlgorithmDialog.
@@ -37,9 +37,9 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
 
         // Chargement du graphe avec le fichier graph-testTEMP, 
         // généré automatiquement après chaque chargement d'espace aérien
-        algoColoration.setFichier(Settings.getGraphTEMPPath());
+        colorationAlgorithm.setFichier(Settings.getGraphTEMPPath());
         try {
-            algoColoration.fillGraph();
+            colorationAlgorithm.fillGraph();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -210,12 +210,12 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
      */
     private void bestalgoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bestalgoButtonActionPerformed
         this.dispose();
-        ResultatColoration resultatColoration = algoColoration.minConflict();
+        ResultatColoration resultatColoration = colorationAlgorithm.minConflict();
         int conflict = resultatColoration.getConflict();
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        if (algoColoration.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+        if (colorationAlgorithm.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(colorationAlgorithm.getKmax()).append("\n")
                     .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
                     .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
                     .append(" Nombre de conflits : ").append(conflict).append("\n");
@@ -250,30 +250,30 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
      */
     private void wpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wpButtonActionPerformed
         this.dispose();
-        int conflict = algoColoration.welshPowell();
+        int conflict = colorationAlgorithm.welshPowell();
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        if (algoColoration.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+        if (colorationAlgorithm.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(colorationAlgorithm.getKmax()).append("\n")
+                    .append(" Nombre d'arrêtes : ").append(colorationAlgorithm.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(colorationAlgorithm.getFileGraph().getNodeCount()).append("\n")
                     .append(" Nombre de conflits : ").append(conflict).append("\n");
         } else {
             generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                    .append(" Nombre d'arrêtes : ").append(colorationAlgorithm.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(colorationAlgorithm.getFileGraph().getNodeCount()).append("\n")
                     .append(" Nombre de conflits : ").append(conflict).append("\n");
         }
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
-        mainFrame.setColoringGraph(algoColoration.getFileGraph());
+        mainFrame.setColoringGraph(colorationAlgorithm.getFileGraph());
 
         if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
-            setViewer(algoColoration.getFileGraph(), true);
+            setViewer(colorationAlgorithm.getFileGraph(), true);
         } else {
-            setViewer(algoColoration.getFileGraph(), false);
+            setViewer(colorationAlgorithm.getFileGraph(), false);
         }
-        mainFrame.getController().colorMapLine(algoColoration.getFileGraph());
+        mainFrame.getController().colorMapLine(colorationAlgorithm.getFileGraph());
         mainFrame.setChosenAlgorithm("WelshPowell");
     }//GEN-LAST:event_wpButtonActionPerformed
 
@@ -288,30 +288,30 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
      */
     private void dsaturButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsaturButtonActionPerformed
         this.dispose();
-        int conflict = algoColoration.dsatur(algoColoration.getFileGraph());
+        int conflict = colorationAlgorithm.dsatur(colorationAlgorithm.getFileGraph());
         StringBuilder generalInformation = new StringBuilder();
         // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        if (algoColoration.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+        if (colorationAlgorithm.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(colorationAlgorithm.getKmax()).append("\n")
+                    .append(" Nombre d'arrêtes : ").append(colorationAlgorithm.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(colorationAlgorithm.getFileGraph().getNodeCount()).append("\n")
                     .append(" Nombre de conflits : ").append(conflict).append("\n");
         } else {
             generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
+                    .append(" Nombre d'arrêtes : ").append(colorationAlgorithm.getFileGraph().getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(colorationAlgorithm.getFileGraph().getNodeCount()).append("\n")
                     .append(" Nombre de conflits : ").append(conflict).append("\n");
         }
         MainFrame mainFrame = (MainFrame) this.getParent();
         mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
-        mainFrame.setColoringGraph(algoColoration.getFileGraph());
+        mainFrame.setColoringGraph(colorationAlgorithm.getFileGraph());
 
         if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
-            setViewer(algoColoration.getFileGraph(), true);
+            setViewer(colorationAlgorithm.getFileGraph(), true);
         } else {
-            setViewer(algoColoration.getFileGraph(), false);
+            setViewer(colorationAlgorithm.getFileGraph(), false);
         }
-        mainFrame.getController().colorMapLine(algoColoration.getFileGraph());
+        mainFrame.getController().colorMapLine(colorationAlgorithm.getFileGraph());
         mainFrame.setChosenAlgorithm("Dsatur");
     }//GEN-LAST:event_dsaturButtonActionPerformed
 

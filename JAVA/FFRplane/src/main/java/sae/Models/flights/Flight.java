@@ -1,5 +1,6 @@
 package sae.models.flights;
 
+import java.util.Date;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import sae.controller.Interfaces.ModelLine;
@@ -22,7 +23,7 @@ public class Flight implements ModelLine{
     private Airport departureAirport;
     private Airport arrivalAirport;
     private int departureHour;
-    private int departureMinute;
+    private int departureMinutes;
     private int duration;
     private int flightHeighLevel;
 
@@ -35,21 +36,63 @@ public class Flight implements ModelLine{
      * @param departureAirport l'aéroport de départ
      * @param arrivalAirport l'aéroport d'arrivée
      * @param departureHour l'heure de départ
-     * @param departureMinute la minute de départ
+     * @param departureMinutes les minutes de départ
      * @param duration la durée du vol en minutes
      */
-    public Flight(String name, Airport departureAirport, Airport arrivalAirport, int departureHour, int departureMinute, int duration) {
+    public Flight(String name, Airport departureAirport, Airport arrivalAirport, int departureHour, int departureMinutes, int duration) {
         this.name = name;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.departureHour = departureHour;
-        this.departureMinute = departureMinute;
+        this.departureMinutes = departureMinutes;
         this.duration = duration;
         this.flightDistance = ToolBox.calDistance(departureAirport.getCoordinates(), arrivalAirport.getCoordinates());
         i++;
         this.flightNumber = i;
     }
 
+    
+    /* ••••••••••••• MÉTHODES ••••••••••••• */
+    
+    
+    /**
+     * Vérifie si un vol se situe dans une plage horaire donnée.
+     *
+     * @param startTimeRange Le début de la plage horaire (Date).
+     * @param endTimeRange La fin de la plage horaire (Date).
+     * @return true si le vol se situe dans la plage horaire, false sinon.
+     */
+    public boolean isFlightWithinTimeRange(Date startTimeRange, Date endTimeRange) {
+        int startMinutes = startTimeRange.getHours() * 60 + startTimeRange.getMinutes();
+        int endMinutes = endTimeRange.getHours() * 60 + endTimeRange.getMinutes(); 
+        int flightDepartureMinutes = getDepartureTime();
+        int flightArrivalMinutes = getArrivalTime();
+
+        if (startMinutes <= endMinutes) { // Plage horaire dans la même journée
+            return (startMinutes <= flightDepartureMinutes && flightArrivalMinutes <= endMinutes);
+        } else { // Cas ou minuit est passé
+            // exemple : 16h30 - 14h30 => Seuls les vols entre 14h31 et 16h29 retournerons false
+            return (startMinutes <= flightDepartureMinutes || flightArrivalMinutes <= endMinutes);
+        }
+    }
+
+    
+    /**
+     * Vérifie si ce vol est lié à un code d'aéroport spécifié.
+     *
+     * @param airportCode le code d'aéroport à vérifier
+     * @return true si le vol est lié à l'aéroport spécifié, sinon false
+     */
+    public boolean isLinkedToAirport(String airportCode){
+        if(departureAirport.getCode().equals(airportCode) || arrivalAirport.getCode().equals(airportCode)) return true;
+        return false;
+    }
+    
+    
+    public static void resetFlightIdIterator(){
+        i=0;
+    }
+    
     
     /* ••••••••••••• GETTERS / SETTERS ••••••••••••• */
     
@@ -107,10 +150,10 @@ public class Flight implements ModelLine{
     /**
      * Définit la minute de départ.
      *
-     * @param departureMinute la nouvelle minute de départ
+     * @param departureMinutes la nouvelle minute de départ
      */
-    public void setDepartureMinute(int departureMinute) {
-        this.departureMinute = departureMinute;
+    public void setDepartureMinutes(int departureMinutes) {
+        this.departureMinutes = departureMinutes;
     }
 
 
@@ -189,8 +232,8 @@ public class Flight implements ModelLine{
      *
      * @return la minute de départ
      */
-    public int getDepartureMinute() {
-        return departureMinute;
+    public int getDepartureMinutes() {
+        return departureMinutes;
     }
 
 
@@ -230,7 +273,7 @@ public class Flight implements ModelLine{
      * @return l'heure de départ en minutes depuis minuit
      */
     public int getDepartureTime() {
-        return departureHour * 60 + departureMinute;
+        return departureHour * 60 + departureMinutes;
     }
 
 
@@ -259,7 +302,7 @@ public class Flight implements ModelLine{
                     "   • Code : "+name+"\n"+ 
                     "   • Depart : "+departureAirport.getLocation()+"\n"+
                     "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
-                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
+                    "   • Heure départ : "+departureHour+" h "+departureMinutes+"\n"+
                     "   • Durée : "+duration+" min\n"+
                     "   • Hauteur : Non Parametrée");
         } else {
@@ -267,7 +310,7 @@ public class Flight implements ModelLine{
                     "   • Code : "+name+"\n"+ 
                     "   • Depart : "+departureAirport.getLocation()+"\n"+
                     "   • Arrivée : "+arrivalAirport.getLocation()+"\n"+
-                    "   • Heure départ : "+departureHour+" h "+departureMinute+"\n"+
+                    "   • Heure départ : "+departureHour+" h "+departureMinutes+"\n"+
                     "   • Durée : "+duration+"\n"+
                     "   • Hauteur : "+flightHeighLevel);
         }

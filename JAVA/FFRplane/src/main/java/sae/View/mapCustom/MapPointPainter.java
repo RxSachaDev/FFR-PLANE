@@ -14,7 +14,7 @@ import org.jxmapviewer.viewer.WaypointPainter;
  * 
  * @author fillo
  */
-public class MapPointRender extends WaypointPainter<MapPoint> {
+public class MapPointPainter extends WaypointPainter<MapPoint> {
     
     /**
      * Peint les mapPoints sur la carte et positionne les boutons associés.
