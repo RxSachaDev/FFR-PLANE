@@ -1,13 +1,16 @@
 package sae.view.jDialog.functionsDialog;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 
-import sae.models.algocoloration.AlgoColoration;
-import sae.models.algocoloration.ResultatColoration;
+import sae.Models.colorationalgorithm.ColorationAlgorithm;
+import sae.Models.colorationalgorithm.ResultatColoration;
+import sae.models.toolbox.ToolBox;
 import sae.utils.Settings;
 import sae.view.jFrame.MainFrame;
 
@@ -23,7 +26,8 @@ import sae.view.jFrame.MainFrame;
  */
 public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
 
-    private AlgoColoration algoColoration = new AlgoColoration();
+    private ColorationAlgorithm algoColoration = new ColorationAlgorithm();
+    private ToolBox toolBox = new ToolBox();
 
     /**
      * Crée une nouvelle instance de ChooseAlgorithmDialog.
@@ -37,7 +41,7 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
 
         // Chargement du graphe avec le fichier graph-testTEMP, 
         // généré automatiquement après chaque chargement d'espace aérien
-        algoColoration.setFichier(Settings.getGraphTEMPPath());
+        algoColoration.setFile(Settings.getGraphTEMPPath());
         try {
             algoColoration.fillGraph();
         } catch (IOException e) {
@@ -58,18 +62,17 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        buttonPanel = new javax.swing.JPanel();
         dsaturButton = new javax.swing.JButton();
         wpButton = new javax.swing.JButton();
         bestalgoButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        labelPanel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new java.awt.FlowLayout());
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(380, 100));
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
+        buttonPanel.setMinimumSize(new java.awt.Dimension(380, 100));
 
         dsaturButton.setBackground(new java.awt.Color(235, 173, 59));
         dsaturButton.setForeground(new java.awt.Color(0, 0, 0));
@@ -79,7 +82,6 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
                 dsaturButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(dsaturButton);
 
         wpButton.setBackground(new java.awt.Color(235, 173, 59));
         wpButton.setForeground(new java.awt.Color(0, 0, 0));
@@ -89,40 +91,63 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
                 wpButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(wpButton);
 
         bestalgoButton.setBackground(new java.awt.Color(235, 173, 59));
         bestalgoButton.setForeground(new java.awt.Color(0, 0, 0));
-        bestalgoButton.setText("LE MEILLEUR");
+        bestalgoButton.setText("LE MEILLEUR DES DEUX");
         bestalgoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bestalgoButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(bestalgoButton);
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Choisissez votre algorithme de coloration");
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(bestalgoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(buttonPanelLayout.createSequentialGroup()
+                        .addComponent(dsaturButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(wpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50))
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dsaturButton)
+                    .addComponent(wpButton))
+                .addGap(18, 18, 18)
+                .addComponent(bestalgoButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        labelPanel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelPanel.setText("Choisissez votre algorithme de coloration");
+        labelPanel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addComponent(jLabel2)
+                .addComponent(labelPanel)
                 .addGap(48, 48, 48)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2);
@@ -150,6 +175,13 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void updateGraphVisualization(Viewer viewer) {
         MainFrame mainFrame = (MainFrame) this.getParent();
         org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
+        
+        viewPanel.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent mwe) {
+                toolBox.zoomGraphMouseWheelMoved(mwe, viewPanel);
+            }
+        });
 
         // Reintialisation du conteneur
         mainFrame.getGraphstreamContener().removeAll();
@@ -211,32 +243,7 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void bestalgoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bestalgoButtonActionPerformed
         this.dispose();
         ResultatColoration resultatColoration = algoColoration.minConflict();
-        int conflict = resultatColoration.getConflict();
-        StringBuilder generalInformation = new StringBuilder();
-        // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        if (algoColoration.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                    .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n");
-        } else {
-            generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrêtes : ").append(resultatColoration.getGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(resultatColoration.getGraph().getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n");
-        }
-
-        MainFrame mainFrame = (MainFrame) this.getParent();
-        mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
-        mainFrame.setColoringGraph(resultatColoration.getGraph());
-
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
-            setViewer(resultatColoration.getGraph(), true);
-        } else {
-            setViewer(resultatColoration.getGraph(), false);
-        }
-        mainFrame.getController().colorMapLine(resultatColoration.getGraph());
-        mainFrame.setChosenAlgorithm("BestAlgo");
+        setMainFrame(resultatColoration.getGraph(), resultatColoration.getConflict(), resultatColoration.getAlgorithm());    
     }//GEN-LAST:event_bestalgoButtonActionPerformed
 
     
@@ -251,30 +258,7 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void wpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wpButtonActionPerformed
         this.dispose();
         int conflict = algoColoration.welshPowell();
-        StringBuilder generalInformation = new StringBuilder();
-        // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        if (algoColoration.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n");
-        } else {
-            generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n");
-        }
-        MainFrame mainFrame = (MainFrame) this.getParent();
-        mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
-        mainFrame.setColoringGraph(algoColoration.getFileGraph());
-
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
-            setViewer(algoColoration.getFileGraph(), true);
-        } else {
-            setViewer(algoColoration.getFileGraph(), false);
-        }
-        mainFrame.getController().colorMapLine(algoColoration.getFileGraph());
-        mainFrame.setChosenAlgorithm("WelshPowell");
+        setMainFrame(algoColoration.getFileGraph(), conflict, "WelshPowell");
     }//GEN-LAST:event_wpButtonActionPerformed
 
     
@@ -289,39 +273,49 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void dsaturButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsaturButtonActionPerformed
         this.dispose();
         int conflict = algoColoration.dsatur(algoColoration.getFileGraph());
-        StringBuilder generalInformation = new StringBuilder();
-        // Modifications du panel contenant les informations générales avec les nouvelles valeurs
-        if (algoColoration.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n");
-        } else {
-            generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrêtes : ").append(algoColoration.getFileGraph().getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(algoColoration.getFileGraph().getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n");
-        }
-        MainFrame mainFrame = (MainFrame) this.getParent();
-        mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
-        mainFrame.setColoringGraph(algoColoration.getFileGraph());
-
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
-            setViewer(algoColoration.getFileGraph(), true);
-        } else {
-            setViewer(algoColoration.getFileGraph(), false);
-        }
-        mainFrame.getController().colorMapLine(algoColoration.getFileGraph());
-        mainFrame.setChosenAlgorithm("Dsatur");
+        setMainFrame(algoColoration.getFileGraph(), conflict, "Dsatur");
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
+    public void setMainFrame(Graph graph, int conflict, String algorithm){
+        StringBuilder generalInformation = new StringBuilder();
+        if (algoColoration.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
+                    .append(" Nombre d'arrête(s) : ").append(graph.getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(graph.getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n")
+                    .append(" Nombre chromatique : ").append(algoColoration.countChromaticNumber(graph)).append("\n")
+                    .append(" Algorithme utilisé : ").append(algorithm).append("\n");
+                  
+            
+        } else {
+            generalInformation.append(" Kmax :  Aucun").append("\n")
+                    .append(" Nombre d'arrête(s): ").append(graph.getEdgeCount()).append("\n")
+                    .append(" Nombre de sommet(s) : ").append(graph.getNodeCount()).append("\n")
+                    .append(" Nombre de conflit(s) : ").append(conflict).append("\n")
+                    .append(" Nombre chromatique : ").append(algoColoration.countChromaticNumber(graph)).append("\n")
+                    .append(" Algorithme utilisé : ").append(algorithm).append("\n");
+                    
+        }
+        
+        MainFrame mainFrame = (MainFrame) this.getParent();
+        mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
+        mainFrame.setColoringGraph(graph);
+
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
+            setViewer(graph, true);
+        } else {
+            setViewer(graph, false);
+        }
+        mainFrame.getController().colorMapLine(graph);
+        mainFrame.setChosenAlgorithm(algorithm);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bestalgoButton;
+    private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton dsaturButton;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel labelPanel;
     private javax.swing.JButton wpButton;
     // End of variables declaration//GEN-END:variables
 }
