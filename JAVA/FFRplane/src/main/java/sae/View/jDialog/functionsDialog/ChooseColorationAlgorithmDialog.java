@@ -280,18 +280,21 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
         StringBuilder generalInformation = new StringBuilder();
         if (algoColoration.getKmax() != -1) {
             generalInformation.append(" Kmax : ").append(algoColoration.getKmax()).append("\n")
-                    .append(" Nombre d'arrêtes : ").append(graph.getEdgeCount()).append("\n")
+                    .append(" Nombre d'arrête(s) : ").append(graph.getEdgeCount()).append("\n")
                     .append(" Nombre de sommets : ").append(graph.getNodeCount()).append("\n")
                     .append(" Nombre de conflits : ").append(conflict).append("\n")
                     .append(" Nombre chromatique : ").append(algoColoration.countChromaticNumber(graph)).append("\n")
                     .append(" Algorithme utilisé : ").append(algorithm).append("\n");
+                  
+            
         } else {
             generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrêtes : ").append(graph.getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(graph.getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n")
+                    .append(" Nombre d'arrête(s): ").append(graph.getEdgeCount()).append("\n")
+                    .append(" Nombre de sommet(s) : ").append(graph.getNodeCount()).append("\n")
+                    .append(" Nombre de conflit(s) : ").append(conflict).append("\n")
                     .append(" Nombre chromatique : ").append(algoColoration.countChromaticNumber(graph)).append("\n")
                     .append(" Algorithme utilisé : ").append(algorithm).append("\n");
+                    
         }
         
         MainFrame mainFrame = (MainFrame) this.getParent();

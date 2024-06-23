@@ -308,7 +308,6 @@ public class ColorationAlgorithm {
         }
 
         toolBox.colorGraph(saveGraph);
-        //afficherGraphe(saveGraph);
         return new ResultatColoration(conflict, saveGraph, algorithm);
     }
 

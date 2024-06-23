@@ -64,7 +64,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         if (parent instanceof MainFrame) {
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             loadAnotherGraphButton.setVisible(false);
-            mainWindowButton.setVisible(false);
+            mainM.setVisible(false);
         }
 
         // Charger le graph en arrière-plan
@@ -161,10 +161,11 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 kmaxLabel.setText("Kmax : Aucun");
             }
 
-            nbNodeLabel.setText("Nombre de sommets : " + algoColoration.getNbNode());
-            nbEdgeLabel.setText("Nombre d'arêtes : " + algoColoration.getFileGraph().getEdgeCount());
+            nbNodeLabel.setText("Nombre de sommet(s) : " + algoColoration.getNbNode());
+            nbEdgeLabel.setText("Nombre d'arête(s) : " + algoColoration.getFileGraph().getEdgeCount());
             chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticNumber(graph));
-            conflictLabel.setText("Nombre de conflits : " + conflict);
+            conflictLabel.setText("Nombre de conflit(s) : " + conflict);
+            connectedComponent.setText("Composante(s) connexe(s) : " + toolBox.connectedComponent(graph));
 
         }
         
@@ -210,7 +211,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 String nodeId = node.getId();
                 graphstreamFrame.getColorLabel().setText("Couleur : " + graphstreamFrame.getGraph().getNode(nodeId).getAttribute("color"));
                 graphstreamFrame.getNodeLabel().setText("Sommet : " + node.getId());
-                graphstreamFrame.getEdgeLabel().setText("Nombre d'arrêtes : " + graphstreamFrame.getGraph().getNode(nodeId).getDegree());
+                graphstreamFrame.getEdgeLabel().setText("Nombre d'arrête(s) : " + graphstreamFrame.getGraph().getNode(nodeId).getDegree());
             }
         }
     }
@@ -233,6 +234,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         nbEdgeLabel = new javax.swing.JLabel();
         chromaticNumberLabel = new javax.swing.JLabel();
         conflictLabel = new javax.swing.JLabel();
+        connectedComponent = new javax.swing.JLabel();
         loadAnotherGraphButton = new javax.swing.JButton();
         labelLogo = new javax.swing.JLabel();
         nodeInformationPanel = new javax.swing.JPanel();
@@ -240,7 +242,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         nodeLabel = new javax.swing.JLabel();
         edgeLabel = new javax.swing.JLabel();
         colorLabel = new javax.swing.JLabel();
-        mainWindowButton = new javax.swing.JButton();
+        mainM = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FFR Plane - Graphstream Frame");
@@ -258,13 +260,15 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
         kmaxLabel.setText("Kmax :  Loading");
 
-        nbNodeLabel.setText("Nombre de sommets : Loading");
+        nbNodeLabel.setText("Nombre de sommet(s) : Loading");
 
-        nbEdgeLabel.setText("Nombre d'arrêtes : Loading");
+        nbEdgeLabel.setText("Nombre d'arrête(s) : Loading");
 
         chromaticNumberLabel.setText("Nombre chromatique : Loading");
 
-        conflictLabel.setText("Nombre de conflits : Loading");
+        conflictLabel.setText("Nombre de conflit(s) : Loading");
+
+        connectedComponent.setText("Composante(s) connexe(s) : Loading");
 
         javax.swing.GroupLayout informationPanelLayout = new javax.swing.GroupLayout(informationPanel);
         informationPanel.setLayout(informationPanelLayout);
@@ -273,6 +277,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             .addGroup(informationPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(informationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(connectedComponent)
                     .addComponent(nbNodeLabel)
                     .addComponent(kmaxLabel)
                     .addComponent(nbEdgeLabel)
@@ -281,7 +286,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                     .addGroup(informationPanelLayout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addComponent(jLabel1)))
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
         informationPanelLayout.setVerticalGroup(
             informationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +303,9 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 .addComponent(chromaticNumberLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(conflictLabel)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(connectedComponent, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         loadAnotherGraphButton.setBackground(new java.awt.Color(235, 173, 59));
@@ -350,14 +357,9 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        mainWindowButton.setBackground(new java.awt.Color(235, 173, 59));
-        mainWindowButton.setForeground(new java.awt.Color(0, 0, 0));
-        mainWindowButton.setText("Revenir à la fenêtre principale");
-        mainWindowButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mainWindowButtonActionPerformed(evt);
-            }
-        });
+        mainM.setBackground(new java.awt.Color(235, 173, 59));
+        mainM.setForeground(new java.awt.Color(0, 0, 0));
+        mainM.setText("Revenir à la fenêtre principale");
 
         javax.swing.GroupLayout rightBarPanelLayout = new javax.swing.GroupLayout(rightBarPanel);
         rightBarPanel.setLayout(rightBarPanelLayout);
@@ -373,7 +375,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                     .addComponent(informationPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nodeInformationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loadAnotherGraphButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mainWindowButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(mainM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         rightBarPanelLayout.setVerticalGroup(
@@ -381,15 +383,15 @@ public class GraphstreamFrame extends javax.swing.JFrame {
             .addGroup(rightBarPanelLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(informationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(nodeInformationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(loadAnotherGraphButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainWindowButton)
+                .addComponent(mainM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         getContentPane().add(rightBarPanel);
@@ -407,12 +409,6 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         LoadGraphDialog loadGraphDialog = new LoadGraphDialog(this, true);
         loadGraphDialog.setVisible(true);
     }//GEN-LAST:event_loadAnotherGraphButtonActionPerformed
-
-    private void mainWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainWindowButtonActionPerformed
-        dispose();
-        WelcomeFrame welcomeFrame = new WelcomeFrame();
-        welcomeFrame.setVisible(true);
-    }//GEN-LAST:event_mainWindowButtonActionPerformed
 
     public JLabel getColorLabel() {
         return colorLabel;
@@ -436,6 +432,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
     private javax.swing.JLabel chromaticNumberLabel;
     private javax.swing.JLabel colorLabel;
     private javax.swing.JLabel conflictLabel;
+    private javax.swing.JLabel connectedComponent;
     private javax.swing.JLabel edgeLabel;
     private javax.swing.JPanel informationPanel;
     private javax.swing.JLabel jLabel1;
@@ -443,7 +440,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
     private javax.swing.JLabel kmaxLabel;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JButton loadAnotherGraphButton;
-    private javax.swing.JButton mainWindowButton;
+    private javax.swing.JButton mainM;
     private javax.swing.JLabel nbEdgeLabel;
     private javax.swing.JLabel nbNodeLabel;
     private javax.swing.JPanel nodeInformationPanel;

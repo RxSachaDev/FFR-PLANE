@@ -26,13 +26,15 @@ import sae.models.flights.Flight;
 import sae.models.flights.FlightsCatalog;
 import sae.models.intersection.FlightCollisionTools;
 import sae.utils.Settings;
+import org.graphstream.algorithm.ConnectedComponents;
 
 /**
  * La classe ToolBox fournit des méthodes utilitaires pour différents calculs.
- * 
+ *
  * @author mathe
  */
 public class ToolBox {
+
     /**
      * Calcule la distance entre deux points dans un plan cartésien.
      *
@@ -44,8 +46,7 @@ public class ToolBox {
         // distanceAB = sqrt((xB - xA)^2 + (yB - yA)^2)
         return Math.sqrt(Math.pow((pointB[0] - pointA[0]), 2) + Math.pow((pointB[1] - pointA[1]), 2));
     }
-    
-    
+
     /**
      * Remplit la liste des aéroports avec les données d'un fichier.
      *
@@ -57,10 +58,10 @@ public class ToolBox {
      */
     public static boolean fillAirportsCatalog(String filePath, AirportsCatalog airportsCatalog) throws FileNotFoundException, FileFormatException {
         List<String> possibleValues = new ArrayList<>();
-                possibleValues.add("N");
-                possibleValues.add("E");
-                possibleValues.add("O");
-                possibleValues.add("S");
+        possibleValues.add("N");
+        possibleValues.add("E");
+        possibleValues.add("O");
+        possibleValues.add("S");
         int lineCount = 1;
         try {
             FileReader file = new FileReader(filePath);
@@ -68,11 +69,11 @@ public class ToolBox {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
-                
+
                 if (!possibleValues.contains(values[5]) || !possibleValues.contains(values[9])) {
                     throw new NumberFormatException(); //On l'envoi directement dans le catch correspondant
                 }
-                
+
                 airportsCatalog.addAirport(new Airport(values[0], values[1],
                         Integer.parseInt(values[2]), Integer.parseInt(values[3]), Integer.parseInt(values[4]), values[5].charAt(0),
                         Integer.parseInt(values[6]), Integer.parseInt(values[7]), Integer.parseInt(values[8]), values[9].charAt(0)));
@@ -86,8 +87,7 @@ public class ToolBox {
         }
         return true;
     }
-    
-    
+
     /**
      * Remplit la liste des vols avec les données d'un fichier.
      *
@@ -115,19 +115,19 @@ public class ToolBox {
             throw new FileNotFoundException();
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException error) {
             throw new FileFormatException(lineCount, filePathFlights);
-        } catch (NullPointerException e){
-            throw new DataMismatchException(filePathAirports,filePathFlights);
+        } catch (NullPointerException e) {
+            throw new DataMismatchException(filePathAirports, filePathFlights);
         }
         return true;
     }
-    
-    
+
     /**
-    * Crée un fichier texte contenant les données de collision du graphe des vols chargé.
-    *
-    * @param flightCatalog le catalogue des vols
-    * @return true si l'opération réussit, false sinon
-    */
+     * Crée un fichier texte contenant les données de collision du graphe des
+     * vols chargé.
+     *
+     * @param flightCatalog le catalogue des vols
+     * @return true si l'opération réussit, false sinon
+     */
     public static boolean createGraphTextFile(FlightsCatalog flightCatalog) {
         List<Flight> flightsList = flightCatalog.getFlights();
         int nbNode = 0;
@@ -160,7 +160,7 @@ public class ToolBox {
             for (Map.Entry<Integer, Set<Integer>> entry : edgeMap.entrySet()) {
                 Integer key = entry.getKey();
                 Set<Integer> values = entry.getValue();
-                if(values.isEmpty()){
+                if (values.isEmpty()) {
                     writer.write(String.valueOf(key));
                     writer.newLine();
                 } else {
@@ -177,8 +177,7 @@ public class ToolBox {
 
         return true;
     }
-    
-    
+
     /**
      * Colore les nœuds d'un graphe avec des couleurs prédéfinies.
      *
@@ -237,19 +236,32 @@ public class ToolBox {
         System.setProperty("org.graphstream.ui", "org.graphstream.ui.swing");
         graph.display();
     }
-    
-    public  void zoomGraphMouseWheelMoved(MouseWheelEvent mwe, ViewPanel view_panel){
-        if (Event.ALT_MASK != 0) {            
+
+    public void zoomGraphMouseWheelMoved(MouseWheelEvent mwe, ViewPanel view_panel) {
+        if (Event.ALT_MASK != 0) {
             if (mwe.getWheelRotation() > 0) {
                 double new_view_percent = view_panel.getCamera().getViewPercent() + 0.05;
-                view_panel.getCamera().setViewPercent(new_view_percent);               
+                view_panel.getCamera().setViewPercent(new_view_percent);
             } else if (mwe.getWheelRotation() < 0) {
                 double current_view_percent = view_panel.getCamera().getViewPercent();
-                if(current_view_percent > 0.05){
-                    view_panel.getCamera().setViewPercent(current_view_percent - 0.05);                
+                if (current_view_percent > 0.05) {
+                    view_panel.getCamera().setViewPercent(current_view_percent - 0.05);
                 }
             }
-        }                     
+        }
+    }
+
+    public int connectedComponent(Graph graph) {
+        // Création de l'instance de l'algorithme de composante connexe
+        ConnectedComponents cc = new ConnectedComponents();
+
+        // Ajout du graph à l'algorithme
+        cc.init(graph);
+
+        // Exécution de l'algorithme pour attribuer les composantes connexes
+        cc.compute();
+        
+        return cc.getConnectedComponentsCount();
     }
 
 }
