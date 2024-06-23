@@ -6,16 +6,16 @@ import org.graphstream.graph.Node;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.models.colorationalgorithm.ColorationAlgorithm;
-import sae.models.colorationalgorithm.ResultatColoration;
+import sae.Models.coloration.Coloration;
+import sae.Models.coloration.ColorationResult;
 
 public class AlgoTest {
 
-    private ColorationAlgorithm algoColoration;
+    private Coloration algoColoration;
 
     @Before
     public void setUp() {
-        algoColoration = new ColorationAlgorithm();
+        algoColoration = new Coloration();
 
     }
 
@@ -85,7 +85,7 @@ public class AlgoTest {
         } catch (Exception p) {
             fail();
         }
-        ResultatColoration result = algoColoration.minConflict();
+        ColorationResult result = algoColoration.minConflict();
         assertNotNull(result);
         assertEquals(0, result.getConflict());
     }

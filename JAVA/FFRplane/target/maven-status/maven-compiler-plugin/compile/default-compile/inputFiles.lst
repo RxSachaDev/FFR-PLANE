@@ -1,41 +1,42 @@
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\intersection\FlightCollisionTools.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Controller.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFrame\MainFrame.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFrame\GraphstreamFrame.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFrame\WelcomeFrame.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\flights\FlightsCatalog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\exceptions\FileFormatException.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseTimeRangeDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFileChooser\OpenFileChooser.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\flights\Flight.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\Plane.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\colorationalgorithm\ResultatColoration.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\utils\Settings.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapPointPainter.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jButton\CustomButtonMapPoint.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseAirportDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\utils\IconUtil.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\EasterPoint.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\JInfosDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapCustom.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapPoint.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\colorationalgorithm\ColorationAlgorithm.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\EasterGame.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\toolbox\ToolBox.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\TypeOfplaneDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\exceptions\DataMismatchException.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\airports\AirportsCatalog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Main.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\FunctionChooserDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\MonumentWaypoint.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\airports\Airport.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jPanel\BackgroundPanel.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseColorationAlgorithmDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\ActionDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\LoadGraphDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Interfaces\ModelLine.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\LoadAirspaceDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapLine.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Interfaces\ModelPoint.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseHeightLevelDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\ColorationSettingsDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easterGame\EasterGame.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easterGame\MonumentWaypoint.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Controller\Main.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\ColorationSettingsDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\intersection\FlightCollisionTools.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\mapCustom\MapPointPainter.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\mapCustom\MapCustom.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Controller\Controller.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Controller\Interfaces\ModelPoint.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\airports\AirportsCatalog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Utils\IconUtil.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easterGame\Plane.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\airports\Airport.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jFrame\MainFrame.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\mapCustom\MapLine.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\exceptions\FileFormatException.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jFrame\WelcomeFrame.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Utils\Settings.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\functionsDialog\FunctionChooserDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jFileChooser\OpenFileChooser.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\coloration\ColorationResult.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easterGame\EasterPoint.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\LoadGraphDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\JInfosDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jButton\CustomButtonMapPoint.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jFrame\GraphstreamFrame.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\flights\FlightsCatalog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\functionsDialog\ChooseHeightLevelDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Controller\Interfaces\ModelLine.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easterGame\ActionDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\coloration\ColorationAlgorithm.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\easterGame\TypeOfplaneDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\functionsDialog\ChooseColorationAlgorithmDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\exceptions\DataMismatchException.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\LoadAirspaceDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\coloration\Coloration.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jPanel\BackgroundPanel.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\functionsDialog\ChooseAirportDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\flights\Flight.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\jDialog\functionsDialog\ChooseTimeRangeDialog.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\View\mapCustom\MapPoint.java
+C:\Users\sacha\Documents\BUT1\S2\SAE\JAVA\FFRplane\src\main\java\sae\Models\toolbox\ToolBox.java

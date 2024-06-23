@@ -8,8 +8,9 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 
-import sae.models.colorationalgorithm.ColorationAlgorithm;
-import sae.models.colorationalgorithm.ResultatColoration;
+import sae.Models.coloration.Coloration;
+import sae.Models.coloration.ColorationAlgorithm;
+import sae.Models.coloration.ColorationResult;
 import sae.models.toolbox.ToolBox;
 import sae.utils.Settings;
 import sae.view.jFrame.MainFrame;
@@ -26,12 +27,19 @@ import sae.view.jFrame.MainFrame;
  */
 public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
 
+    /**
+     * Instance de la classe Coloration représentant le graphe à colorier. Cette
+     * instance est initialisée à partir d'un fichier spécifié et utilisée pour
+     * appliquer les différents algorithmes de coloration.
+     */
+    private Coloration coloration = new Coloration();
 
-    
-
-    private ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm();
-    private ToolBox toolBox = new ToolBox();
-
+    /**
+     * Instance de la classe ColorationAlgorithm utilisée pour exécuter les
+     * différents algorithmes de coloration sur le graphe chargé. Cette instance
+     * est initialisée avec l'objet Coloration.
+     */
+    private ColorationAlgorithm colorationAlgorithm;
 
     /**
      * Crée une nouvelle instance de ChooseAlgorithmDialog.
@@ -45,18 +53,17 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
 
         // Chargement du graphe avec le fichier graph-testTEMP, 
         // généré automatiquement après chaque chargement d'espace aérien
-
-        colorationAlgorithm.setFile(Settings.getGraphTEMPPath());
+        coloration.setFile(Settings.getGraphTEMPPath());
         try {
-            colorationAlgorithm.fillGraph();
+            coloration = ToolBox.fillGraph(coloration.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        colorationAlgorithm = new ColorationAlgorithm(coloration);
         initComponents();
         setLocationRelativeTo(null);
     }
 
-    
     /**
      * Cette méthode est appelée à partir du constructeur pour initialiser le
      * formulaire. ATTENTION : Ne modifiez pas ce code. Le contenu de cette
@@ -160,10 +167,7 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     /* ••••••••••••• MÉTHODES ••••••••••••• */
-    
-    
     /**
      * Met à jour la visualisation du graphe dans le viewer spécifié.
      *
@@ -180,11 +184,11 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void updateGraphVisualization(Viewer viewer) {
         MainFrame mainFrame = (MainFrame) this.getParent();
         org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
-        
+
         viewPanel.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent mwe) {
-                toolBox.zoomGraphMouseWheelMoved(mwe, viewPanel);
+                ToolBox.zoomGraphMouseWheelMoved(mwe, viewPanel);
             }
         });
 
@@ -200,9 +204,9 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
         mainFrame.getGraphstreamPanel().setVisible(true);
     }
 
-    
     /**
-     * Définit la visualisation d'un graphe dans le visualiseur avec un mode sombre ou clair.
+     * Définit la visualisation d'un graphe dans le visualiseur avec un mode
+     * sombre ou clair.
      *
      * @param graph Le graphe à visualiser.
      * @param darkMode Indique si le mode sombre est activé.
@@ -230,13 +234,57 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
         }
         updateGraphVisualization(viewer);
     }
-    
-    
 
-    
+    /**
+     * Met à jour l'interface utilisateur du MainFrame avec les informations sur
+     * le graphe colorié, telles que le nombre de conflits, le nombre
+     * chromatique, et l'algorithme utilisé.
+     *
+     * @param graph Le graphe colorié à afficher.
+     * @param conflict Le nombre de conflits dans le graphe colorié.
+     * @param algorithm Le nom de l'algorithme de coloration utilisé.
+     */
+    public void setMainFrame(Graph graph, int conflict, String algorithm) {
+        // Construction des informations générales sur le graphe
+        StringBuilder generalInformation = new StringBuilder();
+        if (coloration.getKmax() != -1) {
+            generalInformation.append(" Kmax : ").append(coloration.getKmax()).append("\n")
+                    .append(" Nombre d'arrête(s) : ").append(graph.getEdgeCount()).append("\n")
+                    .append(" Nombre de sommets : ").append(graph.getNodeCount()).append("\n")
+                    .append(" Nombre de conflits : ").append(conflict).append("\n")
+                    .append(" Nombre chromatique : ").append(coloration.countChromaticNumber(graph)).append("\n")
+                    .append(" Algorithme utilisé : ").append(algorithm).append("\n");
+        } else {
+            generalInformation.append(" Kmax : Aucun").append("\n")
+                    .append(" Nombre d'arrête(s) : ").append(graph.getEdgeCount()).append("\n")
+                    .append(" Nombre de sommet(s) : ").append(graph.getNodeCount()).append("\n")
+                    .append(" Nombre de conflit(s) : ").append(conflict).append("\n")
+                    .append(" Nombre chromatique : ").append(coloration.countChromaticNumber(graph)).append("\n")
+                    .append(" Algorithme utilisé : ").append(algorithm).append("\n");
+        }
+
+        // Récupère le parent MainFrame et met à jour le texte des informations générales
+        MainFrame mainFrame = (MainFrame) this.getParent();
+        mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
+
+        // Met à jour le graphe colorié dans MainFrame
+        mainFrame.setColoringGraph(graph);
+
+        // Configure le viewer en mode sombre ou clair selon la sélection
+        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
+            setViewer(graph, true);
+        } else {
+            setViewer(graph, false);
+        }
+
+        // Met à jour la colorMapLine avec le graphe colorié
+        mainFrame.getController().colorMapLine(graph);
+
+        // Met à jour l'algorithme choisi dans MainFrame
+        mainFrame.setChosenAlgorithm(algorithm);
+    }
+
     /* ••••••••••••• LISTENERS ••••••••••••• */
-    
-    
     /**
      * Gère l'événement lorsque l'utilisateur clique sur le bouton "Le
      * Meilleur". Ferme la fenêtre de dialogue. Exécute l'algorithme de
@@ -246,12 +294,12 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
      * @param evt L'événement d'action associé à cet écouteur
      */
     private void bestalgoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bestalgoButtonActionPerformed
+
         this.dispose();
-        ResultatColoration resultatColoration = colorationAlgorithm.minConflict();
-        setMainFrame(resultatColoration.getGraph(), resultatColoration.getConflict(), resultatColoration.getAlgorithm());    
+        ColorationResult resultatColoration = colorationAlgorithm.minConflict();
+        setMainFrame(resultatColoration.getGraph(), resultatColoration.getConflict(), resultatColoration.getAlgorithm());
     }//GEN-LAST:event_bestalgoButtonActionPerformed
 
-    
     /**
      * Gère l'événement lorsque l'utilisateur clique sur le bouton "Welsh
      * Powell". Ferme la fenêtre de dialogue. Exécute l'algorithme de coloration
@@ -263,10 +311,9 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
     private void wpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wpButtonActionPerformed
         this.dispose();
         int conflict = colorationAlgorithm.welshPowell();
-        setMainFrame(colorationAlgorithm.getFileGraph(), conflict, "WelshPowell");
+        setMainFrame(coloration.getFileGraph(), conflict, "WelshPowell");
     }//GEN-LAST:event_wpButtonActionPerformed
 
-    
     /**
      * Gère l'événement lorsque l'utilisateur clique sur le bouton "DSATUR".
      * Ferme la fenêtre de dialogue. Exécute l'algorithme de coloration "DSATUR"
@@ -277,44 +324,11 @@ public class ChooseColorationAlgorithmDialog extends javax.swing.JDialog {
      */
     private void dsaturButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsaturButtonActionPerformed
         this.dispose();
-        int conflict = colorationAlgorithm.dsatur(colorationAlgorithm.getFileGraph());
-        setMainFrame(colorationAlgorithm.getFileGraph(), conflict, "Dsatur");
+        int conflict = colorationAlgorithm.dsatur(coloration.getFileGraph());
+        setMainFrame(coloration.getFileGraph(), conflict, "Dsatur");
     }//GEN-LAST:event_dsaturButtonActionPerformed
 
-    public void setMainFrame(Graph graph, int conflict, String algorithm){
-        StringBuilder generalInformation = new StringBuilder();
-        if (colorationAlgorithm.getKmax() != -1) {
-            generalInformation.append(" Kmax : ").append(colorationAlgorithm.getKmax()).append("\n")
-                    .append(" Nombre d'arrête(s) : ").append(graph.getEdgeCount()).append("\n")
-                    .append(" Nombre de sommets : ").append(graph.getNodeCount()).append("\n")
-                    .append(" Nombre de conflits : ").append(conflict).append("\n")
-                    .append(" Nombre chromatique : ").append(colorationAlgorithm.countChromaticNumber(graph)).append("\n")
-                    .append(" Algorithme utilisé : ").append(algorithm).append("\n");
-                  
-            
-        } else {
-            generalInformation.append(" Kmax :  Aucun").append("\n")
-                    .append(" Nombre d'arrête(s): ").append(graph.getEdgeCount()).append("\n")
-                    .append(" Nombre de sommet(s) : ").append(graph.getNodeCount()).append("\n")
-                    .append(" Nombre de conflit(s) : ").append(conflict).append("\n")
-                    .append(" Nombre chromatique : ").append(colorationAlgorithm.countChromaticNumber(graph)).append("\n")
-                    .append(" Algorithme utilisé : ").append(algorithm).append("\n");
-                    
-        }
-        
-        MainFrame mainFrame = (MainFrame) this.getParent();
-        mainFrame.getTextAreaInfosGene().setText(generalInformation.toString());
-        mainFrame.setColoringGraph(graph);
 
-        if (mainFrame.getDarkModeCheckBoxMenuItem().isSelected()) {
-            setViewer(graph, true);
-        } else {
-            setViewer(graph, false);
-        }
-        mainFrame.getController().colorMapLine(graph);
-        mainFrame.setChosenAlgorithm(algorithm);
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bestalgoButton;
     private javax.swing.JPanel buttonPanel;

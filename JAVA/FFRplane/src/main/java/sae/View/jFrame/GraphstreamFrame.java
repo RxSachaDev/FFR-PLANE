@@ -15,9 +15,9 @@ import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
-import sae.models.colorationalgorithm.ColorationAlgorithm;
-import sae.models.colorationalgorithm.ResultatColoration;
+import sae.Models.coloration.Coloration;
 import org.graphstream.ui.view.util.DefaultMouseManager;
+import sae.Models.coloration.ColorationAlgorithm;
 import sae.models.toolbox.ToolBox;
 import sae.utils.IconUtil;
 import sae.view.jDialog.LoadGraphDialog;
@@ -36,13 +36,14 @@ public class GraphstreamFrame extends javax.swing.JFrame {
      * de coloration. Cette instance est initialisée au moment de la
      * déclaration.
      */
-    private ColorationAlgorithm algoColoration = new ColorationAlgorithm();
+    private Coloration coloration = new Coloration();
     private final IconUtil iconU = new IconUtil();
     private Graph graph;
-    
 
+    /**
+     * Le nom de l'algorithme utilisé.
+     */
     private String algo;
-
 
     /**
      * Construit une nouvelle instance de GraphstreamFrame.
@@ -79,7 +80,6 @@ public class GraphstreamFrame extends javax.swing.JFrame {
         private String filePath;
         private JFrame parent;
         private JFrame frameParent;
-        private ToolBox toolBox = new ToolBox(); 
 
         /**
          * Construit une nouvelle instance de GraphLoader.
@@ -94,24 +94,22 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws IOException {
-            algoColoration.setFile(filePath);
-            
-            algoColoration.fillGraph();
-            
+            coloration = ToolBox.fillGraph(filePath);
+
             return null;
         }
 
         @Override
         protected void done() {
-
+            ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(coloration);
             int conflict;
             // Récupère le graph 
             if (algo.equals("Dsatur")) {
-                conflict = algoColoration.dsatur(algoColoration.getFileGraph());
-                graph = algoColoration.getFileGraph();
+                conflict = colorationAlgorithm.dsatur(coloration.getFileGraph());
+                graph = coloration.getFileGraph();
             } else {
-                conflict = algoColoration.welshPowell();
-                graph = algoColoration.getFileGraph();
+                conflict = colorationAlgorithm.welshPowell();
+                graph = coloration.getFileGraph();
             }
 
             // Création de la vision de graphstream
@@ -129,7 +127,7 @@ public class GraphstreamFrame extends javax.swing.JFrame {
                     graph.setAttribute("ui.stylesheet", css);
                 }
             }
-            
+
             // Initialisation du Viewer et activation du layout automatique
             Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
             viewer.enableAutoLayout();
@@ -141,35 +139,34 @@ public class GraphstreamFrame extends javax.swing.JFrame {
 
             org.graphstream.ui.swingViewer.ViewPanel viewPanel = viewer.addDefaultView(false);
             viewer.getDefaultView().setMouseManager(new CustomMouseManager(parent, viewer.getDefaultView()));
-            
+
             viewPanel.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent mwe) {
-                toolBox.zoomGraphMouseWheelMoved(mwe, viewPanel);
-            }
-        });
-            
+                @Override
+                public void mouseWheelMoved(MouseWheelEvent mwe) {
+                    ToolBox.zoomGraphMouseWheelMoved(mwe, viewPanel);
+                }
+            });
+
             GraphstreamPanel.add(viewPanel, BorderLayout.CENTER);
 
             // Mettre à jour jPanel1
             GraphstreamPanel.revalidate();
             GraphstreamPanel.repaint();
             // Modifier les labels avec les bonnes valeurs
-            if (algoColoration.getKmax() != -1) {
-                kmaxLabel.setText("Kmax : " + algoColoration.getKmax());
+            if (coloration.getKmax() != -1) {
+                kmaxLabel.setText("Kmax : " + coloration.getKmax());
             } else {
                 kmaxLabel.setText("Kmax : Aucun");
             }
 
-            nbNodeLabel.setText("Nombre de sommet(s) : " + algoColoration.getNbNode());
-            nbEdgeLabel.setText("Nombre d'arête(s) : " + algoColoration.getFileGraph().getEdgeCount());
-            chromaticNumberLabel.setText("Nombre chromatique : " + algoColoration.countChromaticNumber(graph));
+            nbNodeLabel.setText("Nombre de sommet(s) : " + coloration.getNbNode());
+            nbEdgeLabel.setText("Nombre d'arête(s) : " + coloration.getFileGraph().getEdgeCount());
+            chromaticNumberLabel.setText("Nombre chromatique : " + coloration.countChromaticNumber(graph));
             conflictLabel.setText("Nombre de conflit(s) : " + conflict);
-            connectedComponent.setText("Composante(s) connexe(s) : " + toolBox.connectedComponent(graph));
+            connectedComponent.setText("Composante(s) connexe(s) : " + ToolBox.connectedComponent(graph));
 
         }
-        
-        
+
     }
 
     public void graphstreamFrameDarkMode() {

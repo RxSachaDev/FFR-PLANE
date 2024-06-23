@@ -2,12 +2,15 @@ package sae.view.jDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sae.exceptions.FileFormatException;
+import sae.models.toolbox.ToolBox;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
 import sae.view.jFrame.GraphstreamFrame;
@@ -186,10 +189,8 @@ public class LoadGraphDialog extends javax.swing.JDialog {
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         try { //TODO COUVRIR LES EXCEPTIONS
             // <* Cette partie ne sert qu'à déclancher les exceptions
-            
+            ToolBox.fillGraph(graphFileTextField.getText());
             // *>
-            
-            Scanner scan = new Scanner(new File(graphFileTextField.getText())); //Déclanche l'éxception si le chemin d'exces est foireux
             Settings.setFlightsFilePath(graphFileTextField.getText());
             dispose();
             SwingUtilities.getWindowAncestor(this).dispose();
@@ -200,6 +201,8 @@ public class LoadGraphDialog extends javax.swing.JDialog {
             labelError.setText("Le chemin d'accès est introuvable !");
         } catch(FileFormatException e) {
             labelError.setText(e.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(LoadGraphDialog.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }//GEN-LAST:event_OkButtonActionPerformed
 

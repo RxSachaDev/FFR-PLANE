@@ -1,14 +1,14 @@
-package sae.models.colorationalgorithm;
+package sae.Models.coloration;
 
 import org.graphstream.graph.Graph;
 
 /**
- * La classe ResultatColoration représente le résultat d'une tentative de
- * coloration de graphe, incluant le nombre de conflits et le graphe coloré.
+ * La classe ColorationResult représente le résultat d'une tentative de
+ coloration de graphe, incluant le nombre de conflits et le graphe coloré.
  *
  * @author Sacha
  */
-public class ResultatColoration {
+public class ColorationResult {
 
     /**
      * Le nombre de conflits dans la coloration du graphe.
@@ -20,6 +20,9 @@ public class ResultatColoration {
      */
     private Graph graph;
 
+    /**
+     * Le nom de l'algorithme utilisé.
+     */
     private String algorithm;
 
     /**
@@ -28,7 +31,7 @@ public class ResultatColoration {
      * @param conflict Le nombre de conflits dans la coloration.
      * @param graph Le graphe coloré.
      */
-    public ResultatColoration(int conflict, Graph graph, String algorithm) {
+    public ColorationResult(int conflict, Graph graph, String algorithm) {
         this.conflict = conflict;
         this.graph = graph;
         this.algorithm = algorithm;
@@ -52,6 +55,11 @@ public class ResultatColoration {
         return graph;
     }
 
+    /**
+     * Retourne l'algorithme utilisé.
+     *
+     * @return l'algorithme utilisé.
+     */
     public String getAlgorithm() {
         return algorithm;
     }
