@@ -1,4 +1,3 @@
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\algocoloration\AlgoColoration.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\intersection\FlightCollisionTools.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Controller.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFrame\MainFrame.java
@@ -10,6 +9,7 @@ C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\mai
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jFileChooser\OpenFileChooser.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\flights\Flight.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\Plane.java
+C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\colorationalgorithm\ResultatColoration.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\utils\Settings.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapPointPainter.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jButton\CustomButtonMapPoint.java
@@ -19,6 +19,7 @@ C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\mai
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\JInfosDialog.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapCustom.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapPoint.java
+C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\colorationalgorithm\ColorationAlgorithm.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\EasterGame.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\toolbox\ToolBox.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\easterGame\TypeOfplaneDialog.java
@@ -37,5 +38,4 @@ C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\mai
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\mapCustom\MapLine.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\controller\Interfaces\ModelPoint.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\functionsDialog\ChooseHeightLevelDialog.java
-C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\models\algocoloration\ResultatColoration.java
 C:\Users\mathe\OneDrive\Bureau\Cours\S2 - saé\S2 sae Java\JAVA\FFRplane\src\main\java\sae\view\jDialog\ColorationSettingsDialog.java

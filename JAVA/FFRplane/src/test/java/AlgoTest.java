@@ -6,24 +6,24 @@ import org.graphstream.graph.Node;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.models.algocoloration.AlgoColoration;
-import sae.models.algocoloration.ResultatColoration;
+import sae.models.colorationalgorithm.ColorationAlgorithm;
+import sae.models.colorationalgorithm.ResultatColoration;
 
 public class AlgoTest {
 
-    private AlgoColoration algoColoration;
+    private ColorationAlgorithm algoColoration;
 
     @Before
     public void setUp() {
-        algoColoration = new AlgoColoration();
+        algoColoration = new ColorationAlgorithm();
 
     }
 
     @Test
     public void testSetFichier() {
         String fichier = "src/main/java/data/test/graph-test7.txt";
-        algoColoration.setFichier(fichier);
-        assertEquals(fichier, algoColoration.getFichier());
+        algoColoration.setFile(fichier);
+        assertEquals(fichier, algoColoration.getFile());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class AlgoTest {
 
         }
         String fichier = "src/main/java/data/test/graph-test7.txt";
-        algoColoration.setFichier(fichier);
+        algoColoration.setFile(fichier);
         algoColoration.fillGraph();
 
         Graph graph = algoColoration.getFileGraph();
@@ -50,7 +50,7 @@ public class AlgoTest {
         // Créer un fichier de test
         String fichier = "src/main/java/data/test/graph-test0.txt";
         try {
-            algoColoration.setFichier(fichier);
+            algoColoration.setFile(fichier);
             algoColoration.fillGraph();
         } catch (Exception p) {
             fail();
@@ -65,7 +65,7 @@ public class AlgoTest {
         // Créer un fichier de test
         String fichier = "src/main/java/data/test/graph-test0.txt";
         try {
-            algoColoration.setFichier(fichier);
+            algoColoration.setFile(fichier);
             algoColoration.fillGraph();
         } catch (Exception p) {
             fail();
@@ -80,7 +80,7 @@ public class AlgoTest {
         // Créer un fichier de test
         String fichier = "src/main/java/data/test/graph-test0.txt";
         try {
-            algoColoration.setFichier(fichier);
+            algoColoration.setFile(fichier);
             algoColoration.fillGraph();
         } catch (Exception p) {
             fail();

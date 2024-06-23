@@ -21,7 +21,6 @@ sae\view\jDialog\functionsDialog\ChooseTimeRangeDialog$1.class
 sae\view\easterGame\EasterGame.class
 sae\view\easterGame\Plane.class
 sae\view\easterGame\EasterGame$6.class
-sae\models\algocoloration\ResultatColoration.class
 sae\controller\Interfaces\ModelPoint.class
 sae\view\jDialog\functionsDialog\ChooseHeightLevelDialog.class
 sae\view\jDialog\LoadAirspaceDialog$2.class
@@ -46,7 +45,6 @@ sae\view\easterGame\EasterGame$1.class
 sae\view\jDialog\functionsDialog\ChooseTimeRangeDialog$3.class
 sae\view\jFileChooser\OpenFileChooser.class
 sae\view\jPanel\BackgroundPanel.class
-sae\models\algocoloration\AlgoColoration.class
 sae\view\easterGame\TypeOfplaneDialog$1.class
 sae\view\jDialog\functionsDialog\ChooseHeightLevelDialog$1.class
 sae\models\airports\AirportsCatalog.class
@@ -54,15 +52,19 @@ sae\view\jDialog\functionsDialog\ChooseColorationAlgorithmDialog$1.class
 sae\view\jDialog\LoadGraphDialog.class
 sae\view\easterGame\TypeOfplaneDialog$4.class
 sae\models\flights\FlightsCatalog.class
+sae\models\colorationalgorithm\ResultatColoration.class
 sae\view\jDialog\LoadAirspaceDialog$5.class
 sae\view\jDialog\functionsDialog\ChooseAirportDialog.class
 sae\view\easterGame\MonumentWaypoint$1.class
 sae\view\jFrame\WelcomeFrame$3.class
 sae\view\jDialog\functionsDialog\FunctionChooserDialog.class
 sae\view\jFrame\GraphstreamFrame$GraphLoader.class
+sae\view\jDialog\functionsDialog\ChooseColorationAlgorithmDialog$4.class
+sae\models\colorationalgorithm\ColorationAlgorithm.class
 sae\view\jDialog\functionsDialog\FunctionChooserDialog$3.class
 sae\view\jDialog\ColorationSettingsDialog$2.class
 sae\view\jDialog\LoadAirspaceDialog$3.class
+sae\view\jFrame\GraphstreamFrame$GraphLoader$1.class
 sae\view\jDialog\JInfosDialog$1.class
 sae\view\jDialog\functionsDialog\ChooseAirportDialog$3.class
 sae\view\easterGame\EasterPoint.class

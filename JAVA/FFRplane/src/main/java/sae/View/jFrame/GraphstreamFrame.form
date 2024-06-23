@@ -27,7 +27,7 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="GraphstreamPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -46,19 +46,20 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="labelLogo" min="-2" pref="167" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+              </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="informationPanel" alignment="0" max="32767" attributes="0"/>
                       <Component id="nodeInformationPanel" alignment="1" max="32767" attributes="0"/>
                       <Component id="loadAnotherGraphButton" alignment="1" max="32767" attributes="0"/>
+                      <Component id="mainM" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="16" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="labelLogo" min="-2" pref="167" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -67,13 +68,15 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   <Component id="informationPanel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="nodeInformationPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="loadAnotherGraphButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="mainM" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="labelLogo" min="-2" pref="156" max="-2" attributes="0"/>
-                  <EmptySpace pref="104" max="32767" attributes="0"/>
+                  <EmptySpace pref="75" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -87,6 +90,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="connectedComponent" min="-2" max="-2" attributes="0"/>
                           <Component id="nbNodeLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="kmaxLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="nbEdgeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -97,7 +101,7 @@
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -116,7 +120,9 @@
                       <Component id="chromaticNumberLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="conflictLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="14" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="connectedComponent" min="-2" pref="16" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -135,12 +141,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="nbNodeLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Nombre de sommets : Loading"/>
+                <Property name="text" type="java.lang.String" value="Nombre de sommet(s) : Loading"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="nbEdgeLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Nombre d&apos;arr&#xea;tes : Loading"/>
+                <Property name="text" type="java.lang.String" value="Nombre d&apos;arr&#xea;te(s) : Loading"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="chromaticNumberLabel">
@@ -150,7 +156,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="conflictLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Nombre de conflits : Loading"/>
+                <Property name="text" type="java.lang.String" value="Nombre de conflit(s) : Loading"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="connectedComponent">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Composante(s) connexe(s) : Loading"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -234,6 +245,17 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="mainM">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="3b" green="ad" red="eb" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Revenir &#xe0; la fen&#xea;tre principale"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

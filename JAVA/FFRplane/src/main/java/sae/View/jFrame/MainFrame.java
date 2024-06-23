@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import org.graphstream.graph.Graph;
 
 import sae.utils.IconUtil;
@@ -171,7 +172,7 @@ public class MainFrame extends JFrame {
                     .addGroup(mapCustomLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(369, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         mapCustomLayout.setVerticalGroup(
             mapCustomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +245,6 @@ public class MainFrame extends JFrame {
         textAreaInfosSelect.setColumns(20);
         textAreaInfosSelect.setRows(5);
         textAreaInfosSelect.setBorder(null);
-        textAreaInfosSelect.setCaretColor(null);
         textAreaInfosSelect.setDisabledTextColor(null);
 
         mapLineComboBox.setModel(new DefaultComboBoxModel<MapLine>());
@@ -498,6 +498,7 @@ public class MainFrame extends JFrame {
             if (coloringGraph != null) {
                 chooseAlgorithmDialog.setViewer(coloringGraph, true);
             }
+            
         } else {
             //le darkmode est désactivé
             textAreaInfosSelect.setBackground(Color.white);
