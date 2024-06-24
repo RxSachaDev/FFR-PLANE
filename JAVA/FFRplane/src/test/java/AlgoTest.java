@@ -6,10 +6,10 @@ import org.graphstream.graph.Node;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.Models.coloration.Coloration;
-import sae.Models.coloration.ColorationAlgorithm;
-import sae.Models.coloration.ColorationResult;
-import sae.models.toolbox.ToolBox;
+import sae.model.coloration.Coloration;
+import sae.model.coloration.ColorationAlgorithm;
+import sae.model.coloration.ColorationResult;
+import sae.model.toolbox.ToolBox;
 
 public class AlgoTest {
 
@@ -38,16 +38,9 @@ public class AlgoTest {
             algoColoration = ToolBox.fillGraph(algoColoration.getFile());
         } catch (Exception p) {
             fail();
-        }
-<<<<<<< HEAD
-        
+        }        
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
         // Test du résultat
-=======
-
-        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         int conflicts = colorationAlgorithm.welshPowell();
         assertEquals(0, conflicts);
     }
@@ -64,11 +57,7 @@ public class AlgoTest {
         }
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
         // Test du résultat
-=======
-
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         int conflicts = colorationAlgorithm.dsatur(algoColoration.getFileGraph());
         assertEquals(0, conflicts);
     }
@@ -85,10 +74,7 @@ public class AlgoTest {
         }
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
         // Test du résultat
-=======
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         ColorationResult result = colorationAlgorithm.minConflict();
         assertNotNull(result);
         assertEquals(0, result.getConflict());
@@ -105,10 +91,7 @@ public class AlgoTest {
         algoColoration.getFileGraph().getNode("3").addAttribute("color", 1);
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
         // Test du résultat
-=======
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         Graph testGraph = colorationAlgorithm.copyGraphWithAttributes(algoColoration.getFileGraph());
 
         assertEquals((int) testGraph.getNode("1").getAttribute("color"), (int) algoColoration.getFileGraph().getNode("1").getAttribute("color"));
@@ -137,10 +120,8 @@ public class AlgoTest {
         testTab[2] = node2;
         testTab[3] = node1;
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
+
         // Test du résultat
-=======
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         Node[] resultTab = colorationAlgorithm.orderByDegreeNodes(algoColoration.getFileGraph());
         assertEquals(testTab[0], resultTab[0]);
         assertEquals(testTab[1], resultTab[1]);
@@ -200,12 +181,8 @@ public class AlgoTest {
         testTab[2] = node2;
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
         
         // Test du résultat
-=======
-
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         boolean colorPasRempliResult = colorationAlgorithm.colorNotFill(testTab);
         assertTrue(colorPasRempliResult);
         algoColoration.getFileGraph().getNode("1").addAttribute("color", 2);
@@ -244,12 +221,8 @@ public class AlgoTest {
         testTab[3] = node1;
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
         
         // Test du résultat
-=======
-
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         Node resultNode = colorationAlgorithm.highestUnusedDegree(testTab);
         assertEquals(node4, resultNode);
     }
@@ -266,11 +239,7 @@ public class AlgoTest {
         node1.setAttribute("color", 1);
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
-        
-        
-=======
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
+
         colorationAlgorithm.setNbColorOpposite(node1);
 
         ArrayList<Integer> colorsNode2 = node2.getAttribute("couleurAutour");
@@ -298,12 +267,8 @@ public class AlgoTest {
         node2.setAttribute("color", 2);
 
         ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
-<<<<<<< HEAD
         
         // Test du résultat
-=======
-
->>>>>>> e38c317bab8c23bd6a0d5fdd2acf507d09a934bb
         colorationAlgorithm.putColor(node3);
 
         Integer colorNode3 = (int) node3.getAttribute("color");

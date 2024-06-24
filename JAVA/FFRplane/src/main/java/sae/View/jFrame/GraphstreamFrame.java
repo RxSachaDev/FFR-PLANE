@@ -15,10 +15,10 @@ import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
-import sae.Models.coloration.Coloration;
+import sae.model.coloration.Coloration;
 import org.graphstream.ui.view.util.DefaultMouseManager;
-import sae.Models.coloration.ColorationAlgorithm;
-import sae.models.toolbox.ToolBox;
+import sae.model.coloration.ColorationAlgorithm;
+import sae.model.toolbox.ToolBox;
 import sae.utils.IconUtil;
 import sae.view.jDialog.LoadGraphDialog;
 

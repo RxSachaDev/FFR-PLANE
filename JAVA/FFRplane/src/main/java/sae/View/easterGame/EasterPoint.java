@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.jxmapviewer.viewer.GeoPosition;
 
-import sae.models.airports.Airport;
+import sae.model.airports.Airport;
 import sae.view.mapCustom.*;
 import sae.view.jButton.*;
 

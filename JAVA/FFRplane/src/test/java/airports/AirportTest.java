@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.jxmapviewer.viewer.GeoPosition;
-import sae.models.airports.Airport;
+import sae.model.airports.Airport;
 
 /**
  *

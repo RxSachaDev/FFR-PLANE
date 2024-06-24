@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sae.exceptions.FileFormatException;
-import sae.models.toolbox.ToolBox;
+import sae.model.toolbox.ToolBox;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
 import sae.view.jFrame.GraphstreamFrame;

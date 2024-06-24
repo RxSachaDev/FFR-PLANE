@@ -2,26 +2,22 @@ package sae.controller;
 
 import sae.view.mapCustom.MapPointPainter;
 import java.awt.Color;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.swing.JComboBox;
 import org.graphstream.graph.Graph;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
 
 import sae.utils.*;
-import sae.models.airports.*;
-import sae.models.toolbox.*;
-import sae.models.flights.*;
+import sae.model.airports.*;
+import sae.model.toolbox.*;
+import sae.model.flights.*;
 import sae.view.mapCustom.*;
 import sae.view.easterGame.*;
 import sae.view.jFrame.MainFrame;
-import sae.controller.Interfaces.*;
 
 /**
  * Contrôleur principal de l'application, gère les interactions entre la vue et les modèles.

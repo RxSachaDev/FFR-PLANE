@@ -8,10 +8,10 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 
-import sae.Models.coloration.Coloration;
-import sae.Models.coloration.ColorationAlgorithm;
-import sae.Models.coloration.ColorationResult;
-import sae.models.toolbox.ToolBox;
+import sae.model.coloration.Coloration;
+import sae.model.coloration.ColorationAlgorithm;
+import sae.model.coloration.ColorationResult;
+import sae.model.toolbox.ToolBox;
 import sae.utils.Settings;
 import sae.view.jFrame.MainFrame;
 

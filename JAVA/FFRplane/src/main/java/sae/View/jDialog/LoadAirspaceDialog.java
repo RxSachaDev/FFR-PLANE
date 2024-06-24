@@ -7,9 +7,9 @@ import javax.swing.SwingUtilities;
 
 import sae.exceptions.DataMismatchException;
 import sae.exceptions.FileFormatException;
-import sae.models.airports.AirportsCatalog;
-import sae.models.flights.FlightsCatalog;
-import sae.models.toolbox.ToolBox;
+import sae.model.airports.AirportsCatalog;
+import sae.model.flights.FlightsCatalog;
+import sae.model.toolbox.ToolBox;
 import sae.utils.IconUtil;
 import sae.utils.Settings;
 import sae.view.jFileChooser.OpenFileChooser;

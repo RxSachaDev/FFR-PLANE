@@ -1,9 +1,9 @@
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.models.airports.Airport;
-import sae.models.flights.Flight;
-import sae.models.intersection.FlightCollisionTools;
+import sae.model.airports.Airport;
+import sae.model.flights.Flight;
+import sae.model.intersection.FlightCollisionTools;
 import sae.utils.Settings;
 
 /**

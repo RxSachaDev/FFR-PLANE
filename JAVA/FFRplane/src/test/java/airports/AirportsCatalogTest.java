@@ -1,18 +1,18 @@
-/*package airports;
+package airports;
 
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sae.models.airports.Airport;
-import sae.models.airports.AirportsCatalog;*/
+import sae.model.airports.Airport;
+import sae.model.airports.AirportsCatalog;
 
 
 /**
  *
  * @author mathe
  */
-/*public class AirportsCatalogTest {
+public class AirportsCatalogTest {
     private Airport MRS;
     private Airport BES;
     private Airport LYS;
@@ -63,4 +63,4 @@ import sae.models.airports.AirportsCatalog;*/
         assertTrue(airports.contains(BES));
         assertTrue(airports.contains(LYS));
     }
-}*/
+}
