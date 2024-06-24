@@ -244,44 +244,48 @@ public class ToolBox {
         graph.display();
     }
 
- /**
- * Modifie le niveau de zoom du graphique en réponse à l'événement de déplacement de la molette de la souris.
- * 
- * @param mwe l'événement de déplacement de la molette de la souris
- * @param viewPanel le panneau de vue contenant le graphique
- */
-public static void zoomGraphMouseWheelMoved(MouseWheelEvent mwe, ViewPanel viewPanel){
-        if (Event.ALT_MASK != 0) {            
+    /**
+     * Modifie le niveau de zoom du graphique en réponse à l'événement de
+     * déplacement de la molette de la souris.
+     *
+     * @param mwe l'événement de déplacement de la molette de la souris
+     * @param viewPanel le panneau de vue contenant le graphique
+     */
+    public static void zoomGraphMouseWheelMoved(MouseWheelEvent mwe, ViewPanel viewPanel) {
+        // Vérification si il y a un mouvement de la mollette
+        if (Event.ALT_MASK != 0) {
+            // Si mouvement roulette vers le haut
             if (mwe.getWheelRotation() > 0) {
                 double newViewPercent = viewPanel.getCamera().getViewPercent() + 0.05;
-                viewPanel.getCamera().setViewPercent(newViewPercent);               
+                viewPanel.getCamera().setViewPercent(newViewPercent);
+                // Si mouvement roulette vers le bas
             } else if (mwe.getWheelRotation() < 0) {
                 double currentViewPercent = viewPanel.getCamera().getViewPercent();
-                if(currentViewPercent > 0.05){
-                    viewPanel.getCamera().setViewPercent(currentViewPercent - 0.05);                
+                if (currentViewPercent > 0.05) {
+                    viewPanel.getCamera().setViewPercent(currentViewPercent - 0.05);
                 }
             }
-        }                     
+        }
     }
 
-/**
- * Calcule le nombre de composantes connexes dans un graphe.
- * 
- * @param graph le graphe dont on veut calculer les composantes connexes
- * @return le nombre de composantes connexes dans le graphe
- */
-public static int connectedComponent(Graph graph) {
-    // Création de l'instance de l'algorithme de composante connexe
-    ConnectedComponents cc = new ConnectedComponents();
+    /**
+     * Calcule le nombre de composantes connexes dans un graphe.
+     *
+     * @param graph le graphe dont on veut calculer les composantes connexes
+     * @return le nombre de composantes connexes dans le graphe
+     */
+    public static int connectedComponent(Graph graph) {
+        // Création de l'instance de l'algorithme de composante connexe
+        ConnectedComponents cc = new ConnectedComponents();
 
-    // Ajout du graphe à l'algorithme
-    cc.init(graph);
+        // Ajout du graphe à l'algorithme
+        cc.init(graph);
 
-    // Exécution de l'algorithme pour attribuer les composantes connexes
-    cc.compute();
+        // Exécution de l'algorithme pour attribuer les composantes connexes
+        cc.compute();
 
-    return cc.getConnectedComponentsCount();
-}
+        return cc.getConnectedComponentsCount();
+    }
 
     /**
      * Charge le graphe à partir du fichier source.
