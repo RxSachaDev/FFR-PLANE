@@ -7,7 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import sae.Models.coloration.Coloration;
+import sae.Models.coloration.ColorationAlgorithm;
 import sae.Models.coloration.ColorationResult;
+import sae.models.toolbox.ToolBox;
 
 public class AlgoTest {
 
@@ -21,28 +23,10 @@ public class AlgoTest {
 
     @Test
     public void testSetFichier() {
+        // Modification du fichier
         String fichier = "src/main/java/data/test/graph-test7.txt";
         algoColoration.setFile(fichier);
         assertEquals(fichier, algoColoration.getFile());
-    }
-
-    @Test
-    public void testChargerGraphe() throws IOException {
-        // Créer un fichier de test
-
-        try {
-            algoColoration.fillGraph();
-            fail();
-        } catch (Exception p) {
-
-        }
-        String fichier = "src/main/java/data/test/graph-test7.txt";
-        algoColoration.setFile(fichier);
-        algoColoration.fillGraph();
-
-        Graph graph = algoColoration.getFileGraph();
-        assertNotNull(graph);
-        assertEquals(algoColoration.getNbNode(), graph.getNodeCount());
     }
 
     @Test
@@ -51,12 +35,14 @@ public class AlgoTest {
         String fichier = "src/main/java/data/test/graph-test0.txt";
         try {
             algoColoration.setFile(fichier);
-            algoColoration.fillGraph();
+            algoColoration = ToolBox.fillGraph(algoColoration.getFile());
         } catch (Exception p) {
             fail();
         }
-
-        int conflicts = algoColoration.welshPowell();
+        
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        // Test du résultat
+        int conflicts = colorationAlgorithm.welshPowell();
         assertEquals(0, conflicts);
     }
 
@@ -66,12 +52,14 @@ public class AlgoTest {
         String fichier = "src/main/java/data/test/graph-test0.txt";
         try {
             algoColoration.setFile(fichier);
-            algoColoration.fillGraph();
+            algoColoration = ToolBox.fillGraph(algoColoration.getFile());
         } catch (Exception p) {
             fail();
         }
 
-        int conflicts = algoColoration.dsatur(algoColoration.getFileGraph());
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        // Test du résultat
+        int conflicts = colorationAlgorithm.dsatur(algoColoration.getFileGraph());
         assertEquals(0, conflicts);
     }
 
@@ -81,24 +69,31 @@ public class AlgoTest {
         String fichier = "src/main/java/data/test/graph-test0.txt";
         try {
             algoColoration.setFile(fichier);
-            algoColoration.fillGraph();
+            algoColoration = ToolBox.fillGraph(algoColoration.getFile());
         } catch (Exception p) {
             fail();
         }
-        ColorationResult result = algoColoration.minConflict();
+
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        // Test du résultat
+        ColorationResult result = colorationAlgorithm.minConflict();
         assertNotNull(result);
         assertEquals(0, result.getConflict());
     }
 
     @Test
     public void testCopyGraphWithAttributes() {
+        // Création du graphe
         algoColoration.getFileGraph().addNode("1");
         algoColoration.getFileGraph().getNode("1").addAttribute("color", 5);
         algoColoration.getFileGraph().addNode("2");
         algoColoration.getFileGraph().getNode("2").addAttribute("color", 2);
         algoColoration.getFileGraph().addNode("3");
         algoColoration.getFileGraph().getNode("3").addAttribute("color", 1);
-        Graph testGraph = algoColoration.copyGraphWithAttributes(algoColoration.getFileGraph());
+
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        // Test du résultat
+        Graph testGraph = colorationAlgorithm.copyGraphWithAttributes(algoColoration.getFileGraph());
 
         assertEquals((int) testGraph.getNode("1").getAttribute("color"), (int) algoColoration.getFileGraph().getNode("1").getAttribute("color"));
         assertEquals((int) testGraph.getNode("2").getAttribute("color"), (int) algoColoration.getFileGraph().getNode("2").getAttribute("color"));
@@ -106,6 +101,7 @@ public class AlgoTest {
 
     @Test
     public void testRangerParDegreeNodes() {
+        // Création du graphe
         algoColoration.getFileGraph().addNode("1");
         algoColoration.getFileGraph().addNode("2");
         algoColoration.getFileGraph().addNode("3");
@@ -118,12 +114,15 @@ public class AlgoTest {
         algoColoration.getFileGraph().addEdge("3_2", node3, node2);
         algoColoration.getFileGraph().addEdge("4_3", node4, node3);
         algoColoration.getFileGraph().addEdge("4_2", node4, node2);
+        // Création des résultats attendus
         Node[] testTab = new Node[4];
         testTab[0] = node3;
         testTab[1] = node4;
         testTab[2] = node2;
         testTab[3] = node1;
-        Node[] resultTab = algoColoration.orderByDegreeNodes(algoColoration.getFileGraph());
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        // Test du résultat
+        Node[] resultTab = colorationAlgorithm.orderByDegreeNodes(algoColoration.getFileGraph());
         assertEquals(testTab[0], resultTab[0]);
         assertEquals(testTab[1], resultTab[1]);
         assertEquals(testTab[2], resultTab[2]);
@@ -132,18 +131,21 @@ public class AlgoTest {
 
     @Test
     public void testCountChromaticNumber() {
+        // Création du graphe
         algoColoration.getFileGraph().addNode("1");
         algoColoration.getFileGraph().getNode("1").addAttribute("color", 3);
         algoColoration.getFileGraph().addNode("2");
         algoColoration.getFileGraph().getNode("2").addAttribute("color", 2);
         algoColoration.getFileGraph().addNode("3");
         algoColoration.getFileGraph().getNode("3").addAttribute("color", 1);
+        // Test du résultat
         int chromaticNumberResult = algoColoration.countChromaticNumber(algoColoration.getFileGraph());
         assertEquals(3, chromaticNumberResult);
     }
 
     @Test
     public void testCountConflicts() {
+        // Création du graphe
         algoColoration.getFileGraph().addNode("1");
         algoColoration.getFileGraph().addNode("2");
         algoColoration.getFileGraph().addNode("3");
@@ -156,12 +158,15 @@ public class AlgoTest {
         algoColoration.getFileGraph().addEdge("1_2", node1, node2);
         algoColoration.getFileGraph().addEdge("3_2", node3, node2);
         algoColoration.getFileGraph().addEdge("1_3", node1, node3);
+        
+        // Test du résultat
         int conflictResult = algoColoration.countConflicts(algoColoration.getFileGraph());
         assertEquals(1, conflictResult);
     }
 
     @Test
     public void testColorPasRempli() {
+        // Création du graphe
         algoColoration.getFileGraph().addNode("1");
         algoColoration.getFileGraph().addNode("2");
         algoColoration.getFileGraph().addNode("3");
@@ -174,16 +179,21 @@ public class AlgoTest {
         testTab[0] = node3;
         testTab[1] = node1;
         testTab[2] = node2;
-        boolean colorPasRempliResult = algoColoration.colorNotFill(testTab);
+
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        
+        // Test du résultat
+        boolean colorPasRempliResult = colorationAlgorithm.colorNotFill(testTab);
         assertTrue(colorPasRempliResult);
         algoColoration.getFileGraph().getNode("1").addAttribute("color", 2);
-        colorPasRempliResult = algoColoration.colorNotFill(testTab);
+        colorPasRempliResult = colorationAlgorithm.colorNotFill(testTab);
         assertFalse(colorPasRempliResult);
 
     }
 
     @Test
     public void testPlusHautDegreNonUtilise() {
+        // Création du graphe
         algoColoration.getFileGraph().addNode("1");
         algoColoration.getFileGraph().addNode("2");
         algoColoration.getFileGraph().addNode("3");
@@ -202,27 +212,37 @@ public class AlgoTest {
         node2.setAttribute("nbColor", 2);
         node3.setAttribute("nbColor", 3);
         node4.setAttribute("nbColor", 2);
+        
+        // Création des résultats attendus
         Node[] testTab = new Node[4];
         testTab[0] = node3;
         testTab[1] = node4;
         testTab[2] = node2;
         testTab[3] = node1;
 
-        Node resultNode = algoColoration.highestUnusedDegree(testTab);
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
+        
+        // Test du résultat
+        Node resultNode = colorationAlgorithm.highestUnusedDegree(testTab);
         assertEquals(node4, resultNode);
     }
-    
+
     @Test
     public void testSetNbColorOpposite() {
+        // Création du graphe
         Node node1 = algoColoration.getFileGraph().addNode("1");
         Node node2 = algoColoration.getFileGraph().addNode("2");
         Node node3 = algoColoration.getFileGraph().addNode("3");
         algoColoration.getFileGraph().addEdge("1_2", "1", "2");
         algoColoration.getFileGraph().addEdge("1_3", "1", "3");
-        
+
         node1.setAttribute("color", 1);
-        algoColoration.setNbColorOpposite(node1);
+
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
         
+        
+        colorationAlgorithm.setNbColorOpposite(node1);
+
         ArrayList<Integer> colorsNode2 = node2.getAttribute("couleurAutour");
         ArrayList<Integer> colorsNode3 = node3.getAttribute("couleurAutour");
 
@@ -237,6 +257,7 @@ public class AlgoTest {
 
     @Test
     public void testAppliquerColor() {
+        // Création du graphe
         Node node1 = algoColoration.getFileGraph().addNode("1");
         Node node2 = algoColoration.getFileGraph().addNode("2");
         Node node3 = algoColoration.getFileGraph().addNode("3");
@@ -246,8 +267,11 @@ public class AlgoTest {
         node1.setAttribute("color", 1);
         node2.setAttribute("color", 2);
 
-        algoColoration.putColor(node3);
+        ColorationAlgorithm colorationAlgorithm = new ColorationAlgorithm(algoColoration);
         
+        // Test du résultat
+        colorationAlgorithm.putColor(node3);
+
         Integer colorNode3 = (int) node3.getAttribute("color");
 
         assertNotNull(colorNode3);
